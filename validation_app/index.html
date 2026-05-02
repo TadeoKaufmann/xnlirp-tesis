@@ -82,18 +82,17 @@
   }
   .text-box { margin-bottom: 14px; }
   .text-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 14px;
     margin-bottom: 18px;
-  }
-  @media (max-width: 640px) {
-    .text-cols { grid-template-columns: 1fr; }
   }
   .text-col textarea {
     margin-top: 8px;
     font-size: 0.85rem;
     min-height: 50px;
+    width: 100%;
+    box-sizing: border-box;
   }
   .text-label {
     font-size: 0.72rem;
