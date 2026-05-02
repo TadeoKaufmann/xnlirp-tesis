@@ -1,0 +1,1743 @@
+<!doctype html>
+<html lang='es'><head><meta charset='utf-8'><title>XNLIrp — Held-out 70 (anotación manual ES vs RP)</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 24px; background:#fafafa; color:#111; }
+      h1 { margin-bottom: 8px; }
+      .filters { background:#fff; padding:12px 16px; border-radius:8px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.06); position:sticky; top:0; z-index:10; }
+      .filters label { margin-right: 12px; font-size: 14px; }
+      .card { background:#fff; border-radius:10px; padding:16px 20px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+      .meta { font-size:12px; color:#555; margin-bottom:8px; display:flex; gap:14px; flex-wrap:wrap; }
+      .badge { padding:2px 8px; border-radius:10px; background:#eef; font-weight:600; font-size:11px; text-transform:uppercase; }
+      .badge.A { background:#e0e0e0; }
+      .badge.B { background:#cfe8ff; }
+      .badge.C { background:#ffe0b2; }
+      .badge.D { background:#ffcdd2; }
+      .badge.OK { background:#c8e6c9; }
+      .badge.REVIEW { background:#fff59d; }
+      .badge.ERROR { background:#ef9a9a; }
+      .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+      .col h3 { margin: 0 0 6px 0; font-size:13px; color:#444; text-transform:uppercase; letter-spacing:0.05em; }
+      .text { font-size:15px; line-height:1.5; }
+      .del { background:#ffd6d6; text-decoration:line-through; }
+      .ins { background:#d6f5d6; font-weight:500; }
+      .changes { font-size:12px; color:#444; margin-top:10px; }
+      .changes ul { margin:4px 0 0 18px; padding:0; }
+      .cc { font-size:12px; color:#7a4a00; background:#fff3e0; padding:6px 10px; border-radius:6px; margin-top:8px; }
+      .hidden { display:none; }
+    </style>
+    
+    <script>
+      function applyFilters() {
+        const t = document.getElementById('typeFilter').value;
+        const s = document.getElementById('statusFilter').value;
+        const lev = parseInt(document.getElementById('levFilter').value || '0', 10);
+        document.querySelectorAll('.card').forEach(c => {
+          const ct = c.dataset.type;
+          const cs = c.dataset.status;
+          const cl = parseInt(c.dataset.lev, 10);
+          let show = true;
+          if (t !== 'all' && ct !== t) show = false;
+          if (s !== 'all' && cs !== s) show = false;
+          if (lev > 0 && cl < lev) show = false;
+          c.classList.toggle('hidden', !show);
+        });
+      }
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('select, input').forEach(el => el.addEventListener('change', applyFilters));
+      });
+    </script>
+    </head>
+<body>
+  <h1>XNLIrp — Held-out 70 (anotación manual ES vs RP)</h1>
+  <div class='filters'>
+    <label>Tipo: <select id='typeFilter'>
+      <option value='all'>Todos</option><option>A</option><option>B</option><option>C</option><option>D</option>
+    </select></label>
+    <label>Estado: <select id='statusFilter'>
+      <option value='all'>Todos</option><option>OK</option><option>REVIEW</option><option>ERROR</option>
+    </select></label>
+    <label>Lev mínimo: <input type='number' id='levFilter' value='0' min='0' style='width:60px'></label>
+    <span style='font-size:12px;color:#666'>Total: 70 instancias</span>
+  </div>
+  
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1708</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Pero aunque se riera, sabía tan bien como Pitt que, al desembarcar esa mañana, llevaba su vida en sus manos.</div>
+              <div class='text'><strong>H:</strong> Era peligroso para él ir a la costa.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Pero aunque se riera, sabía tan bien como Pitt que, al desembarcar esa mañana, llevaba su vida en sus manos.</div>
+              <div class='text'><strong>H:</strong> Era peligroso para él ir a la costa.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 628</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> eso es como cuentas de ahorro con contribución</div>
+              <div class='text'><strong>H:</strong> Es lo mismo que una cuenta de ahorro individual.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> eso es como cuentas de ahorro con contribución</div>
+              <div class='text'><strong>H:</strong> Es lo mismo que una cuenta de ahorro individual.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='14'>
+          <div class='meta'>
+            <span><strong>idx 4006</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 14</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> También ponemos énfasis en obras que están directamente relacionados con la historia, la literatura y las ciencias sociales.</div>
+              <div class='text'><strong>H:</strong> <span class='del'>Hemos hecho</span> tres <span class='del'>jugadas</span> históricas en el pasado.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> También ponemos énfasis en obras que están directamente relacionados con la historia, la literatura y las ciencias sociales.</div>
+              <div class='text'><strong>H:</strong> <span class='ins'>Hicimos</span> tres <span class='ins'>obras</span> históricas en el pasado.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>jugadas → obras (corrección de error de traducción: &#x27;plays&#x27; como obras de teatro, no &#x27;jugadas&#x27;)</li><li>hemos hecho → hicimos (PPC → pretérito simple RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='7'>
+          <div class='meta'>
+            <span><strong>idx 2295</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 7</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> <span class='del'>Aquí</span> se pueden encontrar muchos ejemplos de todas las artesanías producidas localmente, y vas a comprarlas mucho más baratas que en cualquier resort, sobre todo si <span class='del'>practicas</span> tu habilidad para negociar antes.</div>
+              <div class='text'><strong>H:</strong> Es más barato comprar cosas <span class='del'>aquí</span> porque no hay impuestos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> <span class='ins'>Acá</span> se pueden encontrar muchos ejemplos de todas las artesanías producidas localmente, y vas a comprarlas mucho más baratas que en cualquier resort, sobre todo si <span class='ins'>practicás</span> tu habilidad para negociar antes.</div>
+              <div class='text'><strong>H:</strong> Es más barato comprar cosas <span class='ins'>acá</span> porque no hay impuestos.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>practicas → practicás (acentuación voseo)</li><li>Aquí → Acá (léxico peninsular → RP)</li><li>aquí → acá (léxico peninsular → RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1222</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El final del siglo XVIII fue de hecho un tiempo maravillosamente simplista.</div>
+              <div class='text'><strong>H:</strong> El final del siglo XVIII fue un tiempo de paz.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El final del siglo XVIII fue de hecho un tiempo maravillosamente simplista.</div>
+              <div class='text'><strong>H:</strong> El final del siglo XVIII fue un tiempo de paz.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2990</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> el impulso continuado de 23Financial es esencial para lograr los objetivos de la Ley de CFO</div>
+              <div class='text'><strong>H:</strong> 23Financial está cerca de completar todos sus objetivos legales.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> el impulso continuado de 23Financial es esencial para lograr los objetivos de la Ley de CFO</div>
+              <div class='text'><strong>H:</strong> 23Financial está cerca de completar todos sus objetivos legales.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='8'>
+          <div class='meta'>
+            <span><strong>idx 4125</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 8</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La única pregunta de libro en la encuesta de la Asociación Nacional Educativa es : <span class='del'>¿Has leído</span> algo de literatura en el pasado año?</div>
+              <div class='text'><strong>H:</strong> El NEA está demasiado ocupado como para hacer preguntas detalladas sobre literatura en sus encuestas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La única pregunta de libro en la encuesta de la Asociación Nacional Educativa es : <span class='ins'>¿Leíste</span> algo de literatura en el pasado año?</div>
+              <div class='text'><strong>H:</strong> El NEA está demasiado ocupado como para hacer preguntas detalladas sobre literatura en sus encuestas.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>has leído → leíste (PPC 2ª persona → pretérito simple RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='2'>
+          <div class='meta'>
+            <span><strong>idx 3716</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Ya <span class='del'>entiendes</span> la importancia de la narración, poesía, canción y teatro a la hora de fomentar la empatía, compasión e imaginación.</div>
+              <div class='text'><strong>H:</strong> La narración de cuentos, la poesía, la canción y el teatro no son importantes y son absolutamente inútiles para promover la empatía, la compasión y la imaginación.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Ya <span class='ins'>entendés</span> la importancia de la narración, poesía, canción y teatro a la hora de fomentar la empatía, compasión e imaginación.</div>
+              <div class='text'><strong>H:</strong> La narración de cuentos, la poesía, la canción y el teatro no son importantes y son absolutamente inútiles para promover la empatía, la compasión y la imaginación.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>entiendes → entendés (acentuación voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3813</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Eso también es cierto para los famosos Hoosiers como James Whitcomb Riley, Eugene V. Debs y Madame C.J.</div>
+              <div class='text'><strong>H:</strong> Eugene Debs nunca salió de California.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Eso también es cierto para los famosos Hoosiers como James Whitcomb Riley, Eugene V. Debs y Madame C.J.</div>
+              <div class='text'><strong>H:</strong> Eugene Debs nunca salió de California.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 197</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Quiero decir que ese fue el punto completo.</div>
+              <div class='text'><strong>H:</strong> Entendí el punto.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Quiero decir que ese fue el punto completo.</div>
+              <div class='text'><strong>H:</strong> Entendí el punto.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1409</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El dominio de la falsa creencia muestra que los niños tratan las creencias como interpretaciones, no solo como hechos de la realidad.</div>
+              <div class='text'><strong>H:</strong> Los niños piensan en las creencias como interpretaciones de lo que es real.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El dominio de la falsa creencia muestra que los niños tratan las creencias como interpretaciones, no solo como hechos de la realidad.</div>
+              <div class='text'><strong>H:</strong> Los niños piensan en las creencias como interpretaciones de lo que es real.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4014</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> ver a una chica con una parka de piel blanca y botas</div>
+              <div class='text'><strong>H:</strong> Una niña está vestida para montar en trineo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> ver a una chica con una parka de piel blanca y botas</div>
+              <div class='text'><strong>H:</strong> Una niña está vestida para montar en trineo.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='3'>
+          <div class='meta'>
+            <span><strong>idx 3103</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 3</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Otros relacionados únicamente con el transporte de pasajeros específicos.</div>
+              <div class='text'><strong>H:</strong> Múltiples pasajeros podrían ser transportados en <span class='del'>estas cajas.</span></div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Otros relacionados únicamente con el transporte de pasajeros específicos.</div>
+              <div class='text'><strong>H:</strong> Múltiples pasajeros podrían ser transportados en <span class='ins'>estos casos.</span></div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>cajas → casos (corrección de error de traducción: &#x27;cases&#x27; = &#x27;casos&#x27;, no &#x27;cajas&#x27;)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4207</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Newsweek dice que los turistas y los famosos acuden en masa a la Patagonia, el que fuera refugio de los nazis que habían huido.</div>
+              <div class='text'><strong>H:</strong> Newsweek informa que la Patagonia se ha convertido en una atracción turística popular.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Newsweek dice que los turistas y los famosos acuden en masa a la Patagonia, el que fuera refugio de los nazis que habían huido.</div>
+              <div class='text'><strong>H:</strong> Newsweek informa que la Patagonia se ha convertido en una atracción turística popular.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2240</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> De momento, la idea es que tal vez sea mejor dejar estas islas más pequeñas y menos desarrolladas en paz.</div>
+              <div class='text'><strong>H:</strong> Deberíamos conservar las islas involucradas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> De momento, la idea es que tal vez sea mejor dejar estas islas más pequeñas y menos desarrolladas en paz.</div>
+              <div class='text'><strong>H:</strong> Deberíamos conservar las islas involucradas.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='2'>
+          <div class='meta'>
+            <span><strong>idx 1534</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Sí, claro, <span class='del'>os</span> lo diré.</div>
+              <div class='text'><strong>H:</strong> No te diré una palabra.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Sí, claro, <span class='ins'>se</span> lo diré.</div>
+              <div class='text'><strong>H:</strong> No te diré una palabra.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>os lo diré → se lo diré (vosotros peninsular → ustedes RP, regla pronominal les+lo → se+lo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4562</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Sin embargo, una cosa que M. Tesniares no ha tenido en cuenta es la aportación anglosajona.</div>
+              <div class='text'><strong>H:</strong> M. Tesniares hace aportes anglosajones.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Sin embargo, una cosa que M. Tesniares no ha tenido en cuenta es la aportación anglosajona.</div>
+              <div class='text'><strong>H:</strong> M. Tesniares hace aportes anglosajones.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2957</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Ante ésta elección, es probable que los clientes se reserven el derecho a salir del país.</div>
+              <div class='text'><strong>H:</strong> Los clientes abandonarían el país en lugar de ir a la cárcel.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Ante ésta elección, es probable que los clientes se reserven el derecho a salir del país.</div>
+              <div class='text'><strong>H:</strong> Los clientes abandonarían el país en lugar de ir a la cárcel.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4617</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> &#x27;Un informante de Tennessee usó el clima de perros para&#x27; clima cálido y sin lluvia &#x27;, que puede derivar de la expresión días de perros que se refieren al clima seco de agosto.</div>
+              <div class='text'><strong>H:</strong> Según el informante, el clima de los perros se utilizó para describir las lluvias monzónicas estacionales.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> &#x27;Un informante de Tennessee usó el clima de perros para&#x27; clima cálido y sin lluvia &#x27;, que puede derivar de la expresión días de perros que se refieren al clima seco de agosto.</div>
+              <div class='text'><strong>H:</strong> Según el informante, el clima de los perros se utilizó para describir las lluvias monzónicas estacionales.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4783</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Nada viene de la nada, argumentó Lucrecio hace dos mil años, y los tautólogos han demostrado que tenía razón.</div>
+              <div class='text'><strong>H:</strong> Los tautólogos han honrado las enseñanzas de Lecretius durante cientos de años.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Nada viene de la nada, argumentó Lucrecio hace dos mil años, y los tautólogos han demostrado que tenía razón.</div>
+              <div class='text'><strong>H:</strong> Los tautólogos han honrado las enseñanzas de Lecretius durante cientos de años.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='5'>
+          <div class='meta'>
+            <span><strong>idx 659</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 5</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Cada vez que <span class='del'>compras</span> un artículo, especialmente un artículo de gran compra, es algo en lo que <span class='del'>pagas</span> y siempre has añadido un impuesto del diez por ciento.</div>
+              <div class='text'><strong>H:</strong> Nunca <span class='del'>tienes</span> que calcular el impuesto para determinar el <span class='del'>coste.</span></div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Cada vez que <span class='ins'>comprás</span> un artículo, especialmente un artículo de gran compra, es algo en lo que <span class='ins'>pagás</span> y siempre has añadido un impuesto del diez por ciento.</div>
+              <div class='text'><strong>H:</strong> Nunca <span class='ins'>tenés</span> que calcular el impuesto para determinar el <span class='ins'>costo.</span></div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>compras → comprás (acentuación voseo)</li><li>pagas → pagás (acentuación voseo)</li><li>tienes → tenés (voseo)</li><li>coste → costo (léxico peninsular → RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='2'>
+          <div class='meta'>
+            <span><strong>idx 595</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> eso es lo bueno de vivir más en el país, no <span class='del'>tienes</span> que preocuparte por nada de esto</div>
+              <div class='text'><strong>H:</strong> Lo bueno de estar en el país es que no hay que preocuparse por cosas como esas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> eso es lo bueno de vivir más en el país, no <span class='ins'>tenés</span> que preocuparte por nada de esto</div>
+              <div class='text'><strong>H:</strong> Lo bueno de estar en el país es que no hay que preocuparse por cosas como esas.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>tienes → tenés (voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1000</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Pero, aparte de eso, espero que todavía haga bueno, no demasiado frío, tal vez, tal vez, tal vez, bueno, tal vez un poco de nieve en Nochebuena, o algo así estaría bien, pero no tiene buen aspecto.</div>
+              <div class='text'><strong>H:</strong> Espero que no haga demasiado frío y siga haciendo un tiempo cálido, si no fuera por la nieve de Nochebuena.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Pero, aparte de eso, espero que todavía haga bueno, no demasiado frío, tal vez, tal vez, tal vez, bueno, tal vez un poco de nieve en Nochebuena, o algo así estaría bien, pero no tiene buen aspecto.</div>
+              <div class='text'><strong>H:</strong> Espero que no haga demasiado frío y siga haciendo un tiempo cálido, si no fuera por la nieve de Nochebuena.</div>
+            </div>
+          </div>
+          
+          <div class='cc'><strong>Cultural candidates:</strong><div>• <code>haga bueno</code> → <code>esté lindo</code> <em>[lexico_cultural_generico]</em></div></div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1002</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Programamos nuestra entrada en el futuro tecnológico.</div>
+              <div class='text'><strong>H:</strong> Estamos construyendo los precursores necesarios para un futuro tecnológico.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Programamos nuestra entrada en el futuro tecnológico.</div>
+              <div class='text'><strong>H:</strong> Estamos construyendo los precursores necesarios para un futuro tecnológico.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 391</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Hum, después nos mudamos a una nueva casa.</div>
+              <div class='text'><strong>H:</strong> Nos trasladamos a una nueva residencia.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Hum, después nos mudamos a una nueva casa.</div>
+              <div class='text'><strong>H:</strong> Nos trasladamos a una nueva residencia.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='5'>
+          <div class='meta'>
+            <span><strong>idx 573</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 5</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> probablemente no fueron las personas más inteligentes del mundo, pero <span class='del'>oye,</span> fueron muy agradables y, <span class='del'>esto...</span> se interesaron por las personas que estaban dispuestas a estudiar</div>
+              <div class='text'><strong>H:</strong> Puede que no hayan sido los más inteligentes, pero fueron muy amables y estaban interesados ​​en los que estudian.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> probablemente no fueron las personas más inteligentes del mundo, pero <span class='ins'>bueno,</span> fueron muy agradables y, <span class='ins'>eso...</span> se interesaron por las personas que estaban dispuestas a estudiar</div>
+              <div class='text'><strong>H:</strong> Puede que no hayan sido los más inteligentes, pero fueron muy amables y estaban interesados ​​en los que estudian.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>oye → bueno (interjección de transición peninsular → RP)</li><li>esto... → eso... (muletilla peninsular → RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4751</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Los doce artículos recopilados bajo las rúbricas generales de Contextos de receptividad, Respuesta y comunicación del oyente y Lectores receptivos han tenido un éxito mixto al tratar el tema.</div>
+              <div class='text'><strong>H:</strong> Hay doce artículos en la colección.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Los doce artículos recopilados bajo las rúbricas generales de Contextos de receptividad, Respuesta y comunicación del oyente y Lectores receptivos han tenido un éxito mixto al tratar el tema.</div>
+              <div class='text'><strong>H:</strong> Hay doce artículos en la colección.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='2'>
+          <div class='meta'>
+            <span><strong>idx 1535</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Sí, claro, <span class='del'>os</span> lo diré.</div>
+              <div class='text'><strong>H:</strong> Es sólo porque prometiste no repetir esto por lo que te lo estoy diciendo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Sí, claro, <span class='ins'>se</span> lo diré.</div>
+              <div class='text'><strong>H:</strong> Es sólo porque prometiste no repetir esto por lo que te lo estoy diciendo.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>os lo diré → se lo diré (vosotros peninsular → ustedes RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4769</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> De esta manera, la ortografía de una palabra a menudo se relaciona con la de otras palabras que pertenecen al mismo paradigma, o a su propia historia.</div>
+              <div class='text'><strong>H:</strong> La ortografía de una palabra está ligada a su historia.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> De esta manera, la ortografía de una palabra a menudo se relaciona con la de otras palabras que pertenecen al mismo paradigma, o a su propia historia.</div>
+              <div class='text'><strong>H:</strong> La ortografía de una palabra está ligada a su historia.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='8'>
+          <div class='meta'>
+            <span><strong>idx 4126</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 8</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La única pregunta de libro en la encuesta de la Asociación Nacional Educativa es : <span class='del'>¿Has leído</span> algo de literatura en el pasado año?</div>
+              <div class='text'><strong>H:</strong> La encuesta NEA formuló 30 preguntas sobre literatura y qué tipos de libros fueron leídos el año pasado.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La única pregunta de libro en la encuesta de la Asociación Nacional Educativa es : <span class='ins'>¿Leíste</span> algo de literatura en el pasado año?</div>
+              <div class='text'><strong>H:</strong> La encuesta NEA formuló 30 preguntas sobre literatura y qué tipos de libros fueron leídos el año pasado.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>has leído → leíste (PPC 2ª persona → pretérito simple RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='6'>
+          <div class='meta'>
+            <span><strong>idx 4524</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 6</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Y simpatizo con su comentario en la página 19: La Primera Ley de la autoría de Brunner: En cualquier cuerpo de texto hay por lo menos un error que su autor <span class='del'>ha leído</span> directamente más allá de tres veces.</div>
+              <div class='text'><strong>H:</strong> Es común que los escritores no identifiquen errores en sus propios textos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Y simpatizo con su comentario en la página 19: La Primera Ley de la autoría de Brunner: En cualquier cuerpo de texto hay por lo menos un error que su autor <span class='ins'>leyó</span> directamente más allá de tres veces.</div>
+              <div class='text'><strong>H:</strong> Es común que los escritores no identifiquen errores en sus propios textos.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>ha leído → leyó (PPC 3ª persona → pretérito simple RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1915</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Puede que hayas oído hablar de mí.</div>
+              <div class='text'><strong>H:</strong> El Capitán Calverley miró fijamente a otro hombre.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Puede que hayas oído hablar de mí.</div>
+              <div class='text'><strong>H:</strong> El Capitán Calverley miró fijamente a otro hombre.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3087</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Un asociado de un alto cargo de Hezbolá estaba en el mismo vuelo que llevó a los futuros secuestradores a Irán.</div>
+              <div class='text'><strong>H:</strong> No se sabe de ningún agente de Hozbollah que haya volado alguna vez a Irán.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Un asociado de un alto cargo de Hezbolá estaba en el mismo vuelo que llevó a los futuros secuestradores a Irán.</div>
+              <div class='text'><strong>H:</strong> No se sabe de ningún agente de Hozbollah que haya volado alguna vez a Irán.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3297</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Mientras él seguía supervisando el canal SOD en toda la ciudad, que utilizaban los helicópteros de la Policía de Nueva York, también supervisó el canal táctico punto a punto que usarían los equipos ESU que escalaban las torres.</div>
+              <div class='text'><strong>H:</strong> Los helicópteros de la policía de Nueva York estaban usando el canal SOD.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Mientras él seguía supervisando el canal SOD en toda la ciudad, que utilizaban los helicópteros de la Policía de Nueva York, también supervisó el canal táctico punto a punto que usarían los equipos ESU que escalaban las torres.</div>
+              <div class='text'><strong>H:</strong> Los helicópteros de la policía de Nueva York estaban usando el canal SOD.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 978</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> sí, otra cosa que no entiendo son cosas como vender tecnología y uh incluso maquinaria militar a gobiernos extranjeros y luego perdonarles su deuda</div>
+              <div class='text'><strong>H:</strong> Para mí no tiene sentido que alguien venda tecnología y equipos militares a un gobierno extranjero y no presten atención a su deuda.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> sí, otra cosa que no entiendo son cosas como vender tecnología y uh incluso maquinaria militar a gobiernos extranjeros y luego perdonarles su deuda</div>
+              <div class='text'><strong>H:</strong> Para mí no tiene sentido que alguien venda tecnología y equipos militares a un gobierno extranjero y no presten atención a su deuda.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1294</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Finalmente agregó un claustro, una galería y una torre.</div>
+              <div class='text'><strong>H:</strong> Él nunca agregó nada.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Finalmente agregó un claustro, una galería y una torre.</div>
+              <div class='text'><strong>H:</strong> Él nunca agregó nada.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2453</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El edificio une dos iglesias idénticas, la Franzoesischer Dom (o catedral francesa) al norte, construida para los inmigrantes hugonotes, y la Deutscher Dom (catedral alemana) al sur.</div>
+              <div class='text'><strong>H:</strong> Dos iglesias son lo mismo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El edificio une dos iglesias idénticas, la Franzoesischer Dom (o catedral francesa) al norte, construida para los inmigrantes hugonotes, y la Deutscher Dom (catedral alemana) al sur.</div>
+              <div class='text'><strong>H:</strong> Dos iglesias son lo mismo.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 991</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Es que tenemos casi un acre, sí, es gracioso porque tenemos um.</div>
+              <div class='text'><strong>H:</strong> No se debe bromear sobre este tema: solo tenemos un pie cuadrado de tierra.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Es que tenemos casi un acre, sí, es gracioso porque tenemos um.</div>
+              <div class='text'><strong>H:</strong> No se debe bromear sobre este tema: solo tenemos un pie cuadrado de tierra.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='9'>
+          <div class='meta'>
+            <span><strong>idx 1993</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 9</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> ¿Y qué se supone que me tiene que pasar a mí, Jeremy? Claro, ahora, volveré para la cena, así lo haré. Blood bajó al barco que le esperaba.</div>
+              <div class='text'><strong>H:</strong> <span class='del'>La sangre</span> se metió en un bote.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> ¿Y qué se supone que me tiene que pasar a mí, Jeremy? Claro, ahora, volveré para la cena, así lo haré. Blood bajó al barco que le esperaba.</div>
+              <div class='text'><strong>H:</strong> <span class='ins'>Blood</span> se metió en un bote.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>La sangre → Blood (corrección de error de traducción: &#x27;Blood&#x27; es nombre propio del Capitán Blood, no traducir como sustantivo común)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='2'>
+          <div class='meta'>
+            <span><strong>idx 619</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> claro, claro, no hagas todo lo posible y</div>
+              <div class='text'><strong>H:</strong> No <span class='del'>tienes</span> que hacerlo todo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> claro, claro, no hagas todo lo posible y</div>
+              <div class='text'><strong>H:</strong> No <span class='ins'>tenés</span> que hacerlo todo.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>tienes → tenés (voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='5'>
+          <div class='meta'>
+            <span><strong>idx 574</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 5</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> probablemente no fueron las personas más inteligentes del mundo, pero <span class='del'>oye,</span> fueron muy agradables y, <span class='del'>esto...</span> se interesaron por las personas que estaban dispuestas a estudiar</div>
+              <div class='text'><strong>H:</strong> Eran muy inteligentes, pero se hicieron los tontos cuando estaban cerca de otros que no los conocían muy bien.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> probablemente no fueron las personas más inteligentes del mundo, pero <span class='ins'>bueno,</span> fueron muy agradables y, <span class='ins'>eso...</span> se interesaron por las personas que estaban dispuestas a estudiar</div>
+              <div class='text'><strong>H:</strong> Eran muy inteligentes, pero se hicieron los tontos cuando estaban cerca de otros que no los conocían muy bien.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>oye → bueno (interjección de transición peninsular → RP)</li><li>esto... → eso... (muletilla peninsular → RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='9'>
+          <div class='meta'>
+            <span><strong>idx 4664</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 9</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> (a) <span class='del'>Cambia</span> cada d o t del objetivo con c.</div>
+              <div class='text'><strong>H:</strong> Debería haber más c&#x27;s en <span class='del'>la tarjeta</span> de d&#x27;s.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> (a) <span class='ins'>Cambiá</span> cada d o t del objetivo con c.</div>
+              <div class='text'><strong>H:</strong> Debería haber más c&#x27;s en <span class='ins'>el objetivo</span> de d&#x27;s.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>tarjeta → objetivo (corrección de error de traducción: &#x27;target&#x27; es &#x27;objetivo&#x27; como en prem, no &#x27;tarjeta&#x27;)</li><li>Cambia → Cambiá (imperativo voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3281</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Las ventanas del piso al techo en la esquina noroeste del nivel del lobby de West Street habían sido voladas</div>
+              <div class='text'><strong>H:</strong> En la esquina del edificio se destruyeron muchas ventanas grandes.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Las ventanas del piso al techo en la esquina noroeste del nivel del lobby de West Street habían sido voladas</div>
+              <div class='text'><strong>H:</strong> En la esquina del edificio se destruyeron muchas ventanas grandes.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='3'>
+          <div class='meta'>
+            <span><strong>idx 827</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 3</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Es increíble, es increíble lo que <span class='del'>puedes</span> sacar de un poquito</div>
+              <div class='text'><strong>H:</strong> No hay manera de que tan poco sea suficiente.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Es increíble, es increíble lo que <span class='ins'>podés</span> sacar de un poquito</div>
+              <div class='text'><strong>H:</strong> No hay manera de que tan poco sea suficiente.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>puedes → podés (voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4706</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La sangre y el flujo no son como la comida,</div>
+              <div class='text'><strong>H:</strong> La comida es más como rocas y árboles que sangre o crecida.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La sangre y el flujo no son como la comida,</div>
+              <div class='text'><strong>H:</strong> La comida es más como rocas y árboles que sangre o crecida.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='3'>
+          <div class='meta'>
+            <span><strong>idx 3841</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 3</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Y más del 30 % de los niños a los que servimos no pueden <span class='del'>permiirse</span> el precio del <span class='del'>campañemto.</span></div>
+              <div class='text'><strong>H:</strong> Los campistas que no pueden pagar vienen de ciudades pobres.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Y más del 30 % de los niños a los que servimos no pueden <span class='ins'>permitirse</span> el precio del <span class='ins'>campamento.</span></div>
+              <div class='text'><strong>H:</strong> Los campistas que no pueden pagar vienen de ciudades pobres.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>permiirse → permitirse (corrección de typo)</li><li>campañemto → campamento (corrección de typo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='3'>
+          <div class='meta'>
+            <span><strong>idx 3459</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 3</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Dijo que si sus asesores le hubieran dicho que había una <span class='del'>celda</span> en Estados Unidos, se habrían trasladado para ocuparse del asunto.</div>
+              <div class='text'><strong>H:</strong> No creía que se pudiera hacer legalmente algo sobre las células en los EE. UU.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Dijo que si sus asesores le hubieran dicho que había una <span class='ins'>célula</span> en Estados Unidos, se habrían trasladado para ocuparse del asunto.</div>
+              <div class='text'><strong>H:</strong> No creía que se pudiera hacer legalmente algo sobre las células en los EE. UU.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>celda → célula (corrección de error de traducción: &#x27;cell&#x27; en contexto de terrorismo es &#x27;célula&#x27;, no &#x27;celda&#x27;)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 421</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Y se mudaron a Mallard Creek en Charlotte.</div>
+              <div class='text'><strong>H:</strong> Nunca se mudaron a Charlotte.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Y se mudaron a Mallard Creek en Charlotte.</div>
+              <div class='text'><strong>H:</strong> Nunca se mudaron a Charlotte.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 709</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> y luego la segunda cosa que probablemente miraría es lo que pueden pagar</div>
+              <div class='text'><strong>H:</strong> No me importa qué cosa puedan pagar.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> y luego la segunda cosa que probablemente miraría es lo que pueden pagar</div>
+              <div class='text'><strong>H:</strong> No me importa qué cosa puedan pagar.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3260</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Tras el impacto, muchos fueron asesinados o gravemente heridos; otros resultaron relativamente ilesos.</div>
+              <div class='text'><strong>H:</strong> Solamente 10 personas recibieron solo lesiones menores por el impacto.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Tras el impacto, muchos fueron asesinados o gravemente heridos; otros resultaron relativamente ilesos.</div>
+              <div class='text'><strong>H:</strong> Solamente 10 personas recibieron solo lesiones menores por el impacto.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2595</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El CIO corporativo trabaja de la mano con los CIO, o gerentes de información de cada una de las unidades de negocio, para asegurar la disponibilidad de una tecnología eficiente, fiable e interoperable en toda la corporación.</div>
+              <div class='text'><strong>H:</strong> El CIO capacita a otros CIOs.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El CIO corporativo trabaja de la mano con los CIO, o gerentes de información de cada una de las unidades de negocio, para asegurar la disponibilidad de una tecnología eficiente, fiable e interoperable en toda la corporación.</div>
+              <div class='text'><strong>H:</strong> El CIO capacita a otros CIOs.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3322</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Para la creencia del piloto y el helicóptero sin mantenerse quieto en el aire, consulte la entrevista 12 de NYPD, Aviación (Mar.</div>
+              <div class='text'><strong>H:</strong> Hubo una entrevista con el jefe del NYPD.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Para la creencia del piloto y el helicóptero sin mantenerse quieto en el aire, consulte la entrevista 12 de NYPD, Aviación (Mar.</div>
+              <div class='text'><strong>H:</strong> Hubo una entrevista con el jefe del NYPD.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2594</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Los prototipos fueron utilizados por las empresas comerciales durante todo el proceso de desarrollo del producto y no sólo durante la integración del producto.</div>
+              <div class='text'><strong>H:</strong> Las compañías comerciales usan prototipos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Los prototipos fueron utilizados por las empresas comerciales durante todo el proceso de desarrollo del producto y no sólo durante la integración del producto.</div>
+              <div class='text'><strong>H:</strong> Las compañías comerciales usan prototipos.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2329</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Las Olimpiadas de 1992 sentaron las bases de la reputación de Barcelona como una ciudad loca por el deporte.</div>
+              <div class='text'><strong>H:</strong> Los Juegos Olímpicos en España fueron los más populares de esa década.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Las Olimpiadas de 1992 sentaron las bases de la reputación de Barcelona como una ciudad loca por el deporte.</div>
+              <div class='text'><strong>H:</strong> Los Juegos Olímpicos en España fueron los más populares de esa década.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2174</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Formando parte de la muralla de la ciudad, los prusianos más pragmáticos pretendían que la puerta no fuera tanto un arco de triunfo como un imponente peaje para recaudar impuestos.</div>
+              <div class='text'><strong>H:</strong> La puerta era solo un arco triunfal.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Formando parte de la muralla de la ciudad, los prusianos más pragmáticos pretendían que la puerta no fuera tanto un arco de triunfo como un imponente peaje para recaudar impuestos.</div>
+              <div class='text'><strong>H:</strong> La puerta era solo un arco triunfal.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3305</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Para obtener ayuda sobre la evacuación del 11 de septiembre, consulte, por ejemplo, la entrevista civil 14 (abr.</div>
+              <div class='text'><strong>H:</strong> No hay ayuda disponible con respecto a la evacuación del 11 de septiembre.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Para obtener ayuda sobre la evacuación del 11 de septiembre, consulte, por ejemplo, la entrevista civil 14 (abr.</div>
+              <div class='text'><strong>H:</strong> No hay ayuda disponible con respecto a la evacuación del 11 de septiembre.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='1'>
+          <div class='meta'>
+            <span><strong>idx 416</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 1</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Es como un archivo con un montón de pestañas diferentes, ya <span class='del'>sabes.</span> Cada pestaña tiene como una hoja de cálculo diferente en ella.</div>
+              <div class='text'><strong>H:</strong> Las pestañas muestran el saldo actual de todas las cuentas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Es como un archivo con un montón de pestañas diferentes, ya <span class='ins'>sabés.</span> Cada pestaña tiene como una hoja de cálculo diferente en ella.</div>
+              <div class='text'><strong>H:</strong> Las pestañas muestran el saldo actual de todas las cuentas.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>sabes → sabés (voseo)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 765</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> a ellos mismos y mi nos gustan algunas de sus canciones, pero como estoy de acuerdo, como regla general, yo tampoco elegiría el rap</div>
+              <div class='text'><strong>H:</strong> No soy fanático del rap, pero sí me gustan algunas de las canciones que tienen.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> a ellos mismos y mi nos gustan algunas de sus canciones, pero como estoy de acuerdo, como regla general, yo tampoco elegiría el rap</div>
+              <div class='text'><strong>H:</strong> No soy fanático del rap, pero sí me gustan algunas de las canciones que tienen.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 2816</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Una agencia intentó implementar un procedimiento de reclamo de viaje para empleados que permite a los viajeros, con ciertas excepciones, simplemente enumerar una cantidad agregada de todos los gastos que individualmente cuestan 75$ o menos.</div>
+              <div class='text'><strong>H:</strong> Los viajeros no tienen que enumerar sus gastos individuales.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Una agencia intentó implementar un procedimiento de reclamo de viaje para empleados que permite a los viajeros, con ciertas excepciones, simplemente enumerar una cantidad agregada de todos los gastos que individualmente cuestan 75$ o menos.</div>
+              <div class='text'><strong>H:</strong> Los viajeros no tienen que enumerar sus gastos individuales.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1888</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Las amenazas no servirán, capitán.</div>
+              <div class='text'><strong>H:</strong> El Capitán había amenazado.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Las amenazas no servirán, capitán.</div>
+              <div class='text'><strong>H:</strong> El Capitán había amenazado.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3336</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La policía disparó al hombre y luego se suicidó en el avión mientras todavía estaba en tierra en el aeropuerto.</div>
+              <div class='text'><strong>H:</strong> El hombre se suicidó en su camioneta.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La policía disparó al hombre y luego se suicidó en el avión mientras todavía estaba en tierra en el aeropuerto.</div>
+              <div class='text'><strong>H:</strong> El hombre se suicidó en su camioneta.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 3121</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Mzoudi afirma que se fue a casa a Marruecos para casarse, pero no pudo porque fue herido en un accidente automovilístico estando ya allí.</div>
+              <div class='text'><strong>H:</strong> Mzoudi afirmó que había llevado a cabo la boda según lo planeado.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Mzoudi afirma que se fue a casa a Marruecos para casarse, pero no pudo porque fue herido en un accidente automovilístico estando ya allí.</div>
+              <div class='text'><strong>H:</strong> Mzoudi afirmó que había llevado a cabo la boda según lo planeado.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4690</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La continencia, después de todo, es una virtud, o eso dicen los que no sufren su imposición.</div>
+              <div class='text'><strong>H:</strong> Sólo aquellos que no tienen continencia lo consideran una virtud.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La continencia, después de todo, es una virtud, o eso dicen los que no sufren su imposición.</div>
+              <div class='text'><strong>H:</strong> Sólo aquellos que no tienen continencia lo consideran una virtud.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1181</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> A menudo, a estos primeros murales se les conocía como arte popular.</div>
+              <div class='text'><strong>H:</strong> Los murales de épocas anteriores eran conocidos como arte popular.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> A menudo, a estos primeros murales se les conocía como arte popular.</div>
+              <div class='text'><strong>H:</strong> Los murales de épocas anteriores eran conocidos como arte popular.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 4065</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Además de este lamentable récord respecto a la libertad civil también existe el uso indebido del FBI en una investigación propia de una oficina de viajes de la Casa Blanca, y lo que se ha denominado como Filegate.</div>
+              <div class='text'><strong>H:</strong> La Casa Blanca tiene al FBI espiando a los candidatos políticos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Además de este lamentable récord respecto a la libertad civil también existe el uso indebido del FBI en una investigación propia de una oficina de viajes de la Casa Blanca, y lo que se ha denominado como Filegate.</div>
+              <div class='text'><strong>H:</strong> La Casa Blanca tiene al FBI espiando a los candidatos políticos.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='6'>
+          <div class='meta'>
+            <span><strong>idx 2500</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 6</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Los caminos se retuercen, giran alrededor de curvas cerradas y se enrollan y ondulan.</div>
+              <div class='text'><strong>H:</strong> El camino era tan curvilíneo que era difícil <span class='del'>conducir</span> por él.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Los caminos se retuercen, giran alrededor de curvas cerradas y se enrollan y ondulan.</div>
+              <div class='text'><strong>H:</strong> El camino era tan curvilíneo que era difícil <span class='ins'>manejar</span> por él.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>conducir → manejar (léxico peninsular → RP)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1514</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Me complacerá llegar a Port Royal. El Capitán Blood apartó un pergamino bajo la mirada de Calverley.</div>
+              <div class='text'><strong>H:</strong> El Capitán Blood rompió el pergamino en pedazos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Me complacerá llegar a Port Royal. El Capitán Blood apartó un pergamino bajo la mirada de Calverley.</div>
+              <div class='text'><strong>H:</strong> El Capitán Blood rompió el pergamino en pedazos.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0'>
+          <div class='meta'>
+            <span><strong>idx 1777</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Será una bondad, lo será. Por un momento, ella se paró delante de él con una respiración acelerada, y el color menguaba y aumentaba en las mejillas.</div>
+              <div class='text'><strong>H:</strong> Ella estaba sin aliento y por un momento parecía nerviosa.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Será una bondad, lo será. Por un momento, ella se paró delante de él con una respiración acelerada, y el color menguaba y aumentaba en las mejillas.</div>
+              <div class='text'><strong>H:</strong> Ella estaba sin aliento y por un momento parecía nerviosa.</div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='6'>
+          <div class='meta'>
+            <span><strong>idx 1942</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 6</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> <span class='del'>Shrewd</span> defensa, él está de acuerdo.</div>
+              <div class='text'><strong>H:</strong> Con toda probabilidad no aprobó la astuta defensa.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> <span class='ins'>Astuta</span> defensa, él está de acuerdo.</div>
+              <div class='text'><strong>H:</strong> Con toda probabilidad no aprobó la astuta defensa.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>Shrewd → Astuta (corrección: palabra inglesa sin traducir en el ES original)</li></ul></div>
+          
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='1'>
+          <div class='meta'>
+            <span><strong>idx 3440</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 1</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Sin embargo, la <span class='del'>guia</span> presupuestaria emitida al día siguiente destacó como prioridades los crímenes con armas de fuego, el narcotráfico y los derechos civiles.</div>
+              <div class='text'><strong>H:</strong> La guía presupuestaria no mencionó los derechos civiles en absoluto.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Sin embargo, la <span class='ins'>guía</span> presupuestaria emitida al día siguiente destacó como prioridades los crímenes con armas de fuego, el narcotráfico y los derechos civiles.</div>
+              <div class='text'><strong>H:</strong> La guía presupuestaria no mencionó los derechos civiles en absoluto.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>guia → guía (corrección de typo: tilde faltante en &#x27;guía&#x27;)</li></ul></div>
+          
+        </div>
+        
+</body></html>

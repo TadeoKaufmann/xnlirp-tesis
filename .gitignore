@@ -1,0 +1,14 @@
+.venv/
+.env
+credentials/
+__pycache__/
+*.pyc
+.claude/
+
+# Outputs de experimentos (regenerables)
+results/
+
+# .jsonl excluidos por defecto, pero se incluyen los gold/dev de processed/
+*.jsonl
+!data/processed/*.jsonl
+!data/raw/**/*.jsonl

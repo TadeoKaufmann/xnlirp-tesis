@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Validación lingüística — Español rioplatense</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --green: #007a33;
+    --green-light: #2d9659;
+    --green-bg: #ebf7ef;
+    --bg: #faf9f5;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  header h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: -0.01em;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 4px;
+  }
+  .meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .progress-bar {
+    height: 5px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.35s ease;
+    width: 0;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .card-anim { animation: fadeIn 0.28s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .text-box { margin-bottom: 14px; }
+  .text-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .text-content {
+    background: #f6f5ee;
+    border-left: 3px solid var(--green);
+    padding: 13px 16px;
+    border-radius: 6px;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: #2a2a2a;
+  }
+  .question {
+    margin-top: 22px;
+    margin-bottom: 14px;
+    font-weight: 500;
+    font-size: 0.98rem;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .options.two-col { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px) {
+    .options { grid-template-columns: 1fr; }
+  }
+  .option {
+    padding: 12px 14px;
+    border: 2px solid var(--border-strong);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text);
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .option:hover { border-color: var(--green-light); }
+  .option.selected {
+    border-color: var(--green);
+    background: var(--green-bg);
+    color: var(--green);
+    font-weight: 600;
+  }
+  textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.93rem;
+    resize: vertical;
+    min-height: 56px;
+    background: white;
+    color: var(--text);
+  }
+  textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--green-bg);
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: white;
+    cursor: pointer;
+    font-size: 0.93rem;
+    font-family: inherit;
+    color: var(--text);
+    transition: background 0.15s, border-color 0.15s, transform 0.05s;
+  }
+  .btn:hover:not(:disabled) { background: #f5f5f0; }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--green-light);
+    border-color: var(--green-light);
+  }
+  .btn-block { width: 100%; padding: 13px; font-size: 0.98rem; }
+  select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: white;
+    color: var(--text);
+  }
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .center { text-align: center; }
+  .hidden { display: none !important; }
+  .icon-check {
+    font-size: 2.6rem;
+    color: var(--green);
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d2d2d;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    z-index: 100;
+    max-width: 90%;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; }
+  .footer-note {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 24px;
+  }
+  h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--green); }
+  .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Validación lingüística</h1>
+    <p>¿Suena natural en español rioplatense?</p>
+  </header>
+
+  <main id="app">
+    <div id="screen-loading" class="card center">
+      <p class="muted">Cargando…</p>
+    </div>
+
+    <div id="screen-instance" class="hidden">
+      <div class="meta" id="counter"></div>
+      <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
+      <div class="card card-anim" id="instance-card">
+        <div class="text-box">
+          <div class="text-label">Premisa</div>
+          <div class="text-content" id="text-prem"></div>
+        </div>
+        <div class="text-box">
+          <div class="text-label">Hipótesis</div>
+          <div class="text-content" id="text-hyp"></div>
+        </div>
+        <div class="question">¿Este texto suena natural en español rioplatense?</div>
+        <div class="options" id="options-respuesta">
+          <button class="option" data-value="si">Sí</button>
+          <button class="option" data-value="parcialmente">Parcialmente</button>
+          <button class="option" data-value="no">No</button>
+        </div>
+        <textarea id="comentario" placeholder="Comentario (opcional). ¿Qué cambiarías? ¿Qué te suena raro?"></textarea>
+        <div class="nav">
+          <button class="btn" id="btn-prev">← Anterior</button>
+          <button class="btn btn-primary" id="btn-next">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-final" class="hidden">
+      <div class="card card-anim">
+        <h2>Casi listo</h2>
+        <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
+        <div class="field">
+          <label for="region">¿De qué región sos?</label>
+          <select id="region">
+            <option value="">Seleccioná una región…</option>
+            <optgroup label="Argentina">
+              <option>Buenos Aires - CABA</option>
+              <option>Buenos Aires - Interior</option>
+              <option>Catamarca</option>
+              <option>Chaco</option>
+              <option>Chubut</option>
+              <option>Córdoba</option>
+              <option>Corrientes</option>
+              <option>Entre Ríos</option>
+              <option>Formosa</option>
+              <option>Jujuy</option>
+              <option>La Pampa</option>
+              <option>La Rioja</option>
+              <option>Mendoza</option>
+              <option>Misiones</option>
+              <option>Neuquén</option>
+              <option>Río Negro</option>
+              <option>Salta</option>
+              <option>San Juan</option>
+              <option>San Luis</option>
+              <option>Santa Cruz</option>
+              <option>Santa Fe</option>
+              <option>Santiago del Estero</option>
+              <option>Tierra del Fuego</option>
+              <option>Tucumán</option>
+            </optgroup>
+            <optgroup label="Uruguay">
+              <option>Uruguay - Montevideo</option>
+              <option>Uruguay - Interior</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label>¿Querés participar en futuras rondas de validación?</label>
+          <div class="options two-col" id="options-quiere">
+            <button class="option" data-quiere="true">Sí</button>
+            <button class="option" data-quiere="false">No</button>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" id="btn-submit">Enviar respuestas</button>
+      </div>
+    </div>
+
+    <div id="screen-thanks" class="hidden">
+      <div class="card center card-anim">
+        <div class="icon-check">✓</div>
+        <h2>¡Muchas gracias!</h2>
+        <p class="muted">Tus respuestas quedaron registradas y van a ser muy útiles para esta investigación.</p>
+      </div>
+    </div>
+
+    <div id="screen-done" class="hidden">
+      <div class="card center card-anim">
+        <div class="icon-check">✓</div>
+        <h2>Todo anotado</h2>
+        <p class="muted" id="done-message" style="margin-bottom: 20px;">No quedan instancias disponibles por ahora.</p>
+        <button class="btn" onclick="location.reload()">Cargar nueva ronda</button>
+      </div>
+    </div>
+
+    <div id="screen-error" class="hidden">
+      <div class="card center card-anim">
+        <h2 style="color: #b91c1c;">Error de conexión</h2>
+        <p class="muted" id="error-message" style="margin-bottom: 20px;"></p>
+        <button class="btn" onclick="location.reload()">Reintentar</button>
+      </div>
+    </div>
+  </main>
+
+  <p class="footer-note">Tesis de Maestría — Validación de XNLIrp</p>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────────────────
+  const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
+
+  // ── Instancias ──────────────────────────────────────────────────────────
+  const INSTANCES = [
+    {"idx": 1522, "prem": "Te lo debía, o así lo creí, dijo él.", "hyp": "Te lo debe por la ayuda que le proporcionaste cuando no tenía un mango."},
+    {"idx": 4957, "prem": "Una diferencia es que otros grupos necesitan hacerlo porque para funcionar deben asignar nuevos significados a las palabras y frases existentes o acuñar nuevas palabras y frases.", "hyp": "Algunos grupos necesitan inventar nuevas palabras."},
+    {"idx": 463, "prem": "Les dije que era de mi hermana.", "hyp": "Dije que era mío."},
+    {"idx": 3484, "prem": "KSM puede haber ordenado a Binalshibh que envíe dinero a Moussaoui para ayudar a preparar a Moussaoui como potencial piloto sustituto de Jarrah.", "hyp": "KSM le dijo a Binalshibh qué hacer porque era el jefe de toda la organización."},
+    {"idx": 2692, "prem": "El concepto de los momentos de enseñanza aunque en este momento sea solo una conceptualización, proporciona parte del interés fundamental de hacer intervenciones de alcohol en ED.", "hyp": "Hay alguna razón para realizar una intervención de alcohol en la sala de emergencias mientras el paciente aún está ebrio."},
+    {"idx": 1710, "prem": "Yo ... no había soñado ...", "hyp": "No soñé el viernes pasado."},
+    {"idx": 2366, "prem": "Funciona simplemente levantando dos tablas de madera a mano.", "hyp": "Dos tablones se levantan."},
+    {"idx": 1015, "prem": "Y existe, creo, una pista molecular de que la biosfera se construye a sí misma de forma persistente en el régimen superviviente para un grupo de propagación de linajes.", "hyp": "La biosfera cambia según la temperatura."},
+    {"idx": 1453, "prem": "La piñata se cuelga de un árbol, con una cuerda larga que es manipulada por un adulto, que puede mover la piñata hacia arriba y hacia abajo para que no se rompa demasiado rápido.", "hyp": "La piñata yace en el suelo."},
+    {"idx": 1095, "prem": "Como se observó en el capítulo anterior, debe haber algo de interacción en la entrada al posible adyacente que abre la exploración por la capacidad de la selección natural para quitar a los perdedores.", "hyp": "La selección natural siempre sucede."},
+    {"idx": 2207, "prem": "El escandaloso y el conservador, se puede ver, coexisten acá sin mucho alboroto.", "hyp": "La gente se lleva bien."},
+    {"idx": 1857, "prem": "Es nuestra única oportunidad, dije, y tenemos que tomarla. La mejor solución que tenía en mente el Capitán Blood era la que ya le había propuesto a Wolverstone.", "hyp": "El Capitán Blood nunca había hablado con Wolverstone antes."},
+    {"idx": 3577, "prem": "Nuestro Despacho de Práctica Civil lleva funcionando varios años, y hace poco añadimos un Despacho de Defensa Delictiva", "hyp": "Nuestra Clínica de Práctica Civil está celebrando su primer año el próximo mes."},
+    {"idx": 4040, "prem": "Una vez en casa, aprendí que los Estados Unidos cortan los suministros de dos formas.", "hyp": "Antes de volver a casa aprendí que Estados Unidos corta suministros de dos maneras."},
+    {"idx": 3314, "prem": "La supervisión por parte del Congreso en inteligencia y lucha contra el terrorismo ahora presenta deficiencias.", "hyp": "La supervisión del Congreso de la inteligencia y el contraterrorismo antes funcionaban con eficacia."},
+    {"idx": 1166, "prem": "Los otros no hacen que el consumidor sea lo suficientemente feliz.", "hyp": "Los otros son suficientes."},
+    {"idx": 3592, "prem": "Mi aventura con la IRT es una larga.", "hyp": "Me parece que el IRT es favorable."},
+    {"idx": 1638, "prem": "En lo mío no hice nada de lo que me avergüence, teniendo en cuenta la provocación que recibí. Su mirada vaciló, y cayó antes que la suya tan intensa.", "hyp": "No me avergüenzo de nada de lo que hice, teniendo en cuenta la provocación que recibí."},
+    {"idx": 1399, "prem": "De hecho, Bios Group está involucrado en inventarlos y fabricarlos.", "hyp": "Bios Group contribuye a su producción."},
+    {"idx": 2294, "prem": "Los planes de ubicar acá el Parlamento tras la independencia no llegaron a nada.", "hyp": "El Parlamento fue fuertemente considerado para esta ubicación."},
+    {"idx": 219, "prem": "Entonces, pienso que hablaré con Ramona de nuevo.", "hyp": "Nunca he hablado con Ramona."},
+    {"idx": 3741, "prem": "¡Es hora de la famosa ÚLTIMA LLAMADA!", "hyp": "Es hora de la última llamada porque cerramos a las 2 a. m."},
+    {"idx": 1630, "prem": "Siempre estaré agradecido.", "hyp": "Estoy realmente feliz y agradecido por lo que hiciste hoy."},
+    {"idx": 4980, "prem": "La persona que llama dice: Gracias por atender mi llamada.", "hyp": "Nadie respondió a la persona que llamó."},
+    {"idx": 2142, "prem": "Si te has convertido en un adepto de la ceremonia del té, apreciarás la excelente colección de cuencos de cerámica del siglo XIV, teteras y cajas para el té, así como cucharas de bambú, batidores y floreros.", "hyp": "Las teteras son feas y es muy aburrido aprender sobre ellas."},
+    {"idx": 1176, "prem": "Tomar los privilegios e inmunidades de los ciudadanos como el valor central del nuevo orden, como lo hace Black, crea sus propios problemas de igualdad bajo la ley.", "hyp": "El Gobierno puede arrebatar privilegios a los ciudadanos."},
+    {"idx": 1804, "prem": "Pero muchos no pudieron resolver de una u otra forma hasta que estuvieron satisfechos tras varias preguntas, y sobre todo después de una hecha por Ogle.", "hyp": "Ogle tenía muchas preocupaciones, de las cuales todavía se tenía que saciar."},
+    {"idx": 910, "prem": "fue un placer hablar con vos, muchas gracias, adiós", "hyp": "No quiero volver a hablar con vos."},
+    {"idx": 4680, "prem": "Algunas de las entradas léxicas del libro son cuestionables.", "hyp": "Las confusas elecciones léxicas del libro hicieron el contenido confuso."},
+    {"idx": 2821, "prem": "Además de LNL y Allenbrand-Drews, se nombra como demandados a Gary Allenbrand y Loren Drews, directores de Allenbrand-Drews; y desarrolladores o contratistas R.L.", "hyp": "Allenbrand y Drews están siendo demandados."}
+  ];
+
+  // ── Estado ──────────────────────────────────────────────────────────────
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let anotadorId = null;
+  let availableInstances = [];
+  let currentIndex = 0;
+  const responses = new Map(); // idx -> { respuesta, comentario, dbId }
+  let selectedRegion = '';
+  let selectedQuiereMas = null;
+  let saving = false;
+
+  // ── Helpers ─────────────────────────────────────────────────────────────
+  function showScreen(id) {
+    ['screen-loading', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
+      .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+  }
+
+  function showToast(msg, ms = 2400) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  function getOrCreateAnotadorId() {
+    let id = localStorage.getItem('anotador_id');
+    if (!id) {
+      id = (crypto.randomUUID && crypto.randomUUID()) ||
+           ('anon-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10));
+      localStorage.setItem('anotador_id', id);
+    }
+    return id;
+  }
+
+  function answeredCount() {
+    return availableInstances.filter(i => {
+      const r = responses.get(i.idx);
+      return r && r.respuesta;
+    }).length;
+  }
+
+  function updateProgress() {
+    const pct = availableInstances.length === 0
+      ? 0
+      : (answeredCount() / availableInstances.length) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function renderInstance(i) {
+    if (i < 0 || i >= availableInstances.length) return;
+    currentIndex = i;
+    const inst = availableInstances[i];
+
+    document.getElementById('text-prem').textContent = inst.prem;
+    document.getElementById('text-hyp').textContent = inst.hyp;
+
+    const card = document.getElementById('instance-card');
+    card.classList.remove('card-anim');
+    void card.offsetWidth;
+    card.classList.add('card-anim');
+
+    const r = responses.get(inst.idx) || {};
+    document.querySelectorAll('#options-respuesta .option').forEach(b => {
+      b.classList.toggle('selected', b.dataset.value === r.respuesta);
+    });
+    document.getElementById('comentario').value = r.comentario || '';
+
+    document.getElementById('counter').textContent =
+      `Instancia ${i + 1} de ${availableInstances.length}`;
+    updateProgress();
+
+    document.getElementById('btn-prev').disabled = i === 0;
+    document.getElementById('btn-next').textContent =
+      i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
+  }
+
+  // ── Persistencia ────────────────────────────────────────────────────────
+  async function saveResponse(idx) {
+    const r = responses.get(idx);
+    if (!r || !r.respuesta || saving) return;
+    saving = true;
+    try {
+      if (r.dbId) {
+        const { error } = await sb.from('respuestas')
+          .update({ respuesta: r.respuesta, comentario: r.comentario || null })
+          .eq('id', r.dbId);
+        if (error) throw error;
+      } else {
+        const { data, error } = await sb.from('respuestas')
+          .insert({
+            anotador_id: anotadorId,
+            idx: idx,
+            respuesta: r.respuesta,
+            comentario: r.comentario || null
+          })
+          .select('id')
+          .single();
+        if (error) throw error;
+        r.dbId = data.id;
+      }
+    } catch (err) {
+      console.error('saveResponse', err);
+      showToast('No se pudo guardar. Reintentá.');
+    } finally {
+      saving = false;
+    }
+  }
+
+  async function submitFinal() {
+    if (!selectedRegion) { showToast('Elegí una región'); return; }
+    if (selectedQuiereMas === null) { showToast('Contestá si querés participar en futuras rondas'); return; }
+
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+
+    try {
+      const { error } = await sb.from('respuestas')
+        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
+        .eq('anotador_id', anotadorId);
+      if (error) throw error;
+      showScreen('screen-thanks');
+    } catch (err) {
+      console.error('submitFinal', err);
+      showToast('Error al enviar. Reintentá.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar respuestas';
+    }
+  }
+
+  // ── Init ────────────────────────────────────────────────────────────────
+  async function init() {
+    anotadorId = getOrCreateAnotadorId();
+
+    let allRows;
+    try {
+      const { data, error } = await sb.from('respuestas')
+        .select('id, idx, anotador_id, respuesta, comentario, region, quiere_mas');
+      if (error) throw error;
+      allRows = data || [];
+    } catch (err) {
+      console.error('init', err);
+      document.getElementById('error-message').textContent =
+        err.message || 'No se pudo conectar con el servidor.';
+      showScreen('screen-error');
+      return;
+    }
+
+    const otherAnnotated = new Set();
+    let myHasRegion = false;
+
+    for (const row of allRows) {
+      if (row.anotador_id === anotadorId) {
+        responses.set(row.idx, {
+          respuesta: row.respuesta,
+          comentario: row.comentario || '',
+          dbId: row.id
+        });
+        if (row.region) myHasRegion = true;
+      } else if (row.respuesta) {
+        otherAnnotated.add(row.idx);
+      }
+    }
+
+    availableInstances = INSTANCES
+      .filter(inst => !otherAnnotated.has(inst.idx))
+      .sort((a, b) => a.idx - b.idx);
+
+    if (availableInstances.length === 0) {
+      document.getElementById('done-message').textContent =
+        'Todas las instancias ya fueron anotadas por la comunidad. ¡Gracias por venir!';
+      showScreen('screen-done');
+      return;
+    }
+
+    const allMineAnswered = availableInstances.every(inst => {
+      const r = responses.get(inst.idx);
+      return r && r.respuesta;
+    });
+
+    if (allMineAnswered && myHasRegion) {
+      document.getElementById('done-message').textContent =
+        'Ya completaste tu encuesta. ¡Muchas gracias!';
+      showScreen('screen-done');
+      return;
+    }
+
+    if (allMineAnswered && !myHasRegion) {
+      showScreen('screen-final');
+      return;
+    }
+
+    const firstUnanswered = availableInstances.findIndex(inst => {
+      const r = responses.get(inst.idx);
+      return !r || !r.respuesta;
+    });
+
+    showScreen('screen-instance');
+    renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
+  }
+
+  // ── Eventos ─────────────────────────────────────────────────────────────
+  document.querySelectorAll('#options-respuesta .option').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const value = btn.dataset.value;
+      document.querySelectorAll('#options-respuesta .option')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+
+      const inst = availableInstances[currentIndex];
+      const existing = responses.get(inst.idx) || {};
+      responses.set(inst.idx, {
+        ...existing,
+        respuesta: value,
+        comentario: document.getElementById('comentario').value
+      });
+      updateProgress();
+      await saveResponse(inst.idx);
+    });
+  });
+
+  document.getElementById('comentario').addEventListener('blur', async () => {
+    const inst = availableInstances[currentIndex];
+    if (!inst) return;
+    const existing = responses.get(inst.idx);
+    if (existing && existing.respuesta) {
+      const newComment = document.getElementById('comentario').value;
+      if (newComment !== (existing.comentario || '')) {
+        existing.comentario = newComment;
+        await saveResponse(inst.idx);
+      }
+    }
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    if (currentIndex > 0) renderInstance(currentIndex - 1);
+  });
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    if (currentIndex < availableInstances.length - 1) {
+      renderInstance(currentIndex + 1);
+      return;
+    }
+    const allAnswered = availableInstances.every(inst => {
+      const r = responses.get(inst.idx);
+      return r && r.respuesta;
+    });
+    if (allAnswered) {
+      showScreen('screen-final');
+    } else {
+      const firstUnanswered = availableInstances.findIndex(inst => {
+        const r = responses.get(inst.idx);
+        return !r || !r.respuesta;
+      });
+      showToast('Faltan instancias por responder');
+      if (firstUnanswered >= 0) renderInstance(firstUnanswered);
+    }
+  });
+
+  document.getElementById('region').addEventListener('change', e => {
+    selectedRegion = e.target.value;
+  });
+
+  document.querySelectorAll('#options-quiere .option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#options-quiere .option')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+      selectedQuiereMas = btn.dataset.quiere === 'true';
+    });
+  });
+
+  document.getElementById('btn-submit').addEventListener('click', submitFinal);
+
+  init();
+</script>
+</body>
+</html>
