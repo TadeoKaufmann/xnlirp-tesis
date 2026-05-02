@@ -251,6 +251,16 @@
       <p class="muted">Cargando…</p>
     </div>
 
+    <div id="screen-welcome" class="hidden">
+      <div class="card card-anim" style="text-align: center; padding: 36px 24px;">
+        <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
+        <h2>¡Bienvenido/a!</h2>
+        <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en español rioplatense y nos vas a decir si suenan naturales.</p>
+        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;">Son 30 instancias, lleva menos de 10 minutos.</p>
+        <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
+      </div>
+    </div>
+
     <div id="screen-instance" class="hidden">
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
@@ -476,7 +486,7 @@
 
   // ── Helpers ─────────────────────────────────────────────────────────────
   function showScreen(id) {
-    ['screen-loading', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
+    ['screen-loading', 'screen-welcome', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
   }
 
@@ -632,13 +642,35 @@
       }
     }
 
-    availableInstances = INSTANCES
+    const BATCH_SIZE = 30;
+
+    const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
       .sort((a, b) => a.idx - b.idx);
 
-    if (availableInstances.length === 0) {
+    if (allAvailable.length === 0) {
       document.getElementById('done-message').textContent =
         'Todas las instancias ya fueron anotadas por la comunidad. ¡Gracias por venir!';
+      showScreen('screen-done');
+      return;
+    }
+
+    const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
+    const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
+
+    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
+      // Retomar batch en curso: lo ya respondido + completar hasta 30
+      const doneIdxs = new Set(inProgress.map(i => i.idx));
+      const fill = unanswered.filter(i => !doneIdxs.has(i.idx)).slice(0, BATCH_SIZE - inProgress.length);
+      availableInstances = [...inProgress, ...fill].sort((a, b) => a.idx - b.idx);
+    } else {
+      // Batch fresco o siguiente: primeras 30 sin responder
+      availableInstances = unanswered.slice(0, BATCH_SIZE);
+    }
+
+    if (availableInstances.length === 0) {
+      document.getElementById('done-message').textContent =
+        'No hay instancias nuevas por ahora, volvé más tarde.';
       showScreen('screen-done');
       return;
     }
@@ -665,8 +697,16 @@
       return !r || !r.respuesta;
     });
 
-    showScreen('screen-instance');
-    renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
+    const answeredInBatch = availableInstances.length - unanswered.filter(i =>
+      availableInstances.some(a => a.idx === i.idx)
+    ).length;
+
+    if (answeredInBatch === 0) {
+      showScreen('screen-welcome');
+    } else {
+      showScreen('screen-instance');
+      renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
+    }
   }
 
   // ── Eventos ─────────────────────────────────────────────────────────────
@@ -736,6 +776,11 @@
         .forEach(b => b.classList.toggle('selected', b === btn));
       selectedQuiereMas = btn.dataset.quiere === 'true';
     });
+  });
+
+  document.getElementById('btn-empezar').addEventListener('click', () => {
+    showScreen('screen-instance');
+    renderInstance(0);
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
