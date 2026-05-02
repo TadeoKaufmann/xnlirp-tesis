@@ -326,6 +326,7 @@
         <div class="icon-check">✓</div>
         <h2>¡Muchas gracias!</h2>
         <p class="muted">Tus respuestas quedaron registradas y van a ser muy útiles para esta investigación.</p>
+        <button id="btn-seguir" class="btn btn-primary hidden" style="margin-top: 20px;">Seguir anotando</button>
       </div>
     </div>
 
@@ -513,6 +514,9 @@
         .eq('anotador_id', anotadorId);
       if (error) throw error;
       showScreen('screen-thanks');
+      if (selectedQuiereMas) {
+        document.getElementById('btn-seguir').classList.remove('hidden');
+      }
     } catch (err) {
       console.error('submitFinal', err);
       showToast('Error al enviar. Reintentá.');
@@ -573,7 +577,7 @@
 
     if (allMineAnswered && myHasRegion) {
       document.getElementById('done-message').textContent =
-        'Ya completaste tu encuesta. ¡Muchas gracias!';
+        'No hay instancias nuevas por ahora, volvé más tarde.';
       showScreen('screen-done');
       return;
     }
@@ -662,6 +666,11 @@
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
+
+  document.getElementById('btn-seguir').addEventListener('click', () => {
+    localStorage.removeItem('anotador_id');
+    location.reload();
+  });
 
   init();
 </script>
