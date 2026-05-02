@@ -474,12 +474,12 @@
     saving = true;
     try {
       if (r.dbId) {
-        const { error } = await sb.from('respuestas')
+        const { error } = await sb.from('Respuestas')
           .update({ respuesta: r.respuesta, comentario: r.comentario || null })
           .eq('id', r.dbId);
         if (error) throw error;
       } else {
-        const { data, error } = await sb.from('respuestas')
+        const { data, error } = await sb.from('Respuestas')
           .insert({
             anotador_id: anotadorId,
             idx: idx,
@@ -508,7 +508,7 @@
     btn.textContent = 'Enviando…';
 
     try {
-      const { error } = await sb.from('respuestas')
+      const { error } = await sb.from('Respuestas')
         .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
         .eq('anotador_id', anotadorId);
       if (error) throw error;
@@ -527,7 +527,7 @@
 
     let allRows;
     try {
-      const { data, error } = await sb.from('respuestas')
+      const { data, error } = await sb.from('Respuestas')
         .select('id, idx, anotador_id, respuesta, comentario, region, quiere_mas');
       if (error) throw error;
       allRows = data || [];
