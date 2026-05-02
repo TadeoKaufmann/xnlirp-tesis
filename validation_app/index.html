@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Validación lingüística — Español rioplatense</title>
+<title>Validación lingüística — Castellano</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
@@ -81,6 +81,20 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .text-box { margin-bottom: 14px; }
+  .text-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 640px) {
+    .text-cols { grid-template-columns: 1fr; }
+  }
+  .text-col textarea {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    min-height: 50px;
+  }
   .text-label {
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -97,6 +111,15 @@
     font-size: 1.02rem;
     line-height: 1.6;
     color: #2a2a2a;
+  }
+  .instructions {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 14px;
+    line-height: 1.5;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .question {
     margin-top: 22px;
@@ -151,9 +174,23 @@
   }
   .nav {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     gap: 10px;
     margin-top: 18px;
+  }
+  .nav .encouragement {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    min-height: 1.2em;
+  }
+  @media (max-width: 540px) {
+    .nav { flex-wrap: wrap; }
+    .nav .encouragement {
+      flex: 0 0 100%;
+      order: -1;
+      margin-bottom: 6px;
+    }
   }
   .btn {
     padding: 10px 18px;
@@ -231,11 +268,9 @@
   h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--green); }
   .muted { color: var(--muted); }
   .encouragement {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-style: italic;
     color: var(--muted);
-    margin-bottom: 12px;
-    min-height: 1.2em;
   }
 </style>
 </head>
@@ -243,7 +278,8 @@
 <div class="container">
   <header>
     <h1>Validación lingüística</h1>
-    <p>¿Suena natural en español rioplatense?</p>
+    <p>¿Suena natural en castellano?</p>
+    <p class="instructions">Evaluá si la premisa y la hipótesis suenan naturales en castellano. Si algo suena raro, escribí en el comentario qué cambiarías. No importa si la premisa y la hipótesis no tienen relación entre sí, eso es normal.</p>
   </header>
 
   <main id="app">
@@ -255,7 +291,7 @@
       <div class="card card-anim" style="text-align: center; padding: 36px 24px;">
         <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
         <h2>¡Bienvenido/a!</h2>
-        <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en español rioplatense y nos vas a decir si suenan naturales.</p>
+        <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en castellano y nos vas a decir si suenan naturales.</p>
         <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;">Son 30 instancias, lleva menos de 10 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
@@ -265,24 +301,27 @@
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
-        <div class="text-box">
-          <div class="text-label">Premisa</div>
-          <div class="text-content" id="text-prem"></div>
+        <div class="text-cols">
+          <div class="text-col">
+            <div class="text-label">Premisa</div>
+            <div class="text-content" id="text-prem"></div>
+            <textarea id="correccion-prem" placeholder="¿Algo raro en la premisa?"></textarea>
+          </div>
+          <div class="text-col">
+            <div class="text-label">Hipótesis</div>
+            <div class="text-content" id="text-hyp"></div>
+            <textarea id="correccion-hyp" placeholder="¿Algo raro en la hipótesis?"></textarea>
+          </div>
         </div>
-        <div class="text-box">
-          <div class="text-label">Hipótesis</div>
-          <div class="text-content" id="text-hyp"></div>
-        </div>
-        <div class="question">¿Este texto suena natural en español rioplatense?</div>
+        <div class="question">¿Este texto suena natural en castellano?</div>
         <div class="options" id="options-respuesta">
           <button class="option" data-value="si">Sí</button>
           <button class="option" data-value="parcialmente">Parcialmente</button>
           <button class="option" data-value="no">No</button>
         </div>
-        <p id="encouragement" class="encouragement"></p>
-        <textarea id="comentario" placeholder="Comentario (opcional). ¿Qué cambiarías? ¿Qué te suena raro?"></textarea>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
+          <p id="encouragement" class="encouragement"></p>
           <button class="btn btn-primary" id="btn-next">Siguiente →</button>
         </div>
       </div>
@@ -376,6 +415,50 @@
   const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
 
+  // ── Validaciones del primer batch (referencia, mayo 2026) ──────────────
+  // Anotador piloto sobre las primeras 30 instancias (idx en pilot_500).
+  // Estas instancias YA NO están en INSTANCES (fueron quitadas del batch público).
+  // Se conservan acá como referencia para análisis posterior.
+  //
+  //   1522: parcialmente
+  //   4957: no — "POR QUE SE LLAMA JOEEE???? Porche no tiene nadie aca, a lo sumo
+  //          entrada, galeria. Tampoco usamos arrojar para personas. Poner echar
+  //          a Juan de su entrada."
+  //   463 : no — prem: "Habia recibido ordenes para ir a (Ciudad ARGENTINA), pero
+  //          cuando llegue AHI me entere de que tenia que irme a (lugar en
+  //          ARGENTINA)." hyp: "Me MANDARON, no enviaron, cambiar la ciudad."
+  //   3484: parcialmente — hyp: "El perro ERA de mi hermana, no usamos le pertenecia"
+  //   2692: si
+  //   1710: parcialmente — prem: "alli cambiar por ahi o alla. Hija mas chica o
+  //          chiquita, pequeña es neutro"
+  //   2366: si
+  //   1015: parcialmente — prem: "cambiar parecia molestarme por me molesto"
+  //   1453: no — prem: "me acuerdo de, levantar, a la casa de mi papa"
+  //   1095: parcialmente
+  //   2207: si
+  //   1857: no — prem: "Cambiar oh dios por pucha che o carajo. supe al instante
+  //          por me di cuenta al toque." hyp: "Acabo no acaba. Pone la
+  //          Constitucion Nacional no el parlamento."
+  //   3577: no — prem: "100 km no millas. lugar argentino no Texas: Saladillo,
+  //          Tandil, Venado Tuerto"
+  //   4040: si
+  //   3314: parcialmente
+  //   1166: no — "Cambia Texas INSTRUMENTS por empresa con ciudad de Tres Arroyos"
+  //   3592: si
+  //   1638: si
+  //   1399: si
+  //   2294: si
+  //   219 : si
+  //   3741: si
+  //   1630: parcialmente — "cambiar ciencias por ciencia"
+  //   4980: si
+  //   2142: parcialmente — prem: "aseguro sin acento. Al corriente de, no sobre"
+  //   1176: parcialmente — "se tiro en una silla, no se dejo caer"
+  //   1804: si
+  //   910 : si — "Santa Claus por Papa Noel. Ogle por nombre argentino"
+  //   4680: parcialmente — "Dam Square por Plaza algo. se quedo sin, no estuvo sin"
+  //   2821: parcialmente — "Carolina del Sur por Misiones"
+
   // ── Instancias ──────────────────────────────────────────────────────────
   const INSTANCES = [
     {"idx": 44, "prem": "Quiero decir que ellos solo tenían, algo así como, cinco hijos. Uno de ellos murió.", "hyp": "El niño que murió había nacido con problemas de salud."},
@@ -449,7 +532,7 @@
     "Esto va directo a la tesis",
     "¿'Che' o 'oye'? Claramente che 😤",
     "Estás hablando con una base de datos sin saberlo. Hola base de datos",
-    "Cada respuesta tuya mejora modelos de lenguaje para el español rioplatense 🤖",
+    "Cada respuesta tuya mejora modelos de lenguaje para el castellano 🤖",
     "Pregunta 9 de 30. Ya arrancaste, lo peor pasó",
     "¿Decís 'acá' o 'aquí'? Si dijiste 'aquí' esta encuesta es para vos igual",
     "Corregile a la IA. Demostrá que seguimos siendo mejores",
@@ -469,7 +552,7 @@
     "Ya casi. No seas de los que abandona en la 25",
     "No seas outlier raro, me arruinás el gráfico",
     "Che, estás mirando más esto que las instancias",
-    "El culo te abrocho",
+    "28, el culo te abrocho",
     "Penúltima. No te rajes ahora",
     "Gracias. En serio. Ahora sí, última pregunta"
   ];
@@ -479,10 +562,10 @@
   let anotadorId = null;
   let availableInstances = [];
   let currentIndex = 0;
-  const responses = new Map(); // idx -> { respuesta, comentario, dbId }
+  const responses = new Map(); // idx -> { respuesta, correccion_prem, correccion_hyp, dbId }
   let selectedRegion = '';
   let selectedQuiereMas = null;
-  let saving = false;
+  const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
 
   // ── Helpers ─────────────────────────────────────────────────────────────
   function showScreen(id) {
@@ -539,48 +622,58 @@
     document.querySelectorAll('#options-respuesta .option').forEach(b => {
       b.classList.toggle('selected', b.dataset.value === r.respuesta);
     });
-    document.getElementById('comentario').value = r.comentario || '';
+    document.getElementById('correccion-prem').value = r.correccion_prem || '';
+    document.getElementById('correccion-hyp').value = r.correccion_hyp || '';
 
     document.getElementById('counter').textContent =
       `Instancia ${i + 1} de ${availableInstances.length}`;
     updateProgress();
 
     document.getElementById('btn-prev').disabled = i === 0;
-    document.getElementById('btn-next').textContent =
-      i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
+    const btnNext = document.getElementById('btn-next');
+    btnNext.textContent = i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
+    btnNext.disabled = !r.respuesta;
     document.getElementById('encouragement').textContent = MESSAGES[i % MESSAGES.length];
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
-  async function saveResponse(idx) {
+  async function doSave(idx) {
     const r = responses.get(idx);
-    if (!r || !r.respuesta || saving) return;
-    saving = true;
-    try {
-      if (r.dbId) {
-        const { error } = await sb.from('Respuestas')
-          .update({ respuesta: r.respuesta, comentario: r.comentario || null })
-          .eq('id', r.dbId);
-        if (error) throw error;
-      } else {
-        const { data, error } = await sb.from('Respuestas')
-          .insert({
-            anotador_id: anotadorId,
-            idx: idx,
-            respuesta: r.respuesta,
-            comentario: r.comentario || null
-          })
-          .select('id')
-          .single();
-        if (error) throw error;
-        r.dbId = data.id;
-      }
-    } catch (err) {
+    if (!r || !r.respuesta) return;
+    const payload = {
+      respuesta: r.respuesta,
+      correccion_prem: r.correccion_prem || null,
+      correccion_hyp: r.correccion_hyp || null
+    };
+    if (r.dbId) {
+      const { error } = await sb.from('Respuestas').update(payload).eq('id', r.dbId);
+      if (error) throw error;
+    } else {
+      const { data, error } = await sb.from('Respuestas')
+        .insert({ anotador_id: anotadorId, idx: idx, ...payload })
+        .select('id')
+        .single();
+      if (error) throw error;
+      r.dbId = data.id;
+    }
+  }
+
+  // Saves serializados por idx: si llega otro save para el mismo idx mientras
+  // hay uno en curso, se encadena en lugar de droppearse.
+  async function saveResponse(idx) {
+    const prev = inFlight.get(idx) || Promise.resolve();
+    const next = prev.then(() => doSave(idx)).catch(err => {
       console.error('saveResponse', err);
       showToast('No se pudo guardar. Reintentá.');
-    } finally {
-      saving = false;
-    }
+    });
+    inFlight.set(idx, next);
+    await next;
+    if (inFlight.get(idx) === next) inFlight.delete(idx);
+  }
+
+  async function flushAllSaves() {
+    const promises = Array.from(inFlight.values());
+    if (promises.length) await Promise.allSettled(promises);
   }
 
   async function submitFinal() {
@@ -592,6 +685,7 @@
     btn.textContent = 'Enviando…';
 
     try {
+      await flushAllSaves();
       const { error } = await sb.from('Respuestas')
         .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
         .eq('anotador_id', anotadorId);
@@ -615,7 +709,7 @@
     let allRows;
     try {
       const { data, error } = await sb.from('Respuestas')
-        .select('id, idx, anotador_id, respuesta, comentario, region, quiere_mas');
+        .select('id, idx, anotador_id, respuesta, correccion_prem, correccion_hyp, region, quiere_mas');
       if (error) throw error;
       allRows = data || [];
     } catch (err) {
@@ -633,7 +727,8 @@
       if (row.anotador_id === anotadorId) {
         responses.set(row.idx, {
           respuesta: row.respuesta,
-          comentario: row.comentario || '',
+          correccion_prem: row.correccion_prem || '',
+          correccion_hyp: row.correccion_hyp || '',
           dbId: row.id
         });
         if (row.region) myHasRegion = true;
@@ -721,47 +816,61 @@
       responses.set(inst.idx, {
         ...existing,
         respuesta: value,
-        comentario: document.getElementById('comentario').value
+        correccion_prem: document.getElementById('correccion-prem').value,
+        correccion_hyp: document.getElementById('correccion-hyp').value
       });
+      document.getElementById('btn-next').disabled = false;
       updateProgress();
       await saveResponse(inst.idx);
     });
   });
 
-  document.getElementById('comentario').addEventListener('blur', async () => {
-    const inst = availableInstances[currentIndex];
-    if (!inst) return;
-    const existing = responses.get(inst.idx);
-    if (existing && existing.respuesta) {
-      const newComment = document.getElementById('comentario').value;
-      if (newComment !== (existing.comentario || '')) {
-        existing.comentario = newComment;
-        await saveResponse(inst.idx);
+  function bindCorrectionBlur(elemId, field) {
+    document.getElementById(elemId).addEventListener('blur', async () => {
+      const inst = availableInstances[currentIndex];
+      if (!inst) return;
+      const existing = responses.get(inst.idx);
+      if (existing && existing.respuesta) {
+        const newVal = document.getElementById(elemId).value;
+        if (newVal !== (existing[field] || '')) {
+          existing[field] = newVal;
+          await saveResponse(inst.idx);
+        }
       }
-    }
-  });
+    });
+  }
+  bindCorrectionBlur('correccion-prem', 'correccion_prem');
+  bindCorrectionBlur('correccion-hyp', 'correccion_hyp');
 
   document.getElementById('btn-prev').addEventListener('click', () => {
     if (currentIndex > 0) renderInstance(currentIndex - 1);
   });
 
-  document.getElementById('btn-next').addEventListener('click', () => {
+  document.getElementById('btn-next').addEventListener('click', async () => {
+    const inst = availableInstances[currentIndex];
+    const r = inst ? responses.get(inst.idx) : null;
+    if (!r || !r.respuesta) {
+      showToast('Elegí una opción para continuar');
+      return;
+    }
     if (currentIndex < availableInstances.length - 1) {
       renderInstance(currentIndex + 1);
       return;
     }
-    const allAnswered = availableInstances.every(inst => {
-      const r = responses.get(inst.idx);
-      return r && r.respuesta;
+    // Última instancia: esperar saves pendientes y validar
+    await flushAllSaves();
+    const allAnswered = availableInstances.every(it => {
+      const rr = responses.get(it.idx);
+      return rr && rr.respuesta;
     });
     if (allAnswered) {
       showScreen('screen-final');
     } else {
-      const firstUnanswered = availableInstances.findIndex(inst => {
-        const r = responses.get(inst.idx);
-        return !r || !r.respuesta;
+      const firstUnanswered = availableInstances.findIndex(it => {
+        const rr = responses.get(it.idx);
+        return !rr || !rr.respuesta;
       });
-      showToast('Faltan instancias por responder');
+      showToast(`Faltan instancias por responder (${firstUnanswered + 1})`);
       if (firstUnanswered >= 0) renderInstance(firstUnanswered);
     }
   });
