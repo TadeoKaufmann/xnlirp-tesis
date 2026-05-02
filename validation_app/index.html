@@ -230,6 +230,13 @@
   }
   h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; color: var(--green); }
   .muted { color: var(--muted); }
+  .encouragement {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 12px;
+    min-height: 1.2em;
+  }
 </style>
 </head>
 <body>
@@ -262,6 +269,7 @@
           <button class="option" data-value="parcialmente">Parcialmente</button>
           <button class="option" data-value="no">No</button>
         </div>
+        <p id="encouragement" class="encouragement"></p>
         <textarea id="comentario" placeholder="Comentario (opcional). ¿Qué cambiarías? ¿Qué te suena raro?"></textarea>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
@@ -348,7 +356,7 @@
     </div>
   </main>
 
-  <p class="footer-note">Tesis de Maestría — Validación de XNLIrp</p>
+  <p class="footer-note">Tesis de Grado — Validación de XNLIrp</p>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -420,6 +428,40 @@
     {"idx": 4958, "prem": "Una diferencia es que otros grupos necesitan hacerlo porque para funcionar deben asignar nuevos significados a las palabras y frases existentes o acuñar nuevas palabras y frases.", "hyp": "Los grupos no pueden inventarse nuevas palabras."},
     {"idx": 4964, "prem": "A pesar de su reputación de desconfiar de los políglotas, de ninguna manera es inusual que los ingleses sean bilingües.", "hyp": "La gente en Inglaterra está obligada a hablar más de una lengua."},
     {"idx": 4971, "prem": "Esto no quiere decir que la tradición occidental tenga el monopolio de la amabilidad.", "hyp": "La amabilidad no es únicamente poseída por la tradición Occidental."}
+  ];
+
+  // ── Mensajes de aliento ─────────────────────────────────────────────────
+  const MESSAGES = [
+    "Cebate un mate y mandale tranqui 🧉",
+    "¿'Tú' o 'vos'? Acá la respuesta es obvia 😏",
+    "Un 'mango' acá no es fruta 🥭",
+    "Anda pa' llá bobo",
+    "Esto va directo a la tesis",
+    "¿'Che' o 'oye'? Claramente che 😤",
+    "Estás hablando con una base de datos sin saberlo. Hola base de datos",
+    "Cada respuesta tuya mejora modelos de lenguaje para el español rioplatense 🤖",
+    "Pregunta 9 de 30. Ya arrancaste, lo peor pasó",
+    "¿Decís 'acá' o 'aquí'? Si dijiste 'aquí' esta encuesta es para vos igual",
+    "Corregile a la IA. Demostrá que seguimos siendo mejores",
+    "Tu cerebro ya está calibrado",
+    "Nadie te va a aplaudir. Pero deberían",
+    "Esto aplica al RP de ambas orillas del Río de la Plata",
+    "Más de la mitad. Sos crack 💪",
+    "Cada respuesta cuenta. Literalmente, las estoy contando",
+    "Si estás en el bondi respondiendo esto, respeto total",
+    "El RP tiene más de 200 años de historia. Tu opinión lo representa 📜",
+    "Podías estar haciendo otra cosa. Elegiste esto. Gracias",
+    "En algún servidor de Amazon existe una fila con tu respuesta. Qué loco",
+    "La diferencia entre un modelo mediocre y uno bueno sos vos",
+    "Estás leyendo oraciones raras un rato. Hay peores formas de pasar el tiempo",
+    "Tu respuesta pesa exactamente 0.000001 MB. Igual vale mucho",
+    "Se me acabó la creatividad por acá. Respondé y listo",
+    "Ya casi. No seas de los que abandona en la 25",
+    "No seas outlier raro, me arruinás el gráfico",
+    "Che, estás mirando más esto que las instancias",
+    "El culo te abrocho",
+    "Penúltima. No te rajes ahora",
+    "Gracias. En serio. Ahora sí, última pregunta"
   ];
 
   // ── Estado ──────────────────────────────────────────────────────────────
@@ -496,6 +538,7 @@
     document.getElementById('btn-prev').disabled = i === 0;
     document.getElementById('btn-next').textContent =
       i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
+    document.getElementById('encouragement').textContent = MESSAGES[i % MESSAGES.length];
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
@@ -698,7 +741,6 @@
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
-    localStorage.removeItem('anotador_id');
     location.reload();
   });
 
