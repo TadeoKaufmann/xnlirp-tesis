@@ -292,7 +292,7 @@
         <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
         <h2>¡Bienvenido/a!</h2>
         <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en castellano y nos vas a decir si suenan naturales.</p>
-        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;">Son 30 instancias, lleva menos de 10 minutos.</p>
+        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
     </div>
@@ -415,49 +415,52 @@
   const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
 
-  // ── Validaciones del primer batch (referencia, mayo 2026) ──────────────
-  // Anotador piloto sobre las primeras 30 instancias (idx en pilot_500).
-  // Estas instancias YA NO están en INSTANCES (fueron quitadas del batch público).
-  // Se conservan acá como referencia para análisis posterior.
+  // ── Validaciones piloto del batch 200-259 (referencia, mayo 2026) ──────
+  // Anotador e34cf881-10c8-4050-916f-00e239bb6239 sobre el batch de 60
+  // instancias traducidas (pilot_500 posiciones 200-259). 29 respuestas.
+  // Fuente: validation_app/Respuestas_rows.csv filas 32-60.
+  // (Las filas 2-31 del CSV son contaminación — clicks rápidos sobre idxs del
+  // primer batch ya retirado, hechos para probar el flujo de Finalizar.)
   //
-  //   1522: parcialmente
-  //   4957: no — "POR QUE SE LLAMA JOEEE???? Porche no tiene nadie aca, a lo sumo
-  //          entrada, galeria. Tampoco usamos arrojar para personas. Poner echar
-  //          a Juan de su entrada."
-  //   463 : no — prem: "Habia recibido ordenes para ir a (Ciudad ARGENTINA), pero
-  //          cuando llegue AHI me entere de que tenia que irme a (lugar en
-  //          ARGENTINA)." hyp: "Me MANDARON, no enviaron, cambiar la ciudad."
-  //   3484: parcialmente — hyp: "El perro ERA de mi hermana, no usamos le pertenecia"
-  //   2692: si
-  //   1710: parcialmente — prem: "alli cambiar por ahi o alla. Hija mas chica o
-  //          chiquita, pequeña es neutro"
-  //   2366: si
-  //   1015: parcialmente — prem: "cambiar parecia molestarme por me molesto"
-  //   1453: no — prem: "me acuerdo de, levantar, a la casa de mi papa"
-  //   1095: parcialmente
-  //   2207: si
-  //   1857: no — prem: "Cambiar oh dios por pucha che o carajo. supe al instante
-  //          por me di cuenta al toque." hyp: "Acabo no acaba. Pone la
-  //          Constitucion Nacional no el parlamento."
-  //   3577: no — prem: "100 km no millas. lugar argentino no Texas: Saladillo,
-  //          Tandil, Venado Tuerto"
-  //   4040: si
-  //   3314: parcialmente
-  //   1166: no — "Cambia Texas INSTRUMENTS por empresa con ciudad de Tres Arroyos"
-  //   3592: si
-  //   1638: si
-  //   1399: si
-  //   2294: si
-  //   219 : si
-  //   3741: si
-  //   1630: parcialmente — "cambiar ciencias por ciencia"
-  //   4980: si
-  //   2142: parcialmente — prem: "aseguro sin acento. Al corriente de, no sobre"
-  //   1176: parcialmente — "se tiro en una silla, no se dejo caer"
-  //   1804: si
-  //   910 : si — "Santa Claus por Papa Noel. Ogle por nombre argentino"
-  //   4680: parcialmente — "Dam Square por Plaza algo. se quedo sin, no estuvo sin"
-  //   2821: parcialmente — "Carolina del Sur por Misiones"
+  //   44  : parcialmente
+  //   49  : no — "POR QUE SE LLAMA JOEEE???? Juan, Jose, Jorge, Javier, no JOE.
+  //          Porche no tiene nadie aca, a lo sumo entrada, galeria, etc..."
+  //   183 : no — "Pone ciudades Argentinas. que chota es TX. Repito, que chota
+  //          es Laughlin Air Force? Esta rara la oracion. No tiene cohesion. Yo
+  //          hubiese puesto: Habia recibido ordenes para ir a (Ciudad
+  //          ARGENTINA), pero cuando llegue AHI me entere de que tenia que irme
+  //          a (lugar o base en ARGENTINA)"
+  //   464 : si
+  //   535 : si
+  //   569 : parcialmente
+  //   596 : si
+  //   603 : no
+  //   614 : no
+  //   671 : parcialmente
+  //   702 : si
+  //   801 : no — "Cambiar oh dios por una frase mas argentina: Uy no, mierda,
+  //          pucha che, carajo, incluso uy dios. Acaba, no acabo. esta mal
+  //          traducida la hipotesis. Pone la Constitucion Nacional, que me
+  //          importa a mi el parlamento de la paz."
+  //   856 : parcialmente
+  //   917 : si
+  //   956 : parcialmente
+  //   971 : parcialmente — "Cambia Texas INSTRUMENTS, inventa una empresa con
+  //          la ciudad de Tres Arroyos."
+  //   1289: si
+  //   1301: si
+  //   1354: si
+  //   1428: si
+  //   1462: si
+  //   1464: si
+  //   1480: parcialmente — "cambiar ciencias por ciencia."
+  //   1500: si
+  //   1503: parcialmente — "aseguro, sin acento. Al corriente de, no sobre."
+  //   1689: parcialmente — "En vez de se dejo caer, se tiro en una silla"
+  //   1839: si
+  //   1990: si
+  //   2430: parcialmente — "Cambiar Dan Square por Plaza algo... cambiar estuvo
+  //          sin por se quedo sin."
 
   // ── Instancias ──────────────────────────────────────────────────────────
   const INSTANCES = [
@@ -737,7 +740,8 @@
       }
     }
 
-    const BATCH_SIZE = 30;
+    const TEST_MODE = new URLSearchParams(location.search).get('test') === 'true';
+    const BATCH_SIZE = TEST_MODE ? 5 : 15;
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
@@ -797,6 +801,10 @@
     ).length;
 
     if (answeredInBatch === 0) {
+      const n = availableInstances.length;
+      const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 3));
+      document.getElementById('welcome-stats').textContent =
+        `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
       showScreen('screen-welcome');
     } else {
       showScreen('screen-instance');
