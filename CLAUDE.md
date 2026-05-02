@@ -40,8 +40,10 @@ Datasets-Codigo/
 │   ├── _annotate_held_out_70.py           # script que generó el held-out 70
 │   ├── _annotate_held_out_100.py          # script que generó el held-out 100
 │   └── prompts/
-│       ├── prompt_v1_minimal.txt          # variante minimal — la que se está optimizando
-│       └── prompt_v2_with_cultural_candidates.txt  # variante con marcaje cultural Fase 1
+│       ├── prompt_v1_minimal.txt           # dialectal puro (A/B/C/D); base de comparación
+│       ├── prompt_v2_cultural_inline.txt   # v1 + adaptación cultural conservadora (tipo E)
+│       └── _archive/
+│           └── prompt_v2_with_cultural_candidates_LEGACY_marker_only.txt  # v2 viejo (solo marcaba); reemplazado en mayo 2026
 └── results/
     ├── review_queue.jsonl
     ├── validation_report_xnli_pilot_30_annotated.md
@@ -77,8 +79,9 @@ Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine
 
 ### 3.2 Lista B completa de sustituciones obligatorias
 
-**Léxico:**
+**Léxico — sustitución directa:**
 - aquí → acá *(obligatorio en TODOS los registros: narrativa, diálogo, descriptivo, turístico, académico, periodístico, formal, coloquial. "Acá" es la forma rioplatense estándar. Conservar mayúscula inicial: "Aquí" → "Acá". Cada ocurrencia se registra como un cambio léxico tipo B.)*
+- allí → ahí *(paralelo a aquí→acá: "Acá/ahí/allá" es la triada RP estándar. "Allí" → "ahí" para referente contextual identificado; "allí" → "allá" para referente distante/abstracto. Excepción: registro decimonónico/literario explícito puede mantener "allí". Conservar mayúscula. Cada ocurrencia es un cambio B.)*
 - coche → auto
 - autobús → colectivo
 - piso (=apartamento) → departamento
@@ -92,6 +95,13 @@ Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine
 - americana (=EEUU) → norteamericana
 - coste → costo
 - no tenía un duro → no tenía un mango
+
+**Léxico — sustitución contextual (no mecánica, solo cuando se cumple la condición de uso):**
+- padre/madre → papá/mamá *(solo en registro coloquial/familiar 1ª persona referido a propios padres del hablante: "casa de mi padre" → "casa de mi papá". MANTENER en registro formal/literario, referente terceros, plural genérico, usos no familiares.)*
+- recoger → levantar *(solo en sentido "agarrar del piso/superficie". MANTENER para juntar/cosechar, pasar a buscar, registro formal o usos figurados.)*
+- enviar → mandar *(preferir "mandar" en registro coloquial o agente impersonal. MANTENER "enviar" en registro formal/escrito.)*
+- recordar X → acordarse de X *(coloquial 1ª persona: "recuerdo a mis abuelos" → "me acuerdo de mis abuelos". MANTENER en registro formal/literario, sentido transitivo "hacer recordar" e imperativos institucionales.)*
+- pequeño/a → chico/a *(referido a edad informal de persona/animal: "mi hija pequeña" → "mi hija chica". MANTENER para tamaño físico de objeto y sentidos figurados abstractos.)*
 
 **Contextuales (no reemplazo mecánico):**
 - **oye** → traducción contextual:
@@ -132,6 +142,19 @@ La etiqueta `entailment | neutral | contradiction` **nunca puede cambiar**. Si u
 
 `lev_prem`, `lev_hyp`, `lev_total` se calculan con `python-Levenshtein` en `normalize_response()` de `translate_xnli_pilot.py`. El modelo no estima distancias.
 
+### 3.6 Adaptación cultural — Fase 2 conservadora (tipo E)
+
+A partir de mayo 2026, el prompt v2 (`prompt_v2_cultural_inline.txt`) habilita **adaptación cultural inline** sobre un subconjunto cerrado de referentes. Esto es excepción controlada a la Restricción 2 ("no modificar nombres propios"), válida SOLO para v2 y SOLO en estas dos categorías:
+
+- **E.1 Nombres anglo de persona — regla escalable, NO tabla fija.** DEFAULT: adaptar a un nombre RP plausible del mismo género, registro y juego lingüístico. EXCEPCIONES (no adaptar): (1) figura histórica/celebridad/persona pública real; (2) personaje universalmente reconocible (Sherlock, Hamlet, Don Quijote); (3) autor citado dentro del texto; (4) antropónimo nominado en contexto jurídico-institucional con apellido específico; (5) nombre que es parte de un juego semántico que no se puede preservar en RP. Si el nombre es de ficción puntual no canónica (ej. Ogle), SÍ se adapta. Si forma parte de un juego de género/apócope (ej. Sam/Samantha), se adapta a un par RP que preserve el juego (ej. Valen/Valentina). El prompt incluye sugerencias heurísticas pero ningún mapeo es obligatorio: dos anotadores pueden elegir equivalentes distintos y ambas adaptaciones son válidas si respetan género/registro/consistencia prem-hyp.
+- **E.2 Festividades/referentes universales con equivalente directo**: Santa Claus / Father Christmas → Papá Noel; Easter Bunny → conejo de Pascua. NO incluye Halloween, Thanksgiving, 4th of July, Super Bowl ni feriados nacionales específicos.
+
+**Restricción 6 (consistencia cultural):** si una adaptación E.1/E.2 se aplica y el referente aparece en prem y hyp, debe usarse la MISMA equivalencia en ambos. Esta es la única excepción a la Restricción 5 (no buscar consistencia léxica), y solo cubre el referente cultural adaptado.
+
+**Quedan FUERA de E (van a `cultural_candidates`, no se modifican inline)**: topónimos extranjeros (Texas, Del Rio, Dam Square), marcas comerciales (Texas Instruments), unidades imperiales (millas, pies), eventos históricos específicos, instituciones extranjeras. Estos los decidimos en Fase 3 humano-en-el-loop.
+
+**Tipo E en la tipología:** se asigna E cuando el cambio cultural es el ÚNICO cambio. Si concurre con B/C/D dialectal, la letra dominante es la dialectal y la cultural va en `secondary_features` ("adaptacion_cultural_E1: Joe → José"). Esto preserva la métrica B/C/D existente y suma E como categoría adicional medible.
+
 ## 4. Estado actual
 
 - **Gold 30** (`xnli_pilot_30_annotated.jsonl`): few-shots + referencia. **Leakage conocido** porque los 3 few-shots del prompt (idx 1638, 910, 2821) están dentro del gold; usar gold solo como sanity check, no como benchmark de generalización. **idx 1522 actualizado** (mayo 2026): se agregó cambio B `así lo creí → así creí` (eliminación de clítico anafórico) en `prem_rp`.
@@ -144,14 +167,22 @@ La etiqueta `entailment | neutral | contradiction` **nunca puede cambiar**. Si u
   2. **`pues` con mapeo contextual**: 4 contextos (muletilla / causal / consecutivo / cierre) en lugar de reemplazo mecánico.
   3. **Caveat corto de registro arcaico para voseo**: si hay marcas de registro decimonónico/aristocrático (ej. "su señoría"), no aplicar voseo.
   4. **Regla acotada de eliminación de clítico anafórico**: `lo`/`la` se elimina solo cuando es redundante tras adverbio anafórico (`así`, `eso`); ejemplo único `así lo creí → así creí`.
+- **Prompt v1 — Fase 1 (mayo 2026, post validación nativa batch 200-260):** ampliación del léxico B con seis sustituciones contextuales adicionales surgidas del feedback nativo:
+  - `allí → ahí/allá` (paralelo a aquí→acá, contextual).
+  - `padre/madre → papá/mamá` (registro coloquial 1ª persona, propios padres).
+  - `recoger → levantar` (solo "agarrar del piso").
+  - `enviar → mandar` (registro coloquial / agente impersonal).
+  - `recordar X → acordarse de X` (coloquial 1ª persona, requiere ajuste de preposición).
+  - `pequeño/a → chico/a` (edad informal de persona/animal).
+- **Prompt v2 cultural inline (mayo 2026, Fase 2):** nuevo archivo `prompt_v2_cultural_inline.txt` que reemplaza al v2 viejo de "solo marcar candidatos". Hereda todo el v1 (Fase 1 incluida) y agrega sección E con adaptación cultural conservadora: tabla cerrada de nombres anglo comunes (Joe→José, Mary→María, etc.) y festividades universales (Santa Claus→Papá Noel, Easter Bunny→conejo de Pascua). Topónimos, marcas, unidades imperiales y eventos históricos se MARCAN en `cultural_candidates` pero NO se modifican (Fase 3 humano-en-el-loop). El archivo viejo está en `scripts/prompts/_archive/`.
 - **Billing Gemini** activo, **Tier 1, 1000 RPM**.
 - Eval **pre-cambios de prompt** (stale, hay que re-evaluar):
   - held-out 70 @ Gemini 2.5 Flash T=0.1 v1: type accuracy **94.3%** (A 95.7 / B 83.3 / C 100 / D 87.5).
   - gold 30 @ idem: type accuracy **93.3%** (A 91.3 / B 100 / C 100 / D 100).
   - held-out 100 @ idem (con gold corregido en sesión actual): type accuracy ≈ **95%** (5 errores reales).
 - **Validación post-cambios sobre subsets puntuales (8 instancias diversas, mayo 2026)**: 8/8 OK. Confirmó que (a) los 4 fixes del held-out 100 funcionan, (b) el voseo contemporáneo sigue aplicando bien, (c) la regla de clítico no se sobre-aplica en controles relativos/predicativos. Falta correr full sets para confirmar ausencia de regresiones globales.
-- **`validation_app/index.html`** (mayo 2026): app web standalone para validación nativa. Stack HTML + vanilla JS + Supabase JS (CDN). Tabla `respuestas` (`anotador_id`, `idx`, `respuesta` ∈ {si/parcialmente/no}, `comentario`, `region`, `quiere_mas`). UUID anónimo en `localStorage`, distribución automática de instancias entre anotadores (filtra `idx` ya respondidos por otros), guardado incremental por `id` de fila. La carpeta es la raíz de deploy de Netlify (drag & drop solo `validation_app/`). 30 instancias del pilot embebidas como JSON literal; cuando se quiera reemplazar el set, editar `INSTANCES` en el HTML.
-- **Repo Git inicializado** (mayo 2026): `git init -b main` en la raíz. `.gitignore` excluye `.env`, `credentials/`, `.venv/`, `.claude/`, `results/` y `*.jsonl` con override `!data/processed/*.jsonl` y `!data/raw/**/*.jsonl` para conservar gold/dev sets en el repo. Commit inicial incluye `validation_app/`. Remote en GitHub configurado para push completo del proyecto.
+- **`validation_app/index.html`** (mayo 2026): app web standalone para validación nativa. Stack HTML + vanilla JS + Supabase JS (CDN). Tabla Supabase `respuestas` con columnas: `anotador_id`, `idx`, `respuesta` ∈ {si/parcialmente/no}, `comentario_prem`, `comentario_hyp`, `region`, `quiere_mas`. UUID anónimo en `localStorage`, distribución automática de instancias entre anotadores (filtra `idx` ya respondidos por otros), guardado incremental por `id` de fila. Las instancias se embeben como JSON literal en `INSTANCES` en el HTML; cuando se quiera cambiar el set, editar ese array. **Deploy:** el repo está vinculado a Netlify vía GitHub — cualquier `git push` a `main` dispara un redeploy automático. La raíz de publicación es `validation_app/` (configurado en `validation_app/netlify.toml`, `publish = "."`). NO hacer drag & drop manual — commitear y pushear.
+- **Repo Git inicializado** (mayo 2026): `git init -b main` en la raíz. `.gitignore` excluye `.env`, `credentials/`, `.venv/`, `.claude/`, `results/` y `*.jsonl` con override `!data/processed/*.jsonl` y `!data/raw/**/*.jsonl` para conservar gold/dev sets en el repo. Commit inicial incluye `validation_app/`. Remote en GitHub configurado para push completo del proyecto. Netlify vinculado al repo GitHub con base directory `validation_app/`.
 
 ## 5. Lo que NO debe hacer Claude Code nunca
 
@@ -159,8 +190,8 @@ La etiqueta `entailment | neutral | contradiction` **nunca puede cambiar**. Si u
 - **No modificar los 3 few-shots del prompt** (idx 1638, 910, 2821).
 - **No implementar Fase 2 de adaptación cultural** (los `cultural_candidates` se marcan en Fase 1; la adaptación cultural real es decisión humana posterior).
 - **No escalar a 10k** sin validación previa en held-out.
-- **No buscar consistencia léxica** entre premisa e hipótesis.
-- **No corregir nombres propios** aunque parezcan mal transcritos (ej. "Lecretius" se queda).
+- **No buscar consistencia léxica** entre premisa e hipótesis. **Excepción única (solo v2):** consistencia obligatoria del referente cultural adaptado bajo E.1/E.2 (Restricción 6 de v2).
+- **No corregir nombres propios** aunque parezcan mal transcritos (ej. "Lecretius" se queda). **Excepción controlada (solo v2):** nombres anglo comunes de persona no-célebres y no-históricos según sección E.1 del prompt v2 cultural inline (Joe → José, Mary → María, etc.). Topónimos, marcas, antropónimos únicos siguen sin tocarse.
 - **No traducir directamente del inglés**; el EN es solo referencia para detectar errores tipo D.
 - **No alterar `label`/`label_int`** ni la estructura JSON del output.
 
@@ -172,14 +203,23 @@ Activar venv: `.venv\Scripts\activate` (Windows). Todos los comandos asumen ejec
 # Sanity check del entorno
 python scripts/check_env.py
 
-# Correr el dev combinado de 200 (gold30 + held70 + held100) con T=0.1 y v1 — RECOMENDADO post-cambios de prompt
+# Correr el dev combinado de 200 (gold30 + held70 + held100) con T=0.1 y v1 — base dialectal post Fase 1
 python scripts/translate_xnli_pilot.py --input data/processed/xnli_combined_dev_200.jsonl \
     --temperatures 0.1 --prompt-variants v1
 
-# Evaluar contra el dev combinado
+# Correr el dev combinado de 200 con T=0.1 y v2 cultural inline — base post Fase 2
+python scripts/translate_xnli_pilot.py --input data/processed/xnli_combined_dev_200.jsonl \
+    --temperatures 0.1 --prompt-variants v2
+
+# Evaluar contra el dev combinado (v1 — gold dialectal estándar)
 python scripts/evaluate_against_gold.py \
     --gold data/processed/xnli_combined_dev_200.jsonl \
     --run results/experiments/xnli_combined_dev_200__gemini-2.5-flash__T0.1__v1.jsonl
+
+# Evaluar v2 contra el gold cultural (cuando exista xnli_combined_dev_200_cultural.jsonl)
+python scripts/evaluate_against_gold.py \
+    --gold data/processed/xnli_combined_dev_200_cultural.jsonl \
+    --run results/experiments/xnli_combined_dev_200__gemini-2.5-flash__T0.1__v2.jsonl
 
 # Correr held-out 70 con T=0.1 y v1 (config principal de optimización, dev individual)
 python scripts/translate_xnli_pilot.py --held-out --temperatures 0.1 --prompt-variants v1

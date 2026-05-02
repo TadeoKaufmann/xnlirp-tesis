@@ -570,7 +570,7 @@
   let anotadorId = null;
   let availableInstances = [];
   let currentIndex = 0;
-  const responses = new Map(); // idx -> { respuesta, correccion_prem, correccion_hyp, dbId }
+  const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
   let selectedQuiereMas = null;
   const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
@@ -630,8 +630,8 @@
     document.querySelectorAll('#options-respuesta .option').forEach(b => {
       b.classList.toggle('selected', b.dataset.value === r.respuesta);
     });
-    document.getElementById('correccion-prem').value = r.correccion_prem || '';
-    document.getElementById('correccion-hyp').value = r.correccion_hyp || '';
+    document.getElementById('correccion-prem').value = r.comentario_prem || '';
+    document.getElementById('correccion-hyp').value = r.comentario_hyp || '';
 
     document.getElementById('counter').textContent =
       `Instancia ${i + 1} de ${availableInstances.length}`;
@@ -650,8 +650,8 @@
     if (!r || !r.respuesta) return;
     const payload = {
       respuesta: r.respuesta,
-      correccion_prem: r.correccion_prem || null,
-      correccion_hyp: r.correccion_hyp || null
+      comentario_prem: r.comentario_prem || null,
+      comentario_hyp: r.comentario_hyp || null
     };
     if (r.dbId) {
       const { error } = await sb.from('Respuestas').update(payload).eq('id', r.dbId);
@@ -717,7 +717,7 @@
     let allRows;
     try {
       const { data, error } = await sb.from('Respuestas')
-        .select('id, idx, anotador_id, respuesta, correccion_prem, correccion_hyp, region, quiere_mas');
+        .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, region, quiere_mas');
       if (error) throw error;
       allRows = data || [];
     } catch (err) {
@@ -735,8 +735,8 @@
       if (row.anotador_id === anotadorId) {
         responses.set(row.idx, {
           respuesta: row.respuesta,
-          correccion_prem: row.correccion_prem || '',
-          correccion_hyp: row.correccion_hyp || '',
+          comentario_prem: row.comentario_prem || '',
+          comentario_hyp: row.comentario_hyp || '',
           dbId: row.id
         });
         if (row.region) myHasRegion = true;
@@ -829,8 +829,8 @@
       responses.set(inst.idx, {
         ...existing,
         respuesta: value,
-        correccion_prem: document.getElementById('correccion-prem').value,
-        correccion_hyp: document.getElementById('correccion-hyp').value
+        comentario_prem: document.getElementById('correccion-prem').value,
+        comentario_hyp: document.getElementById('correccion-hyp').value
       });
       document.getElementById('btn-next').disabled = false;
       updateProgress();
@@ -852,8 +852,8 @@
       }
     });
   }
-  bindCorrectionBlur('correccion-prem', 'correccion_prem');
-  bindCorrectionBlur('correccion-hyp', 'correccion_hyp');
+  bindCorrectionBlur('correccion-prem', 'comentario_prem');
+  bindCorrectionBlur('correccion-hyp', 'comentario_hyp');
 
   document.getElementById('btn-prev').addEventListener('click', () => {
     if (currentIndex > 0) renderInstance(currentIndex - 1);

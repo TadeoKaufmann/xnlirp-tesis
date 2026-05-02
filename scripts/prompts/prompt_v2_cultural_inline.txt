@@ -1,4 +1,4 @@
-Sos un experto en lingüística del español rioplatense (variedad argentino-uruguaya). Tu tarea es ADAPTAR DIALECTALMENTE una instancia del benchmark XNLI desde español neutro/peninsular hacia español rioplatense.
+Sos un experto en lingüística del español rioplatense (variedad argentino-uruguaya). Tu tarea es ADAPTAR DIALECTAL Y CULTURALMENTE una instancia del benchmark XNLI desde español neutro/peninsular hacia español rioplatense.
 
 PRINCIPIO RECTOR: CAMBIO MÍNIMO.
 Solo cambiá lo necesario. Si una oración ya funciona en rioplatense estándar, NO la modifiques.
@@ -9,7 +9,9 @@ PRIORIDAD DE TIPOS — orden de evaluación (importante para asignar la letra co
           ¿Hay otros peninsularismos léxicos del listado obligatorio (tipo B)?
   Paso 3: ¿Hay un error claro de traducción tipo D? (palabra inglesa sin traducir,
           falso amigo jurídico, error contextual con confirmación en la otra parte)
-  Paso 4: Si no hay nada de lo anterior, la instancia es A. NO inventes razones para D.
+  Paso 4: ¿Hay referentes culturales adaptables del listado conservador (tipo E)?
+          (nombres anglo comunes, festividades con equivalente directo)
+  Paso 5: Si no hay nada de lo anterior, la instancia es A. NO inventes razones para D ni para E.
 
 DISTINCIÓN CRÍTICA — antes de marcar D:
   - El tipo D es para errores OBJETIVOS de traducción del ES respecto del EN
@@ -22,10 +24,11 @@ DISTINCIÓN CRÍTICA — antes de marcar D:
 
 RESTRICCIONES DURAS (no negociables):
 1. La etiqueta NLI (entailment / neutral / contradiction) DEBE preservarse. Si tu cambio podría alterar la relación lógica, no lo hagas.
-2. NO modifiques nombres propios, aunque parezcan mal transcritos. Si el ES original tiene "Lecretius", dejalo "Lecretius" — no es tu tarea corregirlo.
+2. NO modifiques nombres propios EN GENERAL (lugares, marcas, organizaciones, personajes históricos, autores, antropónimos únicos como "Lecretius"). EXCEPCIÓN ÚNICA Y CONTROLADA: nombres anglo comunes de personas no-célebres y no-históricas, según la sección E) más abajo.
 3. NO traduzcas directamente del inglés. El inglés es solo referencia para detectar errores de traducción tipo D.
 4. NO inventes contenido que no esté en el ES original.
-5. NO busques consistencia léxica entre prem y hyp. Si el ES tiene "flujo" en prem y "crecida" en hyp, ambos quedan tal cual — no es tu tarea unificarlos.
+5. NO busques consistencia léxica entre prem y hyp para decisiones tipo D. Si el ES tiene "flujo" en prem y "crecida" en hyp, ambos quedan tal cual — no es tu tarea unificarlos.
+6. CONSISTENCIA CULTURAL OBLIGATORIA (única excepción a la Restricción 5): si aplicás una adaptación cultural tipo E (ej. Joe → José) y el mismo referente aparece en prem y en hyp, DEBÉS aplicar la MISMA equivalencia en ambos para preservar la identidad referencial. Esta consistencia solo se aplica al referente cultural adaptado, no al resto del léxico.
 
 REGLAS LINGÜÍSTICAS (orden de prioridad):
 
@@ -176,76 +179,159 @@ D) CORRECCIÓN DE ERRORES DE TRADUCCIÓN del ES respecto del EN.
      4. Error contextual específico donde la palabra ES es claramente incorrecta
         en este contexto y la otra parte (prem o hyp) usa la palabra correcta
         para el MISMO referente:
-         · "jugadas" para "plays" cuando el prem habla de "obras" teatrales/literarias
-           ("Hicimos tres jugadas históricas" siendo el referente compartido con
-            "obras que se relacionan con la historia, literatura...") → "obras".
-         · "celda" para "cell" cuando la otra parte habla de "células" en contexto
-           de organización clandestina o terrorismo ("había una celda en EE.UU."
-            con la hyp diciendo "células en los EE.UU.") → "célula".
-         · "tarjeta" para "target" cuando el prem habla de "objetivo" en contexto
-           técnico ("Cambia cada d o t del objetivo" con hyp "tarjeta de d's") →
-           "objetivo".
+         · "jugadas" para "plays" cuando el prem habla de "obras" teatrales/literarias → "obras".
+         · "celda" para "cell" cuando la otra parte habla de "células" → "célula".
+         · "tarjeta" para "target" cuando el prem habla de "objetivo" → "objetivo".
         REGLA OPERATIVA: si encontrás una palabra que en la otra parte de la
         instancia aparece traducida correctamente para el mismo referente, ese
         es D obligatorio. No te abstengas.
 
         EXCEPCIÓN A LA REGLA OPERATIVA — sinónimos válidos:
         D4 aplica SOLO cuando una de las dos traducciones es CLARAMENTE
-        INCORRECTA respecto del EN (mistraducción real, falso amigo, error
-        contextual inequívoco). Si AMBAS palabras son traducciones DEFENDIBLES
-        del mismo referente EN — sinónimos válidos, paráfrasis aceptables,
-        registros distintos — NO aplicar D4. Prima la Restricción 5
-        (no buscar consistencia léxica) y el caso es A.
-
-        Cómo distinguir: una palabra es "claramente incorrecta" cuando ningún
-        diccionario ni uso común del castellano la admitiría como traducción
-        del término EN en ese contexto. Si ambas opciones son admisibles
-        aunque no idénticas, son sinónimos y no se armonizan.
+        INCORRECTA respecto del EN. Si AMBAS palabras son traducciones DEFENDIBLES
+        del mismo referente EN — sinónimos válidos, paráfrasis aceptables — NO
+        aplicar D4. Prima la Restricción 5 y el caso es A.
 
         Ejemplo de A (NO aplicar D4 — sinónimos válidos):
-          EN prem: "He works as a physician at the local hospital."
-          EN hyp:  "He is a doctor."
           ES prem: "Trabaja como médico en el hospital local."
           ES hyp:  "Es un doctor."
-          → "médico" y "doctor" son glosas válidas del mismo referente.
-            NO armonizar. Tipo A, sin cambios.
+          → "médico" y "doctor" son glosas válidas. NO armonizar. Tipo A.
 
    NO es tipo D (NO modificar):
-     - Correcciones gramaticales (concordancia número/persona, preposiciones,
-       acentuación de pronombres oblicuos: "mi" → "a mí", "presten" → "preste").
-     - Correcciones de puntuación, espaciado o ubicación de comillas.
-     - Tildes diacríticas obsoletas según la RAE 2010: "ésta/éste/ésa/ése/aquél/sólo"
-       con tilde NO se corrigen — son ortografía válida del ES original
-       ("Ante ésta elección" se mantiene tal cual: tipo A).
-     - Paráfrasis válidas: si la palabra ES es UNA traducción posible y el contexto
-       no obliga a otra, mantenela. Caso emblemático: "flujo" para "flood" en
-       "La sangre y el flujo no son como la comida" se mantiene aunque la hyp
-       use "crecida" — el ES eligió un sinónimo válido y NO buscamos consistencia
-       léxica entre prem y hyp (regla 5 de las restricciones duras). Esto es A.
-     - CASO CONCRETO: "match savings" → "cuenta de ahorro individual" en el ES NO se
-       corrige. La glosa del ES es una interpretación contextual razonable; aunque vos
-       prefirieras "cuenta de ahorro con contribución", esto no es un error de
-       traducción puntual de UNA palabra concreta sino una elección léxica del traductor
-       original — déjala intacta (tipo A).
-     - Variantes ortográficas de nombres propios extranjeros ya presentes en el ES
-       original — esto incluye nombres de organizaciones, personas, lugares
-       ("Lecretius" → mantener; "Hozbollah" → mantener aunque conozcas "Hezbolá").
-     - Reinterpretaciones semánticas o "mejoras" de glosas ambiguas.
+     - Correcciones gramaticales, de puntuación, tildes diacríticas obsoletas
+       ("ésta/éste/sólo" con tilde se mantienen).
+     - Paráfrasis válidas ("flujo" para "flood" se mantiene aunque la hyp use "crecida").
+     - "match savings" → "cuenta de ahorro individual" se mantiene.
+     - Variantes ortográficas de nombres propios extranjeros del ES original
+       ("Lecretius", "Hozbollah" → mantener).
      - os/vosotros → se/ustedes → tipo C.
-     - Eliminación de pronombres sujeto → tipo C.
-     - Cambios de tiempo verbal por aspecto (PPC → pretérito simple) → tipo B.
+     - PPC → pretérito simple → tipo B.
 
-   REGLA DE ABSTENCIÓN (para casos AMBIGUOS): si dudás si algo es D, NO lo apliques.
-   La abstención NO se aplica a los casos del cuadro "SÍ es tipo D" arriba — esos son
-   correcciones obligatorias cuando el contexto las habilita.
-   NO acumules cambios: identificá UN error D por par prem/hyp y nada más.
+   REGLA DE ABSTENCIÓN: si dudás si algo es D, NO lo apliques (excepto casos del cuadro
+   "SÍ es tipo D" arriba). NO acumules cambios: identificá UN error D por par y nada más.
+
+E) ADAPTACIÓN CULTURAL CONSERVADORA (NUEVO — Fase 2 inline).
+   Esta sección habilita la modificación de un subconjunto MUY ACOTADO de referentes
+   culturales que un hablante rioplatense reconocería como ajenos. El criterio rector
+   sigue siendo CAMBIO MÍNIMO: solo adaptar lo que está en las dos categorías
+   habilitadas más abajo. Todo lo demás se MARCA en cultural_candidates pero NO se
+   modifica (queda para Fase 3 humano-en-el-loop).
+
+   E.1) NOMBRES ANGLO DE PERSONA → NOMBRES RIOPLATENSES (regla escalable, NO tabla fija):
+
+        DEFAULT: ADAPTAR. Cuando en el ES original aparece un nombre anglo de
+        persona, el default es adaptarlo a un nombre RP plausible del MISMO
+        género, registro (formal/informal/hipocorístico) y, si aplica,
+        manteniendo el JUEGO LINGÜÍSTICO de la frase. El criterio rector:
+        si un hablante rioplatense que lee la oración pensaría "este nombre
+        suena ajeno y no aporta información cultural al texto", adaptar.
+
+        Elegí siempre el nombre RP más plausible para el contexto. No hay
+        equivalencia obligatoria 1-a-1: dos anotadores distintos pueden elegir
+        equivalentes distintos para el mismo nombre y ambas son válidas. Lo
+        que importa es: género, registro, naturalidad en RP, y consistencia
+        prem/hyp.
+
+        EXCEPCIONES — NO ADAPTAR cuando el nombre cae en alguna de estas
+        categorías (en la duda, mantener):
+
+        (1) Figura histórica, celebridad o persona pública real
+            identificable por contexto: políticos, líderes mundiales, artistas
+            famosos, deportistas, científicos reconocidos, CEOs identificados
+            (ej. "Lincoln", "Mike Ovitz" en contexto Hollywood, "Hemingway",
+            "Bill Clinton", "Steve Jobs", "Sinatra"). Si el contexto cita
+            apellido + actividad o + organización conocida, asumir figura real.
+
+        (2) Personaje universalmente reconocible de la cultura literaria,
+            mítica o popular: Sherlock Holmes, Hamlet, Don Quijote, Hermione,
+            Gatsby, Frodo, Mickey Mouse, Cenicienta, Hércules, Drácula.
+            (NO incluye personajes de obras puntuales no canónicas — esos
+            sí son adaptables, ver más abajo.)
+
+        (3) Autor citado o intelectual referenciado dentro del texto, donde
+            el nombre identifica un autor real: ej. "Anthony John Campos
+            se refiere a..."; "Lecretius observa que...". Patrón típico:
+            "<Nombre> + verbo de decir/escribir/observar" en registro académico.
+
+        (4) Antropónimo nominado en contexto jurídico/institucional con apellido
+            específico que identifica al sujeto del caso (ej. "Gary Allenbrand"
+            en una demanda; "John Smith demandante en el caso X"). El apellido
+            ancla la identidad jurídica.
+
+        (5) Personajes de ficción puntual de obras NO canónicas (ej. Ogle,
+            personaje recurrente en una novela del XIX no universalmente
+            reconocida): SÍ se adapta. Ogle, Bumppo, Eustace, etc. son
+            antropónimos extranjeros sin reconocimiento universal — encajan
+            en el default ADAPTAR.
+
+        REGLA DEL JUEGO LINGÜÍSTICO (importante para la consistencia NLI):
+        Si el nombre forma parte de un juego semántico/de género/de
+        ambigüedad (ej. "Sam parece nombre de varón pero es apócope de
+        Samantha"), la adaptación DEBE preservar ese juego, no romperlo.
+          - Sam (apócope ambiguo) / Samantha (femenino) → Valen (apócope
+            ambiguo) / Valentina (femenino). El juego se preserva.
+          - Sam → "Samuel" (masculino sin ambigüedad) ROMPE el juego — NO
+            hacerlo así; preferir el par Valen/Valentina o equivalente.
+          - Si no encontrás un par RP que preserve el juego, MANTENER el
+            nombre original.
+
+        SUGERENCIAS HEURÍSTICAS (orientativas, no obligatorias):
+          Joe→José/Juan, John→Juan, Bob→Roberto, Tom→Tomás, Mike→Miguel,
+          Dave→Diego, Bill→Guillermo, Steve→Esteban, Paul→Pablo,
+          Rick→Ricardo, Frank→Francisco, Tony→Antonio, Charlie→Carlos,
+          Jack→Joaquín, Larry→Lautaro, Gary→Gerardo, Ron→Ramón, Pete→Pedro,
+          Mary→María, Susan→Susana, Anne/Ann→Ana, Helen→Elena, Jenny→Jésica,
+          Sarah→Sara, Kate/Cathy→Catalina, Linda→Linda (mantener),
+          Sam(M)→Santi/Tomás, Sam(amb)+Samantha→Valen+Valentina (juego).
+
+        CONSISTENCIA OBLIGATORIA (Restricción 6): si el mismo nombre aparece
+        en prem y hyp (o si el nombre tiene una variante completa-apócope que
+        aparece en distintas partes, como Sam/Samantha), usar la MISMA
+        adaptación en TODAS las ocurrencias.
+
+   E.2) FESTIVIDADES Y REFERENTES UNIVERSALES CON EQUIVALENTE DIRECTO:
+        Aplicar SOLO en estos casos puntuales:
+          Santa Claus → Papá Noel
+          Father Christmas → Papá Noel
+          Easter Bunny → conejo de Pascua (si aparece en EN sin traducir en ES)
+
+        NO incluye: Halloween (mantener), Thanksgiving (mantener — no hay
+        equivalente directo), 4th of July (mantener), Super Bowl (mantener),
+        ningún feriado nacional específico de USA/UK.
+
+   QUÉ NO ENTRA EN E (queda en cultural_candidates para Fase 3):
+     - Topónimos extranjeros (Texas, Del Rio, Dam Square, Laughlin Air Force Base,
+       Tate Modern, Hyde Park, etc.). Marcar pero NO adaptar.
+     - Marcas comerciales (Texas Instruments, Coca-Cola, etc.). Marcar pero NO adaptar.
+     - Unidades de medida imperiales (millas, pies, libras, galones). Marcar pero
+       NO adaptar (cambiar magnitudes puede romper la verdad lógica de la NLI).
+     - Eventos históricos o instituciones específicos de otros países. Marcar.
+     - Léxico cultural genérico no incluido en E.2 (ir de tapas, tomar el té
+       británico, etc.). Marcar.
+
+   FORMATO DE cultural_candidates (cuando se MARQUE algo, no se aplique):
+     "cultural_candidates": [
+       {"original": "<frase>", "suggestion": "<frase RP o null>", "category": "<categoría>"}
+     ]
+     Categorías: "toponimo_extranjero", "marca_comercial", "unidad_imperial",
+     "evento_historico_especifico", "referente_institucional",
+     "lexico_cultural_generico", "vocativo_peninsular", "idiomatismo_peninsular",
+     "vulgarismo_pansemantico", "antroponimo_no_adaptable".
 
 TIPOLOGÍA (asignar exactamente UNA letra):
-- A: Sin cambios. La instancia funciona igual en ES y RP.
+- A: Sin cambios. La instancia funciona igual en ES y RP, y no requiere adaptación cultural.
 - B: Cambios léxicos peninsulares (incluye PPC → pretérito simple).
-- C: Cambios morfosintácticos (voseo, eliminación de pronombres redundantes).
+- C: Cambios morfosintácticos (voseo, vosotros/os).
 - D: Corrección de errores de traducción.
-Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine el conteo de cambios) y registrar el otro en "secondary_features".
+- E: Adaptación cultural rioplatense (sección E aplicada SIN cambios B/C/D adicionales).
+
+PRIORIDAD DE LETRA cuando hay múltiples cambios:
+  - Si hay B/C/D + adaptación cultural E: la letra es la del cambio dialectal
+    (B/C/D, según corresponda) y registrar la adaptación cultural en
+    "secondary_features" (ej. "adaptacion_cultural_E1: Joe → José").
+  - Si SOLO hay adaptación cultural (sin cambios dialectales): letra = E.
+  - Si una instancia tiene B+C dialectal: la letra es la dominante por conteo
+    de cambios; el otro va en secondary_features.
 
 OUTPUT (JSON estricto, sin markdown fences, sin texto extra):
 {
@@ -253,31 +339,31 @@ OUTPUT (JSON estricto, sin markdown fences, sin texto extra):
   "label": "<entailment|neutral|contradiction>",
   "prem_rp": "<premisa adaptada>",
   "hyp_rp": "<hipótesis adaptada>",
-  "type": "<A|B|C|D>",
+  "type": "<A|B|C|D|E>",
   "changes": ["<descripción corta del cambio 1>", "..."],
   "secondary_features": ["<otra característica observada>", "..."],
-  "cultural_candidates": [],
+  "cultural_candidates": [{"original": "...", "suggestion": "..." | null, "category": "..."}],
   "note": "<una línea de justificación>"
 }
 
-Si type=A, "changes" debe ser []. Si type≠A, "changes" debe describir cada modificación realizada.
+Si type=A, "changes" debe ser []. Si type≠A, "changes" debe describir cada modificación realizada (incluidas las adaptaciones culturales E aplicadas).
 
 ================================================================
-EJEMPLOS (tomados del gold anotado manualmente):
+EJEMPLOS:
 
-EJEMPLO 1 (tipo B — múltiples PPC → pretérito simple):
+EJEMPLO 1 (tipo B — múltiples PPC → pretérito simple, sin cultural):
 INPUT:
 idx: 1638
 label: entailment
 prem_es: "En lo mío no he hecho nada de lo que me avergüence, teniendo en cuenta la provocación que recibí. Su mirada vaciló, y cayó antes que la suya tan intensa."
 hyp_es: "No me avergüenzo de nada de lo que he hecho, teniendo en cuenta la provocación que he recibido."
-prem_en: "In my own I've done nothing at all that I am ashamed of, considering the provocation I received. Her glance faltered, and fell away before his own that was so intent."
+prem_en: "In my own I've done nothing at all that I am ashamed of, considering the provocation I received."
 hyp_en: "I'm not ashamed of anything that I've done, considering the provocation I've received."
 
 OUTPUT:
 {"idx": 1638, "label": "entailment", "prem_rp": "En lo mío no hice nada de lo que me avergüence, teniendo en cuenta la provocación que recibí. Su mirada vaciló, y cayó antes que la suya tan intensa.", "hyp_rp": "No me avergüenzo de nada de lo que hice, teniendo en cuenta la provocación que recibí.", "type": "B", "changes": ["no he hecho → no hice (PPC → pretérito simple RP)", "lo que he hecho → lo que hice (PPC → pretérito simple RP)", "he recibido → recibí (PPC → pretérito simple RP)"], "secondary_features": [], "cultural_candidates": [], "note": "PPC peninsular para acción puntual concluida; RP prefiere pretérito simple."}
 
-EJEMPLO 2 (tipo C — voseo + PPC):
+EJEMPLO 2 (tipo C — voseo + PPC, sin cultural):
 INPUT:
 idx: 910
 label: contradiction
@@ -289,7 +375,7 @@ hyp_en: "I dont want to talk to you eve again."
 OUTPUT:
 {"idx": 910, "label": "contradiction", "prem_rp": "fue un placer hablar con vos, muchas gracias, adiós", "hyp_rp": "No quiero volver a hablar con vos.", "type": "C", "changes": ["contigo → con vos (pronombre tuteo → voseo)", "ha sido → fue (PPC → pretérito simple RP)"], "secondary_features": ["cambio_PPC"], "cultural_candidates": [], "note": "'Contigo' es marcador inequívoco de tuteo; en voseo se reemplaza por 'con vos'."}
 
-EJEMPLO 3 (tipo D — corrección de error de traducción):
+EJEMPLO 3 (tipo D — corrección de error de traducción, sin cultural):
 INPUT:
 idx: 2821
 label: entailment
@@ -299,7 +385,43 @@ prem_en: "Besides LNL and Allenbrand-Drews, the suit names as defendants Gary Al
 hyp_en: "Allenbrand and Drews are getting sued."
 
 OUTPUT:
-{"idx": 2821, "label": "entailment", "prem_rp": "Además de LNL y Allenbrand-Drews, se nombra como demandados a Gary Allenbrand y Loren Drews, directores de Allenbrand-Drews; y desarrolladores o contratistas R.L.", "hyp_rp": "Allenbrand y Drews están siendo demandados.", "type": "D", "changes": ["defensores → demandados (corrección de error de traducción: 'defendants' = 'demandados', no 'defensores')"], "secondary_features": [], "cultural_candidates": [], "note": "El ES traduce mal 'defendants' como 'defensores' (defenders); la corrección preserva el entailment."}
+{"idx": 2821, "label": "entailment", "prem_rp": "Además de LNL y Allenbrand-Drews, se nombra como demandados a Gary Allenbrand y Loren Drews, directores de Allenbrand-Drews; y desarrolladores o contratistas R.L.", "hyp_rp": "Allenbrand y Drews están siendo demandados.", "type": "D", "changes": ["defensores → demandados (corrección de error de traducción: 'defendants' = 'demandados', no 'defensores')"], "secondary_features": [], "cultural_candidates": [], "note": "El ES traduce mal 'defendants' como 'defensores' (defenders); la corrección preserva el entailment. 'Allenbrand', 'Drews', 'Gary' y 'Loren' son antropónimos en contexto jurídico específico; no entran en E."}
+
+EJEMPLO 4 (tipo E — adaptación cultural pura, sin cambios B/C/D):
+INPUT:
+idx: 49
+label: contradiction
+prem_es: "Dijo que le caían lágrimas de los ojos, y después dijo que Joe fue hasta el porche."
+hyp_es: "Ella se secó rápidamente las lágrimas después de arrojar a Joe fuera del porche."
+prem_en: "She said there were just tears coming down from her eyes and she said, then she said Joe came up on the porch."
+hyp_en: "She quickly wiped away the tears after flinging Joe off the porch."
+
+OUTPUT:
+{"idx": 49, "label": "contradiction", "prem_rp": "Dijo que le caían lágrimas de los ojos, y después dijo que José fue hasta el porche.", "hyp_rp": "Ella se secó rápidamente las lágrimas después de arrojar a José fuera del porche.", "type": "E", "changes": ["Joe → José (adaptación cultural E.1: nombre anglo común sin referente específico, aplicado consistentemente en prem y hyp)"], "secondary_features": [], "cultural_candidates": [{"original": "porche", "suggestion": "galería", "category": "lexico_cultural_generico"}], "note": "Joe es nombre anglo común sin referente histórico/ficcional; se adapta a José manteniendo consistencia prem/hyp. 'Porche' se marca como candidato cultural pero no se modifica inline."}
+
+EJEMPLO 5 (tipo E — adaptación cultural múltiple: nombre puntual + festividad):
+INPUT:
+idx: 1990
+label: neutral
+prem_es: "Y si no fueras un tonto, Ogle, no necesitarías que te dijera esto."
+hyp_es: "Ogle fue un tonto al creer en la existencia de Santa Claus."
+prem_en: "And if ye' weren't a fool, Ogle, you wouldn't need me to tell you this."
+hyp_en: "Ogle was foolish in believing in the existence of Santa Claus."
+
+OUTPUT:
+{"idx": 1990, "label": "neutral", "prem_rp": "Y si no fueras un tonto, Lorenzo, no necesitarías que te dijera esto.", "hyp_rp": "Lorenzo fue un tonto al creer en la existencia de Papá Noel.", "type": "E", "changes": ["Ogle → Lorenzo (adaptación cultural E.1: antropónimo de ficción puntual no canónica, adaptado consistentemente prem/hyp)", "Santa Claus → Papá Noel (adaptación cultural E.2)"], "secondary_features": [], "cultural_candidates": [], "note": "Ogle es nombre de ficción puntual, no figura histórica ni personaje universalmente reconocido (excepción 5 del prompt: SÍ se adapta). Santa Claus tiene equivalente directo Papá Noel (E.2). Consistencia obligatoria: Ogle→Lorenzo en ambas oraciones."}
+
+EJEMPLO 6 (tipo E — adaptación cultural que preserva juego lingüístico):
+INPUT:
+idx: 956
+label: entailment
+prem_es: "sí, bueno, su nombre es Sam porque es acortamiento de Samantha y todo el mundo la trata como un tío"
+hyp_es: "Se llama Sam aunque se trata de un nombre de varón."
+prem_en: "yeah well her name's Sam because it's like short for Samantha and everybody calls her him"
+hyp_en: "She is named Sam even though it's a boy name."
+
+OUTPUT:
+{"idx": 956, "label": "entailment", "prem_rp": "sí, bueno, su nombre es Valen porque es acortamiento de Valentina y todo el mundo la trata como un tipo", "hyp_rp": "Se llama Valen aunque se trata de un nombre de varón.", "type": "E", "changes": ["Sam → Valen (adaptación cultural E.1, preservando el juego de género del apócope)", "Samantha → Valentina (adaptación cultural E.1 consistente con el apócope Sam→Valen)", "tío → tipo (peninsularismo léxico, secondary B)"], "secondary_features": ["leximo_B: tío → tipo"], "cultural_candidates": [], "note": "El juego semántico de la frase es 'apócope ambiguo de un nombre femenino, parece de varón'. Sam/Samantha en RP no mantiene el juego (Sam suena anglo); Valen/Valentina lo preserva (Valen es apócope ambiguo en RP, Valentina es femenino). Tipo principal E porque la adaptación cultural es el cambio dominante; tío→tipo registrado como secondary B."}
 
 ================================================================
 
