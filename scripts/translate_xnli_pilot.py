@@ -174,6 +174,8 @@ def select_instances(args, all_500: list[dict], gold_idxs: set[int]) -> list[dic
         rows = [r for r in all_500 if r["idx"] not in gold_idxs]
     else:
         rows = list(all_500)
+    if args.offset:
+        rows = rows[args.offset:]
     if args.limit is not None:
         rows = rows[:args.limit]
     return rows
@@ -315,6 +317,8 @@ def main() -> int:
                         help="Procesa solo los 30 idx del gold.")
     parser.add_argument("--skip-gold-idxs", action="store_true",
                         help="Procesa las 470 instancias que NO están en el gold.")
+    parser.add_argument("--offset", type=int, default=0,
+                        help="Saltea las primeras N instancias del subset (útil para batches parciales).")
     parser.add_argument("--limit", type=int, default=None,
                         help="Procesa solo las primeras N instancias del subset elegido.")
     parser.add_argument("--include-english", action=argparse.BooleanOptionalAction, default=True)
@@ -334,12 +338,16 @@ def main() -> int:
 
     if args.input:
         instances = load_jsonl(args.input)
+        if args.offset:
+            instances = instances[args.offset:]
         if args.limit is not None:
             instances = instances[:args.limit]
         prefix = f"{args.input.stem}__"
         print(f"Input custom: {len(instances)} instancias desde {args.input.name}.")
     elif args.held_out:
         instances = load_jsonl(HELD_OUT_70)
+        if args.offset:
+            instances = instances[args.offset:]
         if args.limit is not None:
             instances = instances[:args.limit]
         prefix = "held70__"
