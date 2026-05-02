@@ -28,6 +28,8 @@ Datasets-Codigo/
 │       ├── xnli_error_cases_15.jsonl      # 15 casos problemáticos conocidos (referencia)
 │       └── eval_xnli_pilot_30_annotated.md
 ├── notebooks/                             # exploración manual
+├── validation_app/                        # encuesta web standalone para validación nativa
+│   └── index.html                         # single-page app (Supabase + vanilla JS), deploy a Netlify desde esta subcarpeta
 ├── scripts/
 │   ├── check_env.py                       # verifica .env y credenciales
 │   ├── translate_xnli_pilot.py            # harness principal: modelo × T × variante prompt
@@ -148,6 +150,8 @@ La etiqueta `entailment | neutral | contradiction` **nunca puede cambiar**. Si u
   - gold 30 @ idem: type accuracy **93.3%** (A 91.3 / B 100 / C 100 / D 100).
   - held-out 100 @ idem (con gold corregido en sesión actual): type accuracy ≈ **95%** (5 errores reales).
 - **Validación post-cambios sobre subsets puntuales (8 instancias diversas, mayo 2026)**: 8/8 OK. Confirmó que (a) los 4 fixes del held-out 100 funcionan, (b) el voseo contemporáneo sigue aplicando bien, (c) la regla de clítico no se sobre-aplica en controles relativos/predicativos. Falta correr full sets para confirmar ausencia de regresiones globales.
+- **`validation_app/index.html`** (mayo 2026): app web standalone para validación nativa. Stack HTML + vanilla JS + Supabase JS (CDN). Tabla `respuestas` (`anotador_id`, `idx`, `respuesta` ∈ {si/parcialmente/no}, `comentario`, `region`, `quiere_mas`). UUID anónimo en `localStorage`, distribución automática de instancias entre anotadores (filtra `idx` ya respondidos por otros), guardado incremental por `id` de fila. La carpeta es la raíz de deploy de Netlify (drag & drop solo `validation_app/`). 30 instancias del pilot embebidas como JSON literal; cuando se quiera reemplazar el set, editar `INSTANCES` en el HTML.
+- **Repo Git inicializado** (mayo 2026): `git init -b main` en la raíz. `.gitignore` excluye `.env`, `credentials/`, `.venv/`, `.claude/`, `results/` y `*.jsonl` con override `!data/processed/*.jsonl` y `!data/raw/**/*.jsonl` para conservar gold/dev sets en el repo. Commit inicial incluye `validation_app/`. Remote en GitHub configurado para push completo del proyecto.
 
 ## 5. Lo que NO debe hacer Claude Code nunca
 
