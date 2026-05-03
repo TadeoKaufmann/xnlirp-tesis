@@ -616,6 +616,7 @@
     });
     document.getElementById('correccion-prem').value = r.comentario_prem || '';
     document.getElementById('correccion-hyp').value = r.comentario_hyp || '';
+    updatePlaceholders(r.respuesta || null);
 
     document.getElementById('counter').textContent =
       `Instancia ${i + 1} de ${availableInstances.length}`;
@@ -801,6 +802,17 @@
     }
   }
 
+  // ── Placeholders dinámicos ───────────────────────────────────────────────
+  function updatePlaceholders(value) {
+    const ph = {
+      'si':           'Podés agregar un comentario si querés',
+      'parcialmente': '¿Qué parte suena rara?',
+      'no':           '¿Qué suena raro?',
+    }[value] || '¿Algo suena raro? (opcional)';
+    document.getElementById('correccion-prem').placeholder = ph;
+    document.getElementById('correccion-hyp').placeholder  = ph;
+  }
+
   // ── Eventos ─────────────────────────────────────────────────────────────
   document.querySelectorAll('#options-respuesta .option').forEach(btn => {
     btn.addEventListener('click', async () => {
@@ -816,6 +828,7 @@
         comentario_prem: document.getElementById('correccion-prem').value,
         comentario_hyp: document.getElementById('correccion-hyp').value
       });
+      updatePlaceholders(value);
       document.getElementById('btn-next').disabled = false;
       updateProgress();
       await saveResponse(inst.idx);
