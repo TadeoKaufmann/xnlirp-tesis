@@ -136,3 +136,19 @@ CREATE POLICY reservas_anon_delete_expired ON public.reservas
 
 -- Índice para filtrar por created_at en queries de expiración
 CREATE INDEX reservas_created_at_idx ON public.reservas (created_at);
+
+-- ============================================================
+-- 3. Policy UPDATE para Respuestas (necesaria para guardar region/quiere_mas)
+-- Correr este bloque si la tabla Respuestas existe pero no tiene UPDATE policy.
+-- ============================================================
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename  = 'Respuestas'
+      AND policyname = 'respuestas_anon_update'
+  ) THEN
+    EXECUTE 'CREATE POLICY respuestas_anon_update ON public."Respuestas" FOR UPDATE TO anon USING (true)';
+  END IF;
+END $$;

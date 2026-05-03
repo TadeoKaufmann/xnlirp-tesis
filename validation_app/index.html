@@ -621,10 +621,11 @@
 
     try {
       await flushAllSaves();
-      // Re-guardar cada respuesta con region y quiere_mas usando el mismo path de doSave
-      for (const [idx] of responses.entries()) {
-        await doSave(idx, { region: selectedRegion, quiere_mas: selectedQuiereMas });
-      }
+      // Actualizar region y quiere_mas en un solo UPDATE para todas las filas del anotador
+      const { error: updErr } = await sb.from('Respuestas')
+        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
+        .eq('anotador_id', anotadorId);
+      if (updErr) throw updErr;
       showScreen('screen-thanks');
       if (selectedQuiereMas) {
         document.getElementById('btn-seguir').classList.remove('hidden');
