@@ -291,7 +291,7 @@
         <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
         <h2>¡Bienvenido/a!</h2>
         <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en castellano y nos vas a decir si suenan naturales.</p>
-        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
+        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva unos 15 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
     </div>
@@ -865,8 +865,8 @@
     // usuario ya tiene respuestas en el batch, ajustamos el mensaje y el CTA.
     const n = availableInstances.length;
     const remaining = n - answeredInBatch;
-    const mins = TEST_MODE ? 1 : Math.max(2, Math.round(remaining / 3));
-    const minutosTxt = `lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}`;
+    const mins = TEST_MODE ? 1 : Math.max(5, Math.round(remaining));
+    const minutosTxt = `lleva ${TEST_MODE ? 'un' : 'unos ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}`;
     const statsEl = document.getElementById('welcome-stats');
     const btnEmpezar = document.getElementById('btn-empezar');
     if (answeredInBatch === 0) {
