@@ -334,36 +334,10 @@
           <label for="region">¿De qué región sos?</label>
           <select id="region">
             <option value="">Seleccioná una región…</option>
-            <optgroup label="Argentina">
-              <option>Buenos Aires - CABA</option>
-              <option>Buenos Aires - Interior</option>
-              <option>Catamarca</option>
-              <option>Chaco</option>
-              <option>Chubut</option>
-              <option>Córdoba</option>
-              <option>Corrientes</option>
-              <option>Entre Ríos</option>
-              <option>Formosa</option>
-              <option>Jujuy</option>
-              <option>La Pampa</option>
-              <option>La Rioja</option>
-              <option>Mendoza</option>
-              <option>Misiones</option>
-              <option>Neuquén</option>
-              <option>Río Negro</option>
-              <option>Salta</option>
-              <option>San Juan</option>
-              <option>San Luis</option>
-              <option>Santa Cruz</option>
-              <option>Santa Fe</option>
-              <option>Santiago del Estero</option>
-              <option>Tierra del Fuego</option>
-              <option>Tucumán</option>
-            </optgroup>
-            <optgroup label="Uruguay">
-              <option>Uruguay - Montevideo</option>
-              <option>Uruguay - Interior</option>
-            </optgroup>
+            <option value="buenos_aires_amba">Buenos Aires AMBA</option>
+            <option value="buenos_aires_interior">Buenos Aires interior</option>
+            <option value="otras_provincias">Otras provincias argentinas</option>
+            <option value="uruguay">Uruguay</option>
           </select>
         </div>
         <div class="field">
@@ -679,10 +653,20 @@
 
     try {
       await flushAllSaves();
-      const { error } = await sb.from('Respuestas')
-        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
-        .eq('anotador_id', anotadorId);
-      if (error) throw error;
+      // Actualizar region y quiere_mas en cada fila por su id primario
+      // (filtrar por anotador_id falla silenciosamente con RLS anónimo)
+      const updates = [];
+      for (const [, r] of responses.entries()) {
+        if (r.dbId) {
+          updates.push(
+            sb.from('Respuestas')
+              .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
+              .eq('id', r.dbId)
+              .then(({ error }) => { if (error) throw error; })
+          );
+        }
+      }
+      await Promise.all(updates);
       showScreen('screen-thanks');
       if (selectedQuiereMas) {
         document.getElementById('btn-seguir').classList.remove('hidden');
