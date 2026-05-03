@@ -323,7 +323,7 @@ def main() -> int:
                         help="Procesa solo las primeras N instancias del subset elegido.")
     parser.add_argument("--include-english", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--batch-size", type=int, default=10)
-    parser.add_argument("--batch-pause", type=float, default=0.5)
+    parser.add_argument("--batch-pause", type=float, default=0.0)
     args = parser.parse_args()
 
     if args.limit_to_gold and args.skip_gold_idxs:
