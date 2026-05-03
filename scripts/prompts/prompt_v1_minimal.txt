@@ -97,6 +97,43 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      cuando: (a) refiere a tamaño físico de un objeto ("una mesa pequeña"); (b) sentido
      figurado abstracto ("un pequeño detalle", "una pequeña diferencia", "pequeña
      empresa"); (c) registro literario o formal. En la duda, mantener.)
+   chaqueta → campera (sustitución directa cuando refiere a una prenda casual/deportiva
+     o de abrigo: "una chaqueta de cuero" → "una campera de cuero", "envío de chaquetas"
+     → "envío de camperas". MANTENER "chaqueta" si el contexto la equipara claramente a
+     un saco formal de traje masculino (uso poco frecuente en NLI). En la duda, cambiar
+     a "campera". Cada ocurrencia es un cambio B.)
+   ello → eso (sustitución directa en registro conversacional/no estrictamente formal:
+     "a través de todo ello" → "a través de todo eso", "por ello" → "por eso", "con
+     ello" → "con eso". "Ello" es marcadamente peninsular/literario en RP, donde el
+     pronombre neutro habitual es "eso". MANTENER "ello" SOLO en registro jurídico-
+     institucional explícito o textos académicos formales con tono claramente
+     castellano. En la duda, cambiar a "eso". Cada ocurrencia es un cambio B.)
+   bachillerato → secundario (cuando refiere al nivel educativo medio post-primario:
+     "terminó el bachillerato" → "terminó el secundario", "estudiantes de bachillerato"
+     → "estudiantes del secundario". En Argentina/Uruguay el sistema educativo usa
+     "primario / secundario / terciario o universitario"; "bachillerato" es término
+     peninsular para la misma etapa. MANTENER "bachillerato" si el referente es una
+     orientación específica del plan de estudios ("bachillerato en humanidades" como
+     título formal) o un sistema educativo extranjero referido como tal. En la duda,
+     cambiar. Cada ocurrencia es un cambio B.)
+   repleto/a → lleno/a (sustitución directa cuando significa "completamente lleno":
+     "el salón estaba repleto" → "el salón estaba lleno", "una caja repleta de cartas"
+     → "una caja llena de cartas". "Repleto" no es agramatical en RP pero suena
+     marcadamente literario/peninsular; "lleno" es la forma neutral de uso diario.
+     MANTENER "repleto" en registro literario explícito o cuando el matiz semántico
+     "lleno hasta el tope" sea relevante en contraste con "lleno" parcial. En la
+     duda, cambiar. Cada ocurrencia es un cambio B.)
+   joven/jóvenes → chico/a, chicos/as o adolescente (en RP el sustantivo "joven"
+     para personas es poco frecuente; preferir "chico/a" en contexto informal o
+     "adolescente" cuando el contexto indica edad menor de 18 años: "los jóvenes de
+     la zona" → "los chicos de la zona", "niños y jóvenes" → "niños y adolescentes".
+     Para animales: preferir diminutivo afectivo ("perro joven" → "perrito") o
+     "cachorro" en el caso específico de perros jóvenes.
+     MANTENER "joven/jóvenes" cuando: (a) adjetivo en contexto narrativo/emocional
+     ("eran tan jóvenes cuando pasó", "siendo tan joven tomó esa decisión"); (b) nombre
+     propio o título formal que contenga "Young"; (c) registro académico, estadístico
+     o formal ("población joven", "trabajadores jóvenes" en estadística/sociología).
+     En la duda, cambiar. Cada ocurrencia es un cambio B.)
    coche → auto
    autobús → colectivo    |  piso (=apartamento) → departamento
    oye → traducción contextual (NO reemplazar mecánicamente):

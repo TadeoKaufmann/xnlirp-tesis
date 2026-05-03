@@ -95,6 +95,11 @@ Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine
 - americana (=EEUU) → norteamericana
 - coste → costo
 - no tenía un duro → no tenía un mango
+- chaqueta → campera *(prenda casual/deportiva o de abrigo. Mantener si refiere a saco formal de traje. En la duda, cambiar.)*
+- ello → eso *(pronombre neutro: "por ello" → "por eso", "con todo ello" → "con todo eso". Mantener solo en registro jurídico-institucional explícito.)*
+- bachillerato → secundario *(nivel educativo medio en sistema AR/UY. Mantener si es orientación de plan de estudios o sistema educativo extranjero referido como tal.)*
+- repleto/a → lleno/a *("Lleno" es la forma neutral en RP; "repleto" suena literario/peninsular. Mantener solo en registro literario explícito o si el matiz "hasta el tope" es relevante.)*
+- joven/jóvenes → chico/a o adolescente *(sustantivo o adjetivo de personas en contexto informal: "los jóvenes de la zona" → "los chicos de la zona", "niños y jóvenes" → "niños y adolescentes". Para animales: diminutivo afectivo ("perro joven" → "perrito") o "cachorro" para perros. MANTENER como adjetivo en contexto narrativo/emocional ("eran tan jóvenes cuando pasó") y en registro académico/estadístico/formal. Regla emergente de validación nativa batch 200-260; escrita por Claude Sonnet 4.6, revisada por Claude Opus 4.7.)*
 
 **Léxico — sustitución contextual (no mecánica, solo cuando se cumple la condición de uso):**
 - padre/madre → papá/mamá *(solo en registro coloquial/familiar 1ª persona referido a propios padres del hablante: "casa de mi padre" → "casa de mi papá". MANTENER en registro formal/literario, referente terceros, plural genérico, usos no familiares.)*
@@ -102,6 +107,9 @@ Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine
 - enviar → mandar *(preferir "mandar" en registro coloquial o agente impersonal. MANTENER "enviar" en registro formal/escrito.)*
 - recordar X → acordarse de X *(coloquial 1ª persona: "recuerdo a mis abuelos" → "me acuerdo de mis abuelos". MANTENER en registro formal/literario, sentido transitivo "hacer recordar" e imperativos institucionales.)*
 - pequeño/a → chico/a *(referido a edad informal de persona/animal: "mi hija pequeña" → "mi hija chica". MANTENER para tamaño físico de objeto y sentidos figurados abstractos.)*
+
+**Reglas pendientes — no agregar al prompt hasta tener N≥3 casos del corpus:**
+- **diminutivo -ito/-ita** *(regla general diferida)*: en RP coloquial, cuando un sustantivo refiere a algo pequeño en tamaño o joven en edad, se prefiere el diminutivo lexicalizado del sustantivo por sobre la construcción adjetivo+sustantivo ("gato pequeño → gatito", "casa pequeña → casita"). No se agrega ahora porque XNLI tiene registro predominantemente formal y agregar diminutivos generativamente introduciría ruido en instancias que no lo requieren. Si en futuras rondas de validación nativa aparecen N≥3 casos donde el -ito resuelve un "parcialmente/no" que ninguna regla B vigente cubre, agregar al prompt como regla contextual acotada a sustantivos domésticos/familiares en registro coloquial. — *Claude Sonnet 4.6*
 
 **Contextuales (no reemplazo mecánico):**
 - **oye** → traducción contextual:
@@ -160,7 +168,7 @@ A partir de mayo 2026, el prompt v2 (`prompt_v2_cultural_inline.txt`) habilita *
 - **Gold 30** (`xnli_pilot_30_annotated.jsonl`): few-shots + referencia. **Leakage conocido** porque los 3 few-shots del prompt (idx 1638, 910, 2821) están dentro del gold; usar gold solo como sanity check, no como benchmark de generalización. **idx 1522 actualizado** (mayo 2026): se agregó cambio B `así lo creí → así creí` (eliminación de clítico anafórico) en `prem_rp`.
 - **Held-out 70** (`xnli_held_out_70_raw.jsonl`): dev set anotado manualmente (Opus 4.7) sobre las posiciones 30-99 del pilot 500. Usar para optimizar el prompt sin contaminación.
 - **Held-out 100** (`xnli_held_out_100_raw.jsonl`): dev set adicional anotado manualmente (Opus 4.7) sobre las posiciones 100-199 del pilot 500. Distribución actual: **A 72 / B 6 / C 13 / D 9** (post correcciones de gold idx 22, 1543, 1731, 4490 → A→D).
-- **Combined dev 200** (`xnli_combined_dev_200.jsonl`): unión de los tres dev sets en un solo archivo, sin duplicados. Distribución total: **A 140 / B 18 / C 23 / D 19**. Cada fila lleva `source_set` ∈ {`gold30`, `held70`, `held100`}. Pensado para una sola corrida + eval únicos.
+- **Combined dev 200** (`xnli_combined_dev_200.jsonl`): unión de los tres dev sets en un solo archivo, sin duplicados. Distribución total: **A 139 / B 19 / C 23 / D 19** (idx 3121 corregido A→B en mayo 2026). Cada fila lleva `source_set` ∈ {`gold30`, `held70`, `held100`}. Pensado para una sola corrida + eval únicos.
 - **Test set**: pendiente, anotar al final (posiciones 200+ del pilot 500).
 - **Prompt v1** actualizado en mayo 2026 con cuatro cambios:
   1. **D4 con caveat de Restricción 5**: D4 solo aplica cuando una traducción es claramente incorrecta; si ambas son sinónimos válidos, es A. Ejemplo nuevo `médico/doctor`.
@@ -174,6 +182,15 @@ A partir de mayo 2026, el prompt v2 (`prompt_v2_cultural_inline.txt`) habilita *
   - `enviar → mandar` (registro coloquial / agente impersonal).
   - `recordar X → acordarse de X` (coloquial 1ª persona, requiere ajuste de preposición).
   - `pequeño/a → chico/a` (edad informal de persona/animal).
+- **Prompt v1 — Fase 1b (mayo 2026, post análisis 60 anotaciones nativas):** cuatro reglas léxicas B adicionales emergentes del feedback (alta confianza, sin riesgo NLI):
+  - `chaqueta → campera` (prenda casual/deportiva/abrigo; mantener para saco formal).
+  - `ello → eso` (pronombre neutro en registro no estrictamente formal).
+  - `bachillerato → secundario` (nivel educativo medio en AR/UY; mantener para orientación específica del plan de estudios o sistema extranjero referido como tal).
+  - `repleto/a → lleno/a` (forma neutral RP; mantener solo en registro literario explícito).
+  - v2 hereda estas cuatro reglas. v2 además aclara que **Acción de Gracias / Thanksgiving** no se adapta inline (no hay equivalente 1:1 en RP) y se MARCA en `cultural_candidates` con `category="evento_historico_especifico"` y `suggestion=null` para Fase 3.
+- **Prompt v1 — Fase 1c (mayo 2026, post análisis 60 anotaciones nativas — continuación):** una regla léxica B adicional emergente del feedback (alta confianza):
+  - `joven/jóvenes → chico/a o adolescente` (sustantivo de personas en contexto informal; diminutivo/cachorro para animales; mantener como adjetivo emocional/narrativo o en registro académico). *Regla escrita por Claude Sonnet 4.6, revisada por Claude Opus 4.7.*
+  - v2 hereda esta regla.
 - **Prompt v2 cultural inline (mayo 2026, Fase 2):** nuevo archivo `prompt_v2_cultural_inline.txt` que reemplaza al v2 viejo de "solo marcar candidatos". Hereda todo el v1 (Fase 1 incluida) y agrega sección E con adaptación cultural conservadora: tabla cerrada de nombres anglo comunes (Joe→José, Mary→María, etc.) y festividades universales (Santa Claus→Papá Noel, Easter Bunny→conejo de Pascua). Topónimos, marcas, unidades imperiales y eventos históricos se MARCAN en `cultural_candidates` pero NO se modifican (Fase 3 humano-en-el-loop). El archivo viejo está en `scripts/prompts/_archive/`.
 - **Billing Gemini** activo, **Tier 1, 1000 RPM**.
 - Eval **pre-cambios de prompt** (stale, hay que re-evaluar):
