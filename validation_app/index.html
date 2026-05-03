@@ -794,8 +794,13 @@
     const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
     const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
 
+    // "Retomar" solo si hay reservas activas para alguna instancia en progreso.
+    // Sin reservas, esas respuestas son de sesiones anteriores completadas (ej. test=true)
+    // y hay que arrancar un batch fresco en lugar de mezclarlas con instancias nuevas.
+    const hasActiveInProgress = inProgress.some(i => reservasMias.has(i.idx));
+
     let candidateBatch;
-    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
+    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE && hasActiveInProgress) {
       // Retomar batch en curso: lo ya respondido + completar hasta BATCH_SIZE
       const doneIdxs = new Set(inProgress.map(i => i.idx));
       const fill = unanswered.filter(i => !doneIdxs.has(i.idx)).slice(0, BATCH_SIZE - inProgress.length);
