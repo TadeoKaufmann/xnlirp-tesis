@@ -497,6 +497,7 @@
   const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
   let selectedQuiereMas = null;
+  let pendingFirstUnanswered = 0; // instancia a abrir al pulsar "Empezar/Continuar"
   const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
 
   // ── Helpers ─────────────────────────────────────────────────────────────
@@ -636,6 +637,73 @@
     }
   }
 
+  // ── Reservas (anti-race-condition) ──────────────────────────────────────
+  // Tabla `reservas` (idx PRIMARY KEY) actúa como mutex distribuido. Cuando un
+  // anotador entra, intenta insertar reservas para su batch; el PK garantiza
+  // exclusividad atómica. Si pierde una carrera, busca reemplazos. Las reservas
+  // expiran a las 2h (renovamos las propias en cada init).
+  const RESERVA_TTL_MS = 2 * 60 * 60 * 1000;
+
+  async function reservarBatch(candidateBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, intento) {
+    const yaRespondidos = new Set(
+      candidateBatch
+        .filter(i => { const r = responses.get(i.idx); return r && r.respuesta; })
+        .map(i => i.idx)
+    );
+
+    const nuevosAReservar = candidateBatch.filter(i =>
+      !reservasMias.has(i.idx) && !yaRespondidos.has(i.idx)
+    );
+    if (nuevosAReservar.length === 0) return candidateBatch;
+
+    let insertedIdxs = new Set();
+    try {
+      const { data: ins, error } = await sb
+        .from('reservas')
+        .upsert(
+          nuevosAReservar.map(i => ({ idx: i.idx, anotador_id: anotadorId })),
+          { onConflict: 'idx', ignoreDuplicates: true }
+        )
+        .select('idx');
+      if (error) throw error;
+      insertedIdxs = new Set((ins || []).map(r => r.idx));
+    } catch (err) {
+      // Si la reserva falla, devolvemos el batch tal cual: el PK del INSERT en
+      // Respuestas y el filtro de otherAnnotated en próximas cargas siguen siendo
+      // garantías. Mejor degradar que bloquear.
+      console.warn('reservarBatch insert (degradando)', err);
+      return candidateBatch;
+    }
+
+    for (const idx of insertedIdxs) reservasMias.add(idx);
+
+    const perdidos = nuevosAReservar.filter(i => !insertedIdxs.has(i.idx));
+    if (perdidos.length === 0) return candidateBatch;
+
+    for (const p of perdidos) reservasAjenas.add(p.idx);
+
+    const batchSinPerdidos = candidateBatch.filter(i =>
+      !perdidos.some(p => p.idx === i.idx)
+    );
+
+    if (intento >= 2) return batchSinPerdidos;
+
+    const enBatch = new Set(batchSinPerdidos.map(i => i.idx));
+    const reemplazos = allAvailable
+      .filter(i =>
+        !enBatch.has(i.idx) &&
+        !reservasAjenas.has(i.idx) &&
+        !otherAnnotated.has(i.idx) &&
+        !reservasMias.has(i.idx)
+      )
+      .slice(0, perdidos.length);
+
+    if (reemplazos.length === 0) return batchSinPerdidos;
+
+    const nuevoBatch = [...batchSinPerdidos, ...reemplazos];
+    return reservarBatch(nuevoBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, intento + 1);
+  }
+
   // ── Init ────────────────────────────────────────────────────────────────
   async function init() {
     anotadorId = getOrCreateAnotadorId();
@@ -659,6 +727,13 @@
       return;
     }
 
+    if (INSTANCES.length === 0) {
+      document.getElementById('error-message').textContent =
+        'No hay instancias cargadas en la base. Ejecutá validation_app/supabase_setup.sql en Supabase.';
+      showScreen('screen-error');
+      return;
+    }
+
     const otherAnnotated = new Set();
     let myHasRegion = false;
 
@@ -676,11 +751,37 @@
       }
     }
 
+    // Cargar reservas activas (últimas 2h). Si falla, seguimos sin reservas —
+    // el PK de reservas igual evita doble-claim cuando intentamos insertar.
+    // Antes de leer, limpiamos las expiradas (>2h) para que sus idx vuelvan al
+    // pool. La RLS de la tabla solo permite borrar las que ya están expiradas.
+    const reservasMias = new Set();
+    const reservasAjenas = new Set();
+    const cutoff = new Date(Date.now() - RESERVA_TTL_MS).toISOString();
+    try {
+      await sb.from('reservas').delete().lt('created_at', cutoff);
+    } catch (err) {
+      console.warn('cleanup reservas expiradas', err);
+    }
+    try {
+      const { data: resData, error: resErr } = await sb.from('reservas')
+        .select('idx, anotador_id, created_at')
+        .gte('created_at', cutoff);
+      if (resErr) throw resErr;
+      for (const r of (resData || [])) {
+        if (r.anotador_id === anotadorId) reservasMias.add(r.idx);
+        else reservasAjenas.add(r.idx);
+      }
+    } catch (err) {
+      console.warn('loadReservas (degradando sin reservas)', err);
+    }
+
     const TEST_MODE = new URLSearchParams(location.search).get('test') === 'true';
     const BATCH_SIZE = TEST_MODE ? 1 : 15;
 
+    // allAvailable = instancias no respondidas por otros y no reservadas activamente por otros
     const allAvailable = INSTANCES
-      .filter(inst => !otherAnnotated.has(inst.idx))
+      .filter(inst => !otherAnnotated.has(inst.idx) && !reservasAjenas.has(inst.idx))
       .sort((a, b) => a.idx - b.idx);
 
     if (allAvailable.length === 0) {
@@ -693,14 +794,31 @@
     const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
     const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
 
+    let candidateBatch;
     if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
-      // Retomar batch en curso: lo ya respondido + completar hasta 30
+      // Retomar batch en curso: lo ya respondido + completar hasta BATCH_SIZE
       const doneIdxs = new Set(inProgress.map(i => i.idx));
       const fill = unanswered.filter(i => !doneIdxs.has(i.idx)).slice(0, BATCH_SIZE - inProgress.length);
-      availableInstances = [...inProgress, ...fill].sort((a, b) => a.idx - b.idx);
+      candidateBatch = [...inProgress, ...fill];
     } else {
-      // Batch fresco o siguiente: primeras 30 sin responder
-      availableInstances = unanswered.slice(0, BATCH_SIZE);
+      // Batch fresco o siguiente: primeras BATCH_SIZE sin responder
+      candidateBatch = unanswered.slice(0, BATCH_SIZE);
+    }
+
+    // Atomic claim de los idxs nuevos del batch (mutex distribuido)
+    const finalBatch = await reservarBatch(candidateBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, 0);
+    availableInstances = finalBatch.sort((a, b) => a.idx - b.idx);
+
+    // Renovar reservas previas para que no expiren mientras el usuario trabaja
+    if (reservasMias.size > 0) {
+      try {
+        await sb.from('reservas')
+          .update({ created_at: new Date().toISOString() })
+          .in('idx', [...reservasMias])
+          .eq('anotador_id', anotadorId);
+      } catch (err) {
+        console.warn('renovar reservas', err);
+      }
     }
 
     if (availableInstances.length === 0) {
@@ -731,21 +849,29 @@
       const r = responses.get(inst.idx);
       return !r || !r.respuesta;
     });
+    pendingFirstUnanswered = firstUnanswered >= 0 ? firstUnanswered : 0;
 
     const answeredInBatch = availableInstances.length - unanswered.filter(i =>
       availableInstances.some(a => a.idx === i.idx)
     ).length;
 
+    // Siempre mostramos la pantalla de presentación al entrar; el botón
+    // "Empezar / Continuar" lleva a la primera instancia sin responder. Si el
+    // usuario ya tiene respuestas en el batch, ajustamos el mensaje y el CTA.
+    const n = availableInstances.length;
+    const remaining = n - answeredInBatch;
+    const mins = TEST_MODE ? 1 : Math.max(2, Math.round(remaining / 3));
+    const minutosTxt = `lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}`;
+    const statsEl = document.getElementById('welcome-stats');
+    const btnEmpezar = document.getElementById('btn-empezar');
     if (answeredInBatch === 0) {
-      const n = availableInstances.length;
-      const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 3));
-      document.getElementById('welcome-stats').textContent =
-        `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
-      showScreen('screen-welcome');
+      statsEl.textContent = `Son ${n} instancia${n === 1 ? '' : 's'}, ${minutosTxt}.`;
+      btnEmpezar.textContent = 'Empezar →';
     } else {
-      showScreen('screen-instance');
-      renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
+      statsEl.textContent = `Ya respondiste ${answeredInBatch} de ${n}. Te quedan ${remaining}, ${minutosTxt}.`;
+      btnEmpezar.textContent = 'Continuar →';
     }
+    showScreen('screen-welcome');
   }
 
   // ── Placeholders dinámicos ───────────────────────────────────────────────
@@ -845,7 +971,7 @@
 
   document.getElementById('btn-empezar').addEventListener('click', () => {
     showScreen('screen-instance');
-    renderInstance(0);
+    renderInstance(pendingFirstUnanswered);
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
