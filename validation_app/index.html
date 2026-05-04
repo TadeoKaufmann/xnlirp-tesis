@@ -87,12 +87,18 @@
     gap: 14px;
     margin-bottom: 18px;
   }
-  .text-col textarea {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    min-height: 50px;
-    width: 100%;
-    box-sizing: border-box;
+  .comment-cols {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .comment-label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 500;
   }
   .text-label {
     font-size: 0.72rem;
@@ -278,7 +284,7 @@
   <header>
     <h1>Validación lingüística</h1>
     <p>¿Suena natural en castellano?</p>
-    <p class="instructions">Evaluá si la premisa y la hipótesis suenan naturales en castellano. Si algo suena raro, escribí en el comentario qué cambiarías. No importa si la premisa y la hipótesis no tienen relación entre sí, eso es normal.</p>
+    <p class="instructions">Evaluá si los dos textos suenan naturales en castellano. Si algo suena raro, escribí en el comentario qué cambiarías. No importa si los textos no tienen relación entre sí, eso es normal.</p>
   </header>
 
   <main id="app">
@@ -302,21 +308,29 @@
       <div class="card card-anim" id="instance-card">
         <div class="text-cols">
           <div class="text-col">
-            <div class="text-label">Premisa</div>
+            <div class="text-label">Texto 1</div>
             <div class="text-content" id="text-prem"></div>
-            <textarea id="correccion-prem" placeholder="¿Algo raro en la premisa?"></textarea>
           </div>
           <div class="text-col">
-            <div class="text-label">Hipótesis</div>
+            <div class="text-label">Texto 2</div>
             <div class="text-content" id="text-hyp"></div>
-            <textarea id="correccion-hyp" placeholder="¿Algo raro en la hipótesis?"></textarea>
           </div>
         </div>
-        <div class="question">¿Este texto suena natural en castellano?</div>
+        <div class="question">¿Algún texto suena raro?</div>
         <div class="options" id="options-respuesta">
-          <button class="option" data-value="si">Sí</button>
-          <button class="option" data-value="parcialmente">Parcialmente</button>
-          <button class="option" data-value="no">No</button>
+          <button class="option" data-value="si">Suenan bien</button>
+          <button class="option" data-value="parcialmente">Más o menos</button>
+          <button class="option" data-value="no">Suenan raro</button>
+        </div>
+        <div class="comment-cols">
+          <div>
+            <span class="comment-label">Comentario Texto 1 (opcional)</span>
+            <textarea id="correccion-prem" placeholder="¿Algo raro? (opcional)"></textarea>
+          </div>
+          <div>
+            <span class="comment-label">Comentario Texto 2 (opcional)</span>
+            <textarea id="correccion-hyp" placeholder="¿Algo raro? (opcional)"></textarea>
+          </div>
         </div>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
@@ -541,6 +555,7 @@
   function renderInstance(i) {
     if (i < 0 || i >= availableInstances.length) return;
     currentIndex = i;
+    window.scrollTo(0, 0);
     const inst = availableInstances[i];
 
     document.getElementById('text-prem').textContent = inst.prem;
