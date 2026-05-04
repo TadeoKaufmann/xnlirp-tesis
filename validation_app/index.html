@@ -332,14 +332,14 @@
           <div class="text-col">
             <div class="text-label">Texto 1</div>
             <div class="text-content" id="text-prem"></div>
-            <span class="comment-label" style="margin-top:8px;">Comentario</span>
-            <textarea id="correccion-prem" placeholder="¿Cómo mejorarías este texto? (opcional)"></textarea>
+            <span class="comment-label" style="margin-top:8px;">Comentario (opcional)</span>
+            <textarea id="correccion-prem" placeholder="¿Algo raro? (opcional)"></textarea>
           </div>
           <div class="text-col">
             <div class="text-label">Texto 2</div>
             <div class="text-content" id="text-hyp"></div>
-            <span class="comment-label" style="margin-top:8px;">Comentario</span>
-            <textarea id="correccion-hyp" placeholder="¿Cómo mejorarías este texto? (opcional)"></textarea>
+            <span class="comment-label" style="margin-top:8px;">Comentario (opcional)</span>
+            <textarea id="correccion-hyp" placeholder="¿Algo raro? (opcional)"></textarea>
           </div>
         </div>
         <div class="nav">
@@ -908,10 +908,10 @@
   // ── Placeholders dinámicos ───────────────────────────────────────────────
   function updatePlaceholders(value) {
     const ph = {
-      'si':           '¿Cómo mejorarías este texto? (opcional)',
-      'parcialmente': '¿Cómo mejorarías este texto?',
-      'no':           '¿Cómo mejorarías este texto?',
-    }[value] || '¿Cómo mejorarías este texto? (opcional)';
+      'si':           'Podés agregar un comentario si querés',
+      'parcialmente': '¿Qué parte suena rara?',
+      'no':           '¿Qué suena raro?',
+    }[value] || '¿Algo raro? (opcional)';
     document.getElementById('correccion-prem').placeholder = ph;
     document.getElementById('correccion-hyp').placeholder  = ph;
   }
