@@ -85,6 +85,7 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    margin-top: 20px;
     margin-bottom: 18px;
   }
   .comment-cols {
@@ -306,29 +307,23 @@
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
-        <div class="text-cols">
-          <div class="text-col">
-            <div class="text-label">Texto 1</div>
-            <div class="text-content" id="text-prem"></div>
-          </div>
-          <div class="text-col">
-            <div class="text-label">Texto 2</div>
-            <div class="text-content" id="text-hyp"></div>
-          </div>
-        </div>
         <div class="question">¿Algún texto suena raro?</div>
         <div class="options" id="options-respuesta">
           <button class="option" data-value="si">Suenan bien</button>
           <button class="option" data-value="parcialmente">Más o menos</button>
           <button class="option" data-value="no">Suenan raro</button>
         </div>
-        <div class="comment-cols">
-          <div>
-            <span class="comment-label">Comentario Texto 1 (opcional)</span>
+        <div class="text-cols">
+          <div class="text-col">
+            <div class="text-label">Texto 1</div>
+            <div class="text-content" id="text-prem"></div>
+            <span class="comment-label" style="margin-top:8px;">Comentario (opcional)</span>
             <textarea id="correccion-prem" placeholder="¿Algo raro? (opcional)"></textarea>
           </div>
-          <div>
-            <span class="comment-label">Comentario Texto 2 (opcional)</span>
+          <div class="text-col">
+            <div class="text-label">Texto 2</div>
+            <div class="text-content" id="text-hyp"></div>
+            <span class="comment-label" style="margin-top:8px;">Comentario (opcional)</span>
             <textarea id="correccion-hyp" placeholder="¿Algo raro? (opcional)"></textarea>
           </div>
         </div>
