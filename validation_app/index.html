@@ -353,7 +353,7 @@
     <div id="screen-final" class="hidden">
       <div class="card card-anim">
         <h2>Casi listo</h2>
-        <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
+        <p class="muted" style="margin-bottom: 22px;">Para finalizar, tres preguntas breves.</p>
         <div class="field">
           <label for="region">¿De qué región sos?</label>
           <select id="region">
@@ -397,6 +397,10 @@
             <button class="option" data-quiere="true">Sí</button>
             <button class="option" data-quiere="false">No</button>
           </div>
+        </div>
+        <div class="field">
+          <label for="feedback-formato">¿Qué opinás del formato de las preguntas? (opcional)</label>
+          <textarea id="feedback-formato" placeholder="Cualquier comentario sobre cómo están planteadas las preguntas…" style="min-height:72px;"></textarea>
         </div>
         <button class="btn btn-primary btn-block" id="btn-submit">Enviar respuestas</button>
       </div>
@@ -521,6 +525,7 @@
   const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
   let selectedQuiereMas = null;
+  let feedbackFormato = '';
   let pendingFirstUnanswered = 0; // instancia a abrir al pulsar "Empezar/Continuar"
   const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
 
@@ -648,7 +653,7 @@
       await flushAllSaves();
       // Actualizar region y quiere_mas en un solo UPDATE para todas las filas del anotador
       const { error: updErr } = await sb.from('Respuestas')
-        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
+        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas, feedback_formato: feedbackFormato || null })
         .eq('anotador_id', anotadorId);
       if (updErr) throw updErr;
       showScreen('screen-thanks');
@@ -1003,6 +1008,10 @@
   document.getElementById('btn-empezar').addEventListener('click', () => {
     showScreen('screen-instance');
     renderInstance(pendingFirstUnanswered);
+  });
+
+  document.getElementById('feedback-formato').addEventListener('input', e => {
+    feedbackFormato = e.target.value;
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
