@@ -103,7 +103,7 @@ Si una instancia tiene B+C, asignar la letra del cambio dominante (la que domine
 
 **Léxico — sustitución contextual (no mecánica, solo cuando se cumple la condición de uso):**
 - padre/madre → papá/mamá *(solo en registro coloquial/familiar 1ª persona referido a propios padres del hablante: "casa de mi padre" → "casa de mi papá". MANTENER en registro formal/literario, referente terceros, plural genérico, usos no familiares.)*
-- recoger → levantar *(solo en sentido "agarrar del piso/superficie". MANTENER para juntar/cosechar, pasar a buscar, registro formal o usos figurados.)*
+- recoger → reemplazar siempre según sentido *(en RP "recoger" no es natural en ningún contexto: "del piso" → levantar; "juntar/recopilar" → juntar/cosechar; "pasar a buscar" → pasar a buscar/ir a buscar; expresiones figuradas → alternativa RP más natural.)*
 - enviar → mandar *(preferir "mandar" en registro coloquial o agente impersonal. MANTENER "enviar" en registro formal/escrito.)*
 - recordar X → acordarse de X *(coloquial 1ª persona: "recuerdo a mis abuelos" → "me acuerdo de mis abuelos". MANTENER en registro formal/literario, sentido transitivo "hacer recordar" e imperativos institucionales.)*
 - pequeño/a → chico/a *(referido a edad informal de persona/animal: "mi hija pequeña" → "mi hija chica". MANTENER para tamaño físico de objeto y sentidos figurados abstractos.)*
@@ -178,7 +178,7 @@ A partir de mayo 2026, el prompt v2 (`prompt_v2_cultural_inline.txt`) habilita *
 - **Prompt v1 — Fase 1 (mayo 2026, post validación nativa batch 200-260):** ampliación del léxico B con seis sustituciones contextuales adicionales surgidas del feedback nativo:
   - `allí → ahí/allá` (paralelo a aquí→acá, contextual).
   - `padre/madre → papá/mamá` (registro coloquial 1ª persona, propios padres).
-  - `recoger → levantar` (solo "agarrar del piso").
+  - `recoger → reemplazar siempre según sentido` (levantar/juntar/cosechar/pasar a buscar según contexto; "recoger" no es natural en RP en ningún uso).
   - `enviar → mandar` (registro coloquial / agente impersonal).
   - `recordar X → acordarse de X` (coloquial 1ª persona, requiere ajuste de preposición).
   - `pequeño/a → chico/a` (edad informal de persona/animal).

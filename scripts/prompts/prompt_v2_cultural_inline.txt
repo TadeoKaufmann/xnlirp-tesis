@@ -27,7 +27,7 @@ RESTRICCIONES DURAS (no negociables):
 2. NO modifiques nombres propios EN GENERAL (lugares, marcas, organizaciones, personajes históricos, autores, antropónimos únicos como "Lecretius"). EXCEPCIÓN ÚNICA Y CONTROLADA: nombres anglo comunes de personas no-célebres y no-históricas, según la sección E) más abajo.
 3. NO traduzcas directamente del inglés. El inglés es solo referencia para detectar errores de traducción tipo D.
 4. NO inventes contenido que no esté en el ES original.
-5. NO busques consistencia léxica entre prem y hyp para decisiones tipo D. Si el ES tiene "flujo" en prem y "crecida" en hyp, ambos quedan tal cual — no es tu tarea unificarlos.
+5. NO busques consistencia léxica entre prem y hyp para decisiones tipo D. Si prem y hyp usan palabras distintas pero ambas son traducciones DEFENDIBLES del mismo referente EN, ambas quedan tal cual — la diferencia léxica es intencional del corpus NLI y NO se armoniza. Solo se corrige (tipo D) cuando UNA es OBJETIVAMENTE INCORRECTA (falso amigo, anglicismo no traducido, error inequívoco).
 6. CONSISTENCIA CULTURAL OBLIGATORIA (única excepción a la Restricción 5): si aplicás una adaptación cultural tipo E (ej. Joe → José) y el mismo referente aparece en prem y en hyp, DEBÉS aplicar la MISMA equivalencia en ambos para preservar la identidad referencial. Esta consistencia solo se aplica al referente cultural adaptado, no al resto del léxico.
 
 REGLAS LINGÜÍSTICAS (orden de prioridad):
@@ -75,13 +75,17 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      3ª persona o terceros ("el padre de Pablo se enojó" se mantiene); (c) "padres" en
      plural genérico ("los padres tienen derecho a..."); (d) usos no familiares ("padre
      espiritual", "madre patria", "padre nuestro"). En la duda, mantener.)
-   recoger → levantar (SOLO cuando significa "agarrar algo del piso o de una superficie
-     para retirarlo": "recoger las latas" → "levantar las latas", "recogió la moneda"
-     → "levantó la moneda". MANTENER "recoger" cuando: (a) significa juntar/cosechar
-     ("recoger frutos", "recoger información", "recoger fondos"); (b) significa pasar
-     a buscar a alguien o algo ("te recojo a las 8", "recoger la ropa de la tintorería");
-     (c) registro formal o usos figurados ("recoger el guante", "recoger los testimonios").
-     En la duda, mantener.)
+   recoger → reemplazar siempre según el sentido (en RP "recoger" no es natural en ningún
+     contexto):
+     - "agarrar del piso/superficie" → levantar ("recogió la moneda" → "levantó la moneda",
+       "recoger las latas" → "levantar las latas")
+     - "juntar/cosechar/recopilar" → juntar o cosechar según corresponda ("recoger
+       información" → "juntar información", "recoger fondos" → "juntar fondos",
+       "recoger frutos" → "cosechar frutos")
+     - "pasar a buscar" → pasar a buscar / ir a buscar ("te recojo a las 8" → "te paso
+       a buscar a las 8", "recoger la ropa" → "buscar la ropa")
+     - expresiones figuradas ("recoger el guante", "recoger testimonios") → reemplazar
+       con la alternativa más natural en RP ("aceptar el desafío", "reunir testimonios")
    enviar → mandar (preferir "mandar" en registro coloquial o cuando el agente es
      impersonal/no especificado: "me enviaron a Texas" → "me mandaron a Texas",
      "me envió un mensaje" (coloquial) → "me mandó un mensaje". MANTENER "enviar" en
@@ -223,21 +227,67 @@ D) CORRECCIÓN DE ERRORES DE TRADUCCIÓN del ES respecto del EN.
         instancia aparece traducida correctamente para el mismo referente, ese
         es D obligatorio. No te abstengas.
 
-        EXCEPCIÓN A LA REGLA OPERATIVA — sinónimos válidos:
-        D4 aplica SOLO cuando una de las dos traducciones es CLARAMENTE
-        INCORRECTA respecto del EN. Si AMBAS palabras son traducciones DEFENDIBLES
-        del mismo referente EN — sinónimos válidos, paráfrasis aceptables — NO
-        aplicar D4. Prima la Restricción 5 y el caso es A.
+        TEST DECISIVO PARA D4 (anti-armonización espuria):
+        Antes de armonizar prem y hyp, contestá UNA pregunta: ¿la palabra
+        del ES original es OBJETIVAMENTE INCORRECTA para traducir el
+        término EN en este contexto — un falso amigo, un anglicismo no
+        traducido, o un término que ningún diccionario ni uso establecido
+        del castellano admitiría?
+          - SÍ → D obligatorio. Corregí solo esa palabra.
+          - NO (la palabra es defendible aunque distinta de la otra parte)
+            → A. NO armonizar. Prima la Restricción 5: la diferencia
+            léxica es intencional del corpus NLI.
 
-        Ejemplo de A (NO aplicar D4 — sinónimos válidos):
+        REGLA NEGATIVA EXPLÍCITA: si AMBAS opciones son traducciones
+        defendibles del mismo término EN — sinónimos, paráfrasis, registros
+        distintos, glosas alternativas del mismo concepto técnico —, son
+        válidas y NO se unifican. Que la otra parte use una palabra "más
+        común", "más natural", "más directa", "más literal" o "más fiel
+        al EN" NO habilita D4. Que una palabra se parezca morfológicamente
+        al EN (cognado, calco) tampoco la hace correcta por encima del
+        sinónimo. D4 solo se habilita por un error OBJETIVO en la palabra
+        del ES (falso amigo inadmisible, anglicismo no traducido, error
+        inequívoco).
+
+        REGLA DEL TRADUCTOR COMPETENTE: si un traductor profesional del
+        castellano podría haber elegido la palabra del ES como una opción
+        legítima (aunque vos prefirieras otra, aunque la hyp use otra,
+        aunque la forma EN sugiera un cognado más directo), la palabra es
+        DEFENDIBLE → tipo A. Para términos técnicos, jurídicos o académicos,
+        asumí que el traductor original eligió un equivalente legítimo
+        dentro del campo semántico; los términos especializados suelen
+        admitir varias glosas en castellano y la divergencia entre prem y
+        hyp es deliberada en este corpus.
+
+        Ejemplo de A (NO aplicar D4 — ambas defendibles):
+          EN prem: "He works as a physician at the local hospital."
+          EN hyp:  "He is a doctor."
           ES prem: "Trabaja como médico en el hospital local."
           ES hyp:  "Es un doctor."
           → "médico" y "doctor" son glosas válidas. NO armonizar. Tipo A.
 
+        Ejemplo de A en contexto técnico/jurídico (NO aplicar D4):
+          EN prem: "He opened a law firm in the city center."
+          EN hyp:  "His practice is downtown."
+          ES prem: "Abrió un bufete en el centro de la ciudad."
+          ES hyp:  "Su estudio está en el centro."
+          → "bufete" y "estudio" son ambos términos jurídicos atestiguados
+            para "law firm / practice". El cognado más directo de "firm"
+            sería "firma", pero ni "bufete" ni "estudio" son errores: son
+            elecciones legítimas del traductor. NO armonizar. Tipo A.
+
+        Ejemplo de D legítimo (armonizar — error objetivo):
+          EN prem: "the suit names as defendants Gary Allenbrand"
+          EN hyp:  "Allenbrand is getting sued."
+          ES prem: "se nombra como defensores a Gary Allenbrand"
+          ES hyp:  "Allenbrand está siendo demandado."
+          → "defensores" = "defenders", falso amigo inadmisible para
+            "defendants". La hyp usa "demandados" (correcto). D obligatorio.
+
    NO es tipo D (NO modificar):
      - Correcciones gramaticales, de puntuación, tildes diacríticas obsoletas
        ("ésta/éste/sólo" con tilde se mantienen).
-     - Paráfrasis válidas ("flujo" para "flood" se mantiene aunque la hyp use "crecida").
+     - Paráfrasis válidas: si la palabra ES es una traducción defendible del término EN, se mantiene aunque la otra parte (prem o hyp) use un sinónimo distinto. La diferencia léxica es intencional del corpus NLI (Restricción 5).
      - "match savings" → "cuenta de ahorro individual" se mantiene.
      - Variantes ortográficas de nombres propios extranjeros del ES original
        ("Lecretius", "Hozbollah" → mantener).
