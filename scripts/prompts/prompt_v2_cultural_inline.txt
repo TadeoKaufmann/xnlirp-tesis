@@ -98,12 +98,15 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      años con cariño" en narrativa); (b) sentido transitivo de "hacer recordar" o "traer
      a memoria" ("esto me recuerda a..."); (c) imperativo institucional ("recuerde
      guardar el comprobante"). En la duda, mantener.)
-   pequeño/a → chico/a (cuando se refiere a edad informal de una persona o animal:
-     "mi hija pequeña" → "mi hija chica" (o "chiquita" en registro afectivo), "el más
-     pequeño de los hermanos" → "el más chico de los hermanos". MANTENER "pequeño/a"
-     cuando: (a) refiere a tamaño físico de un objeto ("una mesa pequeña"); (b) sentido
-     figurado abstracto ("un pequeño detalle", "una pequeña diferencia", "pequeña
-     empresa"); (c) registro literario o formal. En la duda, mantener.)
+   pequeño/a → chico/a, pero según la construcción:
+     - Comparativo → "el/la más chico/a": "el más pequeño de los hermanos" → "el más
+       chico de los hermanos". ✓
+     - Adjetivo standalone de edad → diminutivo del sustantivo o agregar "más":
+       "mi hija pequeña" → "mi hijita" o "mi hija más chica" (NO "mi hija chica" solo).
+       "el perro pequeño" → "el perrito". En la duda, preferir diminutivo del sustantivo.
+     MANTENER "pequeño/a" cuando: (a) tamaño físico de objeto ("una mesa pequeña");
+     (b) sentido figurado abstracto ("un pequeño detalle", "pequeña diferencia",
+     "pequeña empresa"); (c) registro literario o formal.
    chaqueta → campera (sustitución directa cuando refiere a una prenda casual/deportiva
      o de abrigo: "una chaqueta de cuero" → "una campera de cuero", "envío de chaquetas"
      → "envío de camperas". MANTENER "chaqueta" si el contexto la equipara claramente a
