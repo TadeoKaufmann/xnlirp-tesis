@@ -395,13 +395,6 @@
         <p class="muted welcome-line">
           Y al final, puntuá del 1 al 5 qué tan rioplatense suena.
         </p>
-        <div class="options likert demo-likert" style="margin: -6px 0 22px;">
-          <button class="option" data-demo-rating="1">1</button>
-          <button class="option" data-demo-rating="2">2</button>
-          <button class="option" data-demo-rating="3">3</button>
-          <button class="option" data-demo-rating="4">4</button>
-          <button class="option selected" data-demo-rating="5">5</button>
-        </div>
         <p class="muted" style="margin-bottom: 22px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
@@ -1339,14 +1332,6 @@
 
   tokenizeWelcomeWords();
   document.querySelectorAll('#screen-welcome .demo-word').forEach(initDemoWord);
-
-  // Demo Likert en welcome (toggle selección, no guarda nada)
-  document.querySelectorAll('#screen-welcome .demo-likert .option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.parentElement.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-    });
-  });
 
   init();
 </script>
