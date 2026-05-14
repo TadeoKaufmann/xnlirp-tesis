@@ -1,0 +1,1758 @@
+<!doctype html>
+<html lang='es'><head><meta charset='utf-8'><title>XNLIrp — Batch 200-259 (Gemini)</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 24px; background:#fafafa; color:#111; }
+      h1 { margin-bottom: 8px; }
+      .filters { background:#fff; padding:12px 16px; border-radius:8px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.06); position:sticky; top:0; z-index:10; display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+      .filters label { margin-right: 4px; font-size: 14px; }
+      .export-btn { margin-left:auto; padding:6px 14px; background:#1a73e8; color:#fff; border:none; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+      .export-btn:hover { background:#1558b0; }
+      .card { background:#fff; border-radius:10px; padding:16px 20px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+      .card[data-has-note='1'] { border-left:3px solid #fbbc04; }
+      .meta { font-size:12px; color:#555; margin-bottom:8px; display:flex; gap:14px; flex-wrap:wrap; }
+      .badge { padding:2px 8px; border-radius:10px; background:#eef; font-weight:600; font-size:11px; text-transform:uppercase; }
+      .badge.A { background:#e0e0e0; }
+      .badge.B { background:#cfe8ff; }
+      .badge.C { background:#ffe0b2; }
+      .badge.D { background:#ffcdd2; }
+      .badge.OK { background:#c8e6c9; }
+      .badge.REVIEW { background:#fff59d; }
+      .badge.ERROR { background:#ef9a9a; }
+      .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+      .col h3 { margin: 0 0 6px 0; font-size:13px; color:#444; text-transform:uppercase; letter-spacing:0.05em; }
+      .text { font-size:15px; line-height:1.5; }
+      .del { background:#ffd6d6; text-decoration:line-through; }
+      .ins { background:#d6f5d6; font-weight:500; }
+      .changes { font-size:12px; color:#444; margin-top:10px; }
+      .changes ul { margin:4px 0 0 18px; padding:0; }
+      .cc { font-size:12px; color:#7a4a00; background:#fff3e0; padding:6px 10px; border-radius:6px; margin-top:8px; }
+      .notes-section { margin-top:10px; }
+      .notes-ta { width:100%; box-sizing:border-box; min-height:38px; padding:7px 10px; font-size:13px; font-family:inherit; border:1px solid #ddd; border-radius:6px; background:#fffde7; resize:vertical; color:#333; }
+      .notes-ta:focus { outline:none; border-color:#fbbc04; box-shadow:0 0 0 2px rgba(251,188,4,0.2); }
+      .notes-ta::placeholder { color:#bbb; }
+      .hidden { display:none; }
+    </style>
+    
+    <script>
+      const STORAGE_KEY = "xnliNotes_XNLIrp___Batch_200_259__Gemini_";
+
+      function getNotes() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+        catch { return {}; }
+      }
+
+      function saveNote(ta) {
+        const notes = getNotes();
+        const idx = ta.dataset.idx;
+        if (ta.value.trim()) { notes[idx] = ta.value; } else { delete notes[idx]; }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        ta.closest('.card').dataset.hasNote = ta.value.trim() ? '1' : '0';
+        updateNoteCount();
+      }
+
+      function loadNotes() {
+        const notes = getNotes();
+        document.querySelectorAll('.notes-ta').forEach(ta => {
+          const v = notes[ta.dataset.idx] || '';
+          ta.value = v;
+          ta.closest('.card').dataset.hasNote = v.trim() ? '1' : '0';
+          autoResize(ta);
+        });
+        updateNoteCount();
+      }
+
+      function autoResize(ta) {
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight + 'px';
+      }
+
+      function updateNoteCount() {
+        const n = Object.keys(getNotes()).filter(k => getNotes()[k].trim()).length;
+        document.getElementById('noteCount').textContent = n > 0 ? n + ' nota' + (n > 1 ? 's' : '') : '';
+      }
+
+      function exportNotes() {
+        const notes = getNotes();
+        const cards = {};
+        document.querySelectorAll('.card').forEach(c => {
+          cards[c.dataset.idx] = { type: c.dataset.type, lev: c.dataset.lev };
+        });
+        const entries = Object.entries(notes)
+          .filter(([, v]) => v.trim())
+          .sort(([a], [b]) => parseInt(a) - parseInt(b))
+          .map(([idx, note]) => JSON.stringify({
+            idx: parseInt(idx),
+            type: (cards[idx] || {}).type || '?',
+            note: note.trim()
+          }));
+        if (!entries.length) { alert('No hay notas para exportar.'); return; }
+        const blob = new Blob([entries.join('\n')], {type: 'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'corrections_xnliNotes_XNLIrp___Batch_200_259__Gemini_.jsonl';
+        a.click();
+      }
+
+      function applyFilters() {
+        const t = document.getElementById('typeFilter').value;
+        const s = document.getElementById('statusFilter').value;
+        const lev = parseInt(document.getElementById('levFilter').value || '0', 10);
+        const onlyNotes = document.getElementById('notesOnlyFilter').checked;
+        document.querySelectorAll('.card').forEach(c => {
+          const ct = c.dataset.type;
+          const cs = c.dataset.status;
+          const cl = parseInt(c.dataset.lev, 10);
+          const hn = c.dataset.hasNote === '1';
+          let show = true;
+          if (t !== 'all' && ct !== t) show = false;
+          if (s !== 'all' && cs !== s) show = false;
+          if (lev > 0 && cl < lev) show = false;
+          if (onlyNotes && !hn) show = false;
+          c.classList.toggle('hidden', !show);
+        });
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('select, input[type=number]').forEach(el => el.addEventListener('change', applyFilters));
+        document.getElementById('notesOnlyFilter').addEventListener('change', applyFilters);
+        loadNotes();
+      });
+    </script>
+    </head>
+<body>
+  <h1>XNLIrp — Batch 200-259 (Gemini)</h1>
+  <div class='filters'>
+    <label>Tipo: <select id='typeFilter'>
+      <option value='all'>Todos</option><option>A</option><option>B</option><option>C</option><option>D</option>
+    </select></label>
+    <label>Estado: <select id='statusFilter'>
+      <option value='all'>Todos</option><option>OK</option><option>REVIEW</option><option>ERROR</option>
+    </select></label>
+    <label>Lev mínimo: <input type='number' id='levFilter' value='0' min='0' style='width:60px'></label>
+    <label><input type='checkbox' id='notesOnlyFilter'> Solo con notas</label>
+    <span style='font-size:12px;color:#666'>Total: 60 instancias</span>
+    <span id='noteCount' style='font-size:12px;color:#e67e00;font-weight:600;margin-left:4px'></span>
+    <button class='export-btn' onclick='exportNotes()'>&#8595; Exportar correcciones</button>
+  </div>
+  
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3295' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3295</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Con respecto a la propuesta adicional de KSM de bombardear aviones de carga mediante el envío de chaquetas que contienen nitrocelulosa, KSM declara que Bin Ladin expresó su interés en cambiar la operación para que involucre un operativo suicida.</div>
+              <div class='text'><strong>H:</strong> KSM no estuvo de acuerdo con la sugerencia de Bin Laden de usar un terrorista suicida.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Con respecto a la propuesta adicional de KSM de bombardear aviones de carga mediante el envío de chaquetas que contienen nitrocelulosa, KSM declara que Bin Ladin expresó su interés en cambiar la operación para que involucre un operativo suicida.</div>
+              <div class='text'><strong>H:</strong> KSM no estuvo de acuerdo con la sugerencia de Bin Laden de usar un terrorista suicida.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3295' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4958' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4958</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Una diferencia es que otros grupos necesitan hacerlo porque para funcionar deben asignar nuevos significados a las palabras y frases existentes o acuñar nuevas palabras y frases.</div>
+              <div class='text'><strong>H:</strong> Los grupos no pueden inventarse nuevas palabras.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Una diferencia es que otros grupos necesitan hacerlo porque para funcionar deben asignar nuevos significados a las palabras y frases existentes o acuñar nuevas palabras y frases.</div>
+              <div class='text'><strong>H:</strong> Los grupos no pueden inventarse nuevas palabras.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4958' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3395' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3395</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Un impedimento fue que los componentes respectivos del DOJ no pudieron ponerse de acuerdo sobre todas las reformas propuestas.</div>
+              <div class='text'><strong>H:</strong> Nunca puede ser superado el impedimento para las reformas propuestas por DOJ por parte de todos los componentes</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Un impedimento fue que los componentes respectivos del DOJ no pudieron ponerse de acuerdo sobre todas las reformas propuestas.</div>
+              <div class='text'><strong>H:</strong> Nunca puede ser superado el impedimento para las reformas propuestas por DOJ por parte de todos los componentes</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3395' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4026' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4026</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Nancy Griffin escribe en Hollywood Strikes Back que Michael Eisner extendió una rama de olivo a su examigo Mike Ovitz, pero Ovitz se negó a aceptarla.</div>
+              <div class='text'><strong>H:</strong> Se informó de que Michael Eisner intentó desafortunadamente hacer las paces con su antiguo amigo, Mike Ovitz.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Nancy Griffin escribe en Hollywood Strikes Back que Michael Eisner extendió una rama de olivo a su examigo Mike Ovitz, pero Ovitz se negó a aceptarla.</div>
+              <div class='text'><strong>H:</strong> Se informó de que Michael Eisner intentó desafortunadamente hacer las paces con su antiguo amigo, Mike Ovitz.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4026' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4335' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4335</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Muchos de los padres de los jóvenes donantes son activistas políticos desde hace tiempo y conocen las reglas.</div>
+              <div class='text'><strong>H:</strong> Los padres no están involucrados con la política.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Muchos de los padres de los jóvenes donantes son activistas políticos desde hace tiempo y conocen las reglas.</div>
+              <div class='text'><strong>H:</strong> Los padres no están involucrados con la política.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4335' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3856' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3856</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Tenemos nuestros programas de arte para estudiantes de secundaria y bachillerato que son tan importantes ahora que cada vez se asigna menos presupuestos escolares para las artes.</div>
+              <div class='text'><strong>H:</strong> Las escuelas no tienen grandes presupuestos para las artes.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Tenemos nuestros programas de arte para estudiantes de secundaria y bachillerato que son tan importantes ahora que cada vez se asigna menos presupuestos escolares para las artes.</div>
+              <div class='text'><strong>H:</strong> Las escuelas no tienen grandes presupuestos para las artes.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3856' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='2578' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 2578</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Los esfuerzos de colaboración de Carolina del Sur produjeron otro éxito el año siguiente.</div>
+              <div class='text'><strong>H:</strong> Los SC trabajaron conjuntamente.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Los esfuerzos de colaboración de Carolina del Sur produjeron otro éxito el año siguiente.</div>
+              <div class='text'><strong>H:</strong> Los SC trabajaron conjuntamente.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='2578' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='464' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 464</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Les dije que era de mi hermana.</div>
+              <div class='text'><strong>H:</strong> Les dije que el perro le pertenecía a mi hermana.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Les dije que era de mi hermana.</div>
+              <div class='text'><strong>H:</strong> Les dije que el perro le pertenecía a mi hermana.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='464' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='14' data-idx='2430' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 2430</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 14</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Dam Square estuvo <span class='del'>rodeada de tierra</span> por primera vez en su historia.</div>
+              <div class='text'><strong>H:</strong> La plaza Dam no solía estar sin salida al mar.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Dam Square estuvo <span class='ins'>sin salida al mar</span> por primera vez en su historia.</div>
+              <div class='text'><strong>H:</strong> La plaza Dam no solía estar sin salida al mar.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>rodeada de tierra → sin salida al mar (corrección de error de traducción: &#x27;landlocked&#x27; = &#x27;sin salida al mar&#x27;)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='2430' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='8' data-idx='671' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 671</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 8</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> <span class='del'>Golly, sabes</span> que él ni siquiera siguió ninguna de las reglas y a mi ni siquiera parecía molestarme, por supuesto, lo sacaron a patadas de inmediato</div>
+              <div class='text'><strong>H:</strong> Él debería haber seguido las normas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> <span class='ins'>Caramba, sabés</span> que él ni siquiera siguió ninguna de las reglas y a mi ni siquiera parecía molestarme, por supuesto, lo sacaron a patadas de inmediato</div>
+              <div class='text'><strong>H:</strong> Él debería haber seguido las normas.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>sabes → sabés (voseo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='671' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='7' data-idx='3391' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3391</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 7</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El traslado a San Diego para el 4 de febrero, Hazmi y Mihdhar habían llegado a San Diego desde Los Ángeles, posiblemente <span class='del'>iba conduciendo</span> por Mohdar Abdullah.</div>
+              <div class='text'><strong>H:</strong> Hazmi y Mihdhar viajaron por California del sur.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El traslado a San Diego para el 4 de febrero, Hazmi y Mihdhar habían llegado a San Diego desde Los Ángeles, posiblemente <span class='ins'>conducidos</span> por Mohdar Abdullah.</div>
+              <div class='text'><strong>H:</strong> Hazmi y Mihdhar viajaron por California del sur.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>iba conduciendo por → conducidos por (corrección de error de traducción: &#x27;driven by&#x27; = &#x27;conducidos por&#x27;, no &#x27;iba conduciendo por&#x27;)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3391' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4823' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4823</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Puedo simpatizar, por lo tanto, con su rechazo al término &#x27;negro&#x27; por ser considerado racista.</div>
+              <div class='text'><strong>H:</strong> La mayoría de la gente acepta que es un término racista.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Puedo simpatizar, por lo tanto, con su rechazo al término &#x27;negro&#x27; por ser considerado racista.</div>
+              <div class='text'><strong>H:</strong> La mayoría de la gente acepta que es un término racista.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4823' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='4' data-idx='702' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 702</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 4</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> hm, ni siquiera aluminio <span class='del'>forjado,</span> solo aluminio prensado</div>
+              <div class='text'><strong>H:</strong> Estaban hechos de un metal más barato.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> hm, ni siquiera aluminio <span class='ins'>fundido,</span> solo aluminio prensado</div>
+              <div class='text'><strong>H:</strong> Estaban hechos de un metal más barato.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>forjado → fundido (corrección de error de traducción: &#x27;cast aluminum&#x27; = &#x27;aluminio fundido&#x27;, no &#x27;aluminio forjado&#x27;)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='702' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1503' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1503</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Le aseguró, señor, que estaba absolutamente al corriente de todo.</div>
+              <div class='text'><strong>H:</strong> Te digo que me pusieron al corriente sobre todo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Le aseguró, señor, que estaba absolutamente al corriente de todo.</div>
+              <div class='text'><strong>H:</strong> Te digo que me pusieron al corriente sobre todo.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1503' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='4' data-idx='596' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 596</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 4</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> eso es lo bueno de vivir más en el país, no <span class='del'>tienes</span> que preocuparte por nada de esto</div>
+              <div class='text'><strong>H:</strong> Lo magnífico es que en el campo no <span class='del'>tienes</span> que preocuparte por eso como lo harías en la ciudad.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> eso es lo bueno de vivir más en el país, no <span class='ins'>tenés</span> que preocuparte por nada de esto</div>
+              <div class='text'><strong>H:</strong> Lo magnífico es que en el campo no <span class='ins'>tenés</span> que preocuparte por eso como lo harías en la ciudad.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>tienes → tenés (voseo)</li><li>tienes → tenés (voseo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='596' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3708' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3708</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Si comenzamos el nuevo año fiscal con déficit, será un año repleto de desafíos.</div>
+              <div class='text'><strong>H:</strong> Comenzar un nuevo año fiscal con un déficit es una desventaja.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Si comenzamos el nuevo año fiscal con déficit, será un año repleto de desafíos.</div>
+              <div class='text'><strong>H:</strong> Comenzar un nuevo año fiscal con un déficit es una desventaja.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3708' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='49' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 49</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Dijo que le caían lágrimas de los ojos, y después dijo que Joe fue hasta el porche.</div>
+              <div class='text'><strong>H:</strong> Ella se secó rápidamente las lágrimas después de arrojar a Joe fuera del porche.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Dijo que le caían lágrimas de los ojos, y después dijo que Joe fue hasta el porche.</div>
+              <div class='text'><strong>H:</strong> Ella se secó rápidamente las lágrimas después de arrojar a Joe fuera del porche.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='49' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='6' data-idx='856' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 856</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 6</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Sí, usted sabe que generalmente hay. Tengo una granja a cien millas al este de <span class='del'>aquí</span> en el este de Texas.</div>
+              <div class='text'><strong>H:</strong> Tengo una granja <span class='del'>aquí</span> en Texas.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Sí, usted sabe que generalmente hay. Tengo una granja a cien millas al este de <span class='ins'>acá</span> en el este de Texas.</div>
+              <div class='text'><strong>H:</strong> Tengo una granja <span class='ins'>acá</span> en Texas.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>aquí → acá (léxico peninsular → rioplatense)</li><li>aquí → acá (léxico peninsular → rioplatense)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='856' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3001' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3001</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> En empresas líderes, los procesos de negocio en desarrollo desempeñan un papel clave en la determinación de cómo estas responsabilidades de gestión de la información están estructuradas y adaptadas para satisfacer las necesidades cambiantes.</div>
+              <div class='text'><strong>H:</strong> Cuando se adoptan nuevos procesos comerciales hay que crear nuevos programas de entrenamiento.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> En empresas líderes, los procesos de negocio en desarrollo desempeñan un papel clave en la determinación de cómo estas responsabilidades de gestión de la información están estructuradas y adaptadas para satisfacer las necesidades cambiantes.</div>
+              <div class='text'><strong>H:</strong> Cuando se adoptan nuevos procesos comerciales hay que crear nuevos programas de entrenamiento.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3001' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4479' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4479</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Estás haciendo una montaña de un grano de arena.</div>
+              <div class='text'><strong>H:</strong> Hacer demasiado de esto lo hará inútil.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Estás haciendo una montaña de un grano de arena.</div>
+              <div class='text'><strong>H:</strong> Hacer demasiado de esto lo hará inútil.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4479' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='26' data-idx='4820' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4820</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 26</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La ley de marcas registradas, que llena más de dos volúmenes de los <span class='del'>Comentarios legales de los EE. UU.</span></div>
+              <div class='text'><strong>H:</strong> La ley de marcas comerciales es muy complicada y requiere referencias frecuentes a los dos volúmenes de los Estados Unidos anotados</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La ley de marcas registradas, que llena más de dos volúmenes de los <span class='ins'>Estados Unidos anotados</span></div>
+              <div class='text'><strong>H:</strong> La ley de marcas comerciales es muy complicada y requiere referencias frecuentes a los dos volúmenes de los Estados Unidos anotados</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>Comentarios legales de los EE. UU. → Estados Unidos anotados (corrección de error de traducción: &#x27;Annotated U.S.&#x27; = &#x27;Estados Unidos anotados&#x27;, no &#x27;Comentarios legales&#x27;)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4820' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3541' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3541</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Separe simplemente la parte inferior, marque la opción aplicable, haga cualquier cambio a su dirección, que fuera necesaria, y envíelo en el sobre adjunto.</div>
+              <div class='text'><strong>H:</strong> Hay un sobre blanco adjunto, con su dirección en él.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Separe simplemente la parte inferior, marque la opción aplicable, haga cualquier cambio a su dirección, que fuera necesaria, y envíelo en el sobre adjunto.</div>
+              <div class='text'><strong>H:</strong> Hay un sobre blanco adjunto, con su dirección en él.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3541' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='183' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 183</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Recibí órdenes para irme a Del Rio, TX, así que cuando llegué allí, bueno, me enteré de que tenía que irme a la base de Laughlin Air Force.</div>
+              <div class='text'><strong>H:</strong> Me enviaron a Del Rio, Texas para trabajar.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Recibí órdenes para irme a Del Rio, TX, así que cuando llegué allí, bueno, me enteré de que tenía que irme a la base de Laughlin Air Force.</div>
+              <div class='text'><strong>H:</strong> Me enviaron a Del Rio, Texas para trabajar.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='183' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='2671' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 2671</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Los negocios usan el dispositivo para crear una subsidiaria completamente propia, dijo el Sr. Delaney, director ejecutivo de Lawyers&#x27; Alliance de Nueva York.</div>
+              <div class='text'><strong>H:</strong> El dispositivo ayuda a las empresas a crear filiales.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Los negocios usan el dispositivo para crear una subsidiaria completamente propia, dijo el Sr. Delaney, director ejecutivo de Lawyers&#x27; Alliance de Nueva York.</div>
+              <div class='text'><strong>H:</strong> El dispositivo ayuda a las empresas a crear filiales.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='2671' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3294' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3294</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Con respecto a la propuesta adicional de KSM de bombardear aviones de carga mediante el envío de chaquetas que contienen nitrocelulosa, KSM declara que Bin Ladin expresó su interés en cambiar la operación para que involucre un operativo suicida.</div>
+              <div class='text'><strong>H:</strong> Según KSM, Bin Laden quería usar un agente suicida.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Con respecto a la propuesta adicional de KSM de bombardear aviones de carga mediante el envío de chaquetas que contienen nitrocelulosa, KSM declara que Bin Ladin expresó su interés en cambiar la operación para que involucre un operativo suicida.</div>
+              <div class='text'><strong>H:</strong> Según KSM, Bin Laden quería usar un agente suicida.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3294' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='614' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 614</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> sí, recuerdo a mis abuelos y solía salir a la calle y recoger las latas y eh</div>
+              <div class='text'><strong>H:</strong> Solíamos ir de fiesta a casa de mi padre.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> sí, recuerdo a mis abuelos y solía salir a la calle y recoger las latas y eh</div>
+              <div class='text'><strong>H:</strong> Solíamos ir de fiesta a casa de mi padre.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='614' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1462' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1462</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Una nube específica, como nuestra biosfera, presumiblemente se queda cinéticamente atrapada en un conjunto muy especial de especies moleculares complejas que se han formado a medida que la nube evoluciona.</div>
+              <div class='text'><strong>H:</strong> Algunas especies moleculares se forman en nubes negras.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Una nube específica, como nuestra biosfera, presumiblemente se queda cinéticamente atrapada en un conjunto muy especial de especies moleculares complejas que se han formado a medida que la nube evoluciona.</div>
+              <div class='text'><strong>H:</strong> Algunas especies moleculares se forman en nubes negras.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1462' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3030' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3030</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Mihdhar recibe un nuevo visado para los Estados Unidos dos días después del encuentro entre la CIA y el FBI en Nueva York.</div>
+              <div class='text'><strong>H:</strong> Mihdhar tenía una visa de los Estados Unidos para ingresar al país.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Mihdhar recibe un nuevo visado para los Estados Unidos dos días después del encuentro entre la CIA y el FBI en Nueva York.</div>
+              <div class='text'><strong>H:</strong> Mihdhar tenía una visa de los Estados Unidos para ingresar al país.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3030' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='4' data-idx='3680' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3680</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 4</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> En noviembre, enviamos cartas compartiendo <span class='del'>contigo</span> una historia sobre el Club de Niños y Niñas, un lugar positivo y espléndido para los niños y jóvenes de nuestra comunidad.</div>
+              <div class='text'><strong>H:</strong> Enviamos cartas en honor a Acción de Gracias.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> En noviembre, enviamos cartas compartiendo <span class='ins'>con vos</span> una historia sobre el Club de Niños y Niñas, un lugar positivo y espléndido para los niños y jóvenes de nuestra comunidad.</div>
+              <div class='text'><strong>H:</strong> Enviamos cartas en honor a Acción de Gracias.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>contigo → con vos (pronombre tuteo → voseo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3680' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1689' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1689</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> En la cabina, se dejó caer en una silla y explotó, con una violencia completamente ajena a su naturaleza.</div>
+              <div class='text'><strong>H:</strong> Se sentó en una silla de la cabina.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> En la cabina, se dejó caer en una silla y explotó, con una violencia completamente ajena a su naturaleza.</div>
+              <div class='text'><strong>H:</strong> Se sentó en una silla de la cabina.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1689' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4964' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4964</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> A pesar de su reputación de desconfiar de los políglotas, de ninguna manera es inusual que los ingleses sean bilingües.</div>
+              <div class='text'><strong>H:</strong> La gente en Inglaterra está obligada a hablar más de una lengua.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> A pesar de su reputación de desconfiar de los políglotas, de ninguna manera es inusual que los ingleses sean bilingües.</div>
+              <div class='text'><strong>H:</strong> La gente en Inglaterra está obligada a hablar más de una lengua.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4964' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='16' data-idx='1428' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1428</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 16</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El pachuco fue menospreciado en los EE. UU. por <span class='del'>tanto</span> los mexicano-estadounidenses <span class='del'>y</span> las comunidades anglosajonas, y de igual manera en México por los medios y los intelectuales.</div>
+              <div class='text'><strong>H:</strong> En los Estados Unidos, los mexicoamericanos y los angloamericanos pensaban que el pachuco era indigno.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El pachuco fue menospreciado en los EE. UU. <span class='ins'>tanto</span> por los mexicano-estadounidenses <span class='ins'>como por</span> las comunidades anglosajonas, y de igual manera en México por los medios y los intelectuales.</div>
+              <div class='text'><strong>H:</strong> En los Estados Unidos, los mexicoamericanos y los angloamericanos pensaban que el pachuco era indigno.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>por tanto los... y las... → tanto por los... como por las... (corrección de error de traducción: &#x27;by both&#x27; mal traducido como &#x27;por tanto&#x27;)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1428' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='7' data-idx='4054' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4054</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 7</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Esto es lo que hizo Sidewalk. Grabó las URL de las páginas de transacciones de TicketMaster, donde <span class='del'>compras</span> entradas para espectáculos específicos.</div>
+              <div class='text'><strong>H:</strong> <span class='del'>Acera</span> Grabó música.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Esto es lo que hizo Sidewalk. Grabó las URL de las páginas de transacciones de TicketMaster, donde <span class='ins'>comprás</span> entradas para espectáculos específicos.</div>
+              <div class='text'><strong>H:</strong> <span class='ins'>Sidewalk</span> Grabó música.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>compras → comprás (voseo)</li><li>Acera → Sidewalk (corrección de error de traducción: nombre propio mal traducido)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4054' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3799' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3799</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Nuestros hospitales universitarios y programas de investigación no reciben ningún apoyo estatal.</div>
+              <div class='text'><strong>H:</strong> El programa de investigación no obtiene ningún dinero del estado.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Nuestros hospitales universitarios y programas de investigación no reciben ningún apoyo estatal.</div>
+              <div class='text'><strong>H:</strong> El programa de investigación no obtiene ningún dinero del estado.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3799' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3963' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3963</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> En 1990, el Programa estableció el Premio de Servicio Distinguido Elton T. Ridley.</div>
+              <div class='text'><strong>H:</strong> El premio no se inició hasta 2002.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> En 1990, el Programa estableció el Premio de Servicio Distinguido Elton T. Ridley.</div>
+              <div class='text'><strong>H:</strong> El premio no se inició hasta 2002.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3963' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='603' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 603</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Tengo una hija más pequeña ahora y es difícil llevarla allí y eso, pero voy a, eh...</div>
+              <div class='text'><strong>H:</strong> Es posible que pueda llevar a mi hija allí.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Tengo una hija más pequeña ahora y es difícil llevarla allí y eso, pero voy a, eh...</div>
+              <div class='text'><strong>H:</strong> Es posible que pueda llevar a mi hija allí.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='603' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1990' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1990</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Y si no fueras un tonto, Ogle, no necesitarías que te dijera esto.</div>
+              <div class='text'><strong>H:</strong> Ogle fue un tonto al creer en la existencia de Santa Claus.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Y si no fueras un tonto, Ogle, no necesitarías que te dijera esto.</div>
+              <div class='text'><strong>H:</strong> Ogle fue un tonto al creer en la existencia de Santa Claus.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1990' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4062' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4062</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Lamar Alexander se retiró de su candidatura presidencial.</div>
+              <div class='text'><strong>H:</strong> Al menos una persona renunció a intentar ser presidente.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Lamar Alexander se retiró de su candidatura presidencial.</div>
+              <div class='text'><strong>H:</strong> Al menos una persona renunció a intentar ser presidente.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4062' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='44' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 44</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Quiero decir que ellos solo tenían, algo así como, cinco hijos. Uno de ellos murió.</div>
+              <div class='text'><strong>H:</strong> El niño que murió había nacido con problemas de salud.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Quiero decir que ellos solo tenían, algo así como, cinco hijos. Uno de ellos murió.</div>
+              <div class='text'><strong>H:</strong> El niño que murió había nacido con problemas de salud.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='44' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='801' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 801</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> oh dios, acabó de nombrar el curso uh, se me acaba de olvidar pero es el Parlamento de la Paz</div>
+              <div class='text'><strong>H:</strong> Supe al instante que el nombre era Piece of Parliament.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> oh dios, acabó de nombrar el curso uh, se me acaba de olvidar pero es el Parlamento de la Paz</div>
+              <div class='text'><strong>H:</strong> Supe al instante que el nombre era Piece of Parliament.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='801' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='2868' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 2868</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> 4.14 Un estándar adicional para las auditorías financieras realizadas de acuerdo con GAGAS</div>
+              <div class='text'><strong>H:</strong> Las auditorías realizadas que no se realicen de acuerdo con GAGAS deben volverse a hacer.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> 4.14 Un estándar adicional para las auditorías financieras realizadas de acuerdo con GAGAS</div>
+              <div class='text'><strong>H:</strong> Las auditorías realizadas que no se realicen de acuerdo con GAGAS deben volverse a hacer.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='2868' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3471' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3471</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Para obtener pasaportes limpios y los dos pasaportes dañados, ver informes de inteligencia, interrogatorios del KSM, 3 de julio de 2003; 9 de septiembre de 2003.</div>
+              <div class='text'><strong>H:</strong> KSM nunca obtenía documentos limpios.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Para obtener pasaportes limpios y los dos pasaportes dañados, ver informes de inteligencia, interrogatorios del KSM, 3 de julio de 2003; 9 de septiembre de 2003.</div>
+              <div class='text'><strong>H:</strong> KSM nunca obtenía documentos limpios.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3471' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1354' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1354</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Imaginan una concepción diádica del gobierno&#x27;el individuo enfrentado contra el estado&#x27;.</div>
+              <div class='text'><strong>H:</strong> El gobierno diádico era inestable por un desequilibrio de poder y por la frustración de su pueblo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Imaginan una concepción diádica del gobierno&#x27;el individuo enfrentado contra el estado&#x27;.</div>
+              <div class='text'><strong>H:</strong> El gobierno diádico era inestable por un desequilibrio de poder y por la frustración de su pueblo.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1354' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4095' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4095</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> A través de todo ello, Morris mantiene que lo que hacía era realmente muy noble.</div>
+              <div class='text'><strong>H:</strong> Morris dijo que tenía malos motivos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> A través de todo ello, Morris mantiene que lo que hacía era realmente muy noble.</div>
+              <div class='text'><strong>H:</strong> Morris dijo que tenía malos motivos.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4095' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3558' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3558</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Le invitamos a participar en Futures for Children patrocinando a un niño indígena estadounidense o haciéndose socio para apoyar nuestros proyectos de educación comunitaria.</div>
+              <div class='text'><strong>H:</strong> Si elige patrocinar a un niño indígena americano, no podrá participar en Futures for Children.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Le invitamos a participar en Futures for Children patrocinando a un niño indígena estadounidense o haciéndose socio para apoyar nuestros proyectos de educación comunitaria.</div>
+              <div class='text'><strong>H:</strong> Si elige patrocinar a un niño indígena americano, no podrá participar en Futures for Children.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3558' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1289' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1289</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> El principio general de tratamiento igualitario, según lo hemos elaborado, se presta al argumento de limitar la libertad de expresión.</div>
+              <div class='text'><strong>H:</strong> Hay una discusión sobre la libertad de expresión.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> El principio general de tratamiento igualitario, según lo hemos elaborado, se presta al argumento de limitar la libertad de expresión.</div>
+              <div class='text'><strong>H:</strong> Hay una discusión sobre la libertad de expresión.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1289' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='D' data-status='OK' data-lev='2' data-idx='3105' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3105</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge D'>D</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Clarke mencionó al asesor de seguridad nacional Rice al menos dos veces que las células durmientes de al Qaeda probablemente se <span class='del'>encuntran</span> en los Estados Unidos.</div>
+              <div class='text'><strong>H:</strong> Clarke nunca le dijo al Consejero de Seguridad Nacional, Rice, que las células durmientes de Al Qaeda probablemente se encontraban en Estados Unidos.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Clarke mencionó al asesor de seguridad nacional Rice al menos dos veces que las células durmientes de al Qaeda probablemente se <span class='ins'>encuentran</span> en los Estados Unidos.</div>
+              <div class='text'><strong>H:</strong> Clarke nunca le dijo al Consejero de Seguridad Nacional, Rice, que las células durmientes de Al Qaeda probablemente se encontraban en Estados Unidos.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>encuntran → encuentran (corrección de typo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3105' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='1' data-idx='3548' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3548</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 1</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> La escuela de enfermería necesita tus regalos generosos para seguir y mantener su excelencia educativa.</div>
+              <div class='text'><strong>H:</strong> Esperamos que <span class='del'>haga</span> una donación a la Escuela de Enfermería.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> La escuela de enfermería necesita tus regalos generosos para seguir y mantener su excelencia educativa.</div>
+              <div class='text'><strong>H:</strong> Esperamos que <span class='ins'>hagas</span> una donación a la Escuela de Enfermería.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>haga → hagas (voseo para 2ª persona singular informal en subjuntivo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3548' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='971' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 971</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> así que hay muchas cosas como esa que hace Texas Instruments y que incluso la mayoría de los empleados no sabe que hace</div>
+              <div class='text'><strong>H:</strong> Texas Instruments solo fabrica calculadoras.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> así que hay muchas cosas como esa que hace Texas Instruments y que incluso la mayoría de los empleados no sabe que hace</div>
+              <div class='text'><strong>H:</strong> Texas Instruments solo fabrica calculadoras.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='971' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='C' data-status='OK' data-lev='4' data-idx='569' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 569</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge C'>C</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 4</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> sí, ¿qué tipo de cachorro <span class='del'>tienes?</span></div>
+              <div class='text'><strong>H:</strong> ¿Qué tipo de perro joven <span class='del'>tienes?</span></div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> sí, ¿qué tipo de cachorro <span class='ins'>tenés?</span></div>
+              <div class='text'><strong>H:</strong> ¿Qué tipo de perro joven <span class='ins'>tenés?</span></div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>tienes → tenés (voseo)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='569' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='917' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 917</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> así que si tenemos la oportunidad solo porque está más tranquilo</div>
+              <div class='text'><strong>H:</strong> Hay tanto ruido que ni siquiera podemos hablar.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> así que si tenemos la oportunidad solo porque está más tranquilo</div>
+              <div class='text'><strong>H:</strong> Hay tanto ruido que ni siquiera podemos hablar.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='917' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1301' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1301</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Mi ejemplo favorito sigue siendo la rana y la mosca.</div>
+              <div class='text'><strong>H:</strong> Me gustan las alegorías.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Mi ejemplo favorito sigue siendo la rana y la mosca.</div>
+              <div class='text'><strong>H:</strong> Me gustan las alegorías.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1301' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='4971' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 4971</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Esto no quiere decir que la tradición occidental tenga el monopolio de la amabilidad.</div>
+              <div class='text'><strong>H:</strong> La amabilidad no es únicamente poseída por la tradición Occidental.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Esto no quiere decir que la tradición occidental tenga el monopolio de la amabilidad.</div>
+              <div class='text'><strong>H:</strong> La amabilidad no es únicamente poseída por la tradición Occidental.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='4971' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='3817' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 3817</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Hasta ahora, los resultados han sido los siguientes: 5.615 se destinaron a nuestros exalumnos que no son donantes, 81 1,4 por ciento, la donación más grande fue de 2.840 dólares, y la más pequeña de 5 dólares.</div>
+              <div class='text'><strong>H:</strong> Nadie donó más de 500 $, lo cual fue decepcionante.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Hasta ahora, los resultados han sido los siguientes: 5.615 se destinaron a nuestros exalumnos que no son donantes, 81 1,4 por ciento, la donación más grande fue de 2.840 dólares, y la más pequeña de 5 dólares.</div>
+              <div class='text'><strong>H:</strong> Nadie donó más de 500 $, lo cual fue decepcionante.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='3817' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1464' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1464</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> En 1863 la nación seguía deseando crear una Unión más perfecta pero tenía además un pasado que al mismo tiempo inspiraba y molestaba a la nueva mentalidad autóctona.</div>
+              <div class='text'><strong>H:</strong> Nada era diferente en 1863 porque todavía no era un país.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> En 1863 la nación seguía deseando crear una Unión más perfecta pero tenía además un pasado que al mismo tiempo inspiraba y molestaba a la nueva mentalidad autóctona.</div>
+              <div class='text'><strong>H:</strong> Nada era diferente en 1863 porque todavía no era un país.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1464' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='B' data-status='OK' data-lev='2' data-idx='956' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 956</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge B'>B</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 2</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> sí, bueno, su nombre es Sam porque es acortamiento de Samantha y todo el mundo la trata como un <span class='del'>tío</span></div>
+              <div class='text'><strong>H:</strong> Se llama Sam aunque se trata de un nombre de varón.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> sí, bueno, su nombre es Sam porque es acortamiento de Samantha y todo el mundo la trata como un <span class='ins'>tipo</span></div>
+              <div class='text'><strong>H:</strong> Se llama Sam aunque se trata de un nombre de varón.</div>
+            </div>
+          </div>
+          <div class='changes'><strong>Cambios:</strong><ul><li>un tío → un tipo (peninsularismo léxico)</li></ul></div>
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='956' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1839' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1839</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Dio un paso atrás, un hombre desconcertado e impotente.</div>
+              <div class='text'><strong>H:</strong> No lo afectó para nada.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Dio un paso atrás, un hombre desconcertado e impotente.</div>
+              <div class='text'><strong>H:</strong> No lo afectó para nada.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1839' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1480' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1480</strong></span>
+            <span>label: <code>neutral</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Una biología general está, de hecho, a la vuelta de la esquina.</div>
+              <div class='text'><strong>H:</strong> Todas las aulas de ciencias están ubicadas en el siguiente pasillo.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Una biología general está, de hecho, a la vuelta de la esquina.</div>
+              <div class='text'><strong>H:</strong> Todas las aulas de ciencias están ubicadas en el siguiente pasillo.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1480' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='535' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 535</strong></span>
+            <span>label: <code>entailment</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> Bueno, esa es una buena en la cual no había pensado que sí.</div>
+              <div class='text'><strong>H:</strong> Esto es un buen punto.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> Bueno, esa es una buena en la cual no había pensado que sí.</div>
+              <div class='text'><strong>H:</strong> Esto es un buen punto.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='535' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+        <div class='card' data-type='A' data-status='OK' data-lev='0' data-idx='1500' data-has-note='0'>
+          <div class='meta'>
+            <span><strong>idx 1500</strong></span>
+            <span>label: <code>contradiction</code></span>
+            <span class='badge A'>A</span>
+            <span class='badge OK'>OK</span>
+            <span>lev: 0</span>
+          </div>
+          <div class='grid'>
+            <div class='col'>
+              <h3>ES (origen)</h3>
+              <div class='text'><strong>P:</strong> ¿Cómo puede un padre reconocer la diferencia entre un trastorno lingüístico y un desarrollo de lenguaje normal?</div>
+              <div class='text'><strong>H:</strong> Un padre sabe si el desarrollo lingüístico es normal.</div>
+            </div>
+            <div class='col'>
+              <h3>RP (adaptado)</h3>
+              <div class='text'><strong>P:</strong> ¿Cómo puede un padre reconocer la diferencia entre un trastorno lingüístico y un desarrollo de lenguaje normal?</div>
+              <div class='text'><strong>H:</strong> Un padre sabe si el desarrollo lingüístico es normal.</div>
+            </div>
+          </div>
+          
+          
+          <div class='notes-section'>
+            <textarea class='notes-ta' data-idx='1500' placeholder='Nota / corrección (se guarda automáticamente)...' oninput='autoResize(this); saveNote(this)'></textarea>
+          </div>
+        </div>
+        
+</body></html>

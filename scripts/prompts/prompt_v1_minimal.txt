@@ -31,12 +31,23 @@ REGLAS LINGÜÍSTICAS (orden de prioridad):
 
 A) VOSEO (cuando hay 2ª persona singular informal):
    tú → vos        |  contigo → con vos
+   ti → vos        |  (después de preposición: a vos, para vos, de vos, por vos, etc.)
    tienes → tenés  |  puedes → podés
    sabes → sabés   |  quieres → querés
    haces → hacés   |  vienes → venís
    eres → sos      |  dices → decís
    Imperativos: ten → tené, mira → mirá, di → decí, sé → sé (igual)
    IMPORTANTE: las formas con "haber" (has hecho, habéis dicho) y los futuros (apreciarás, dirás) NO cambian con el voseo.
+
+   PRONOMBRE TÓNICO "ti" → "vos" (regla obligatoria en voseo): después de cualquier
+   preposición que rija pronombre tónico de 2ª persona singular, `ti` se reemplaza por
+   `vos`. Aplica a TODAS las preposiciones: "a ti" → "a vos", "para ti" → "para vos",
+   "de ti" → "de vos", "por ti" → "por vos", "en ti" → "en vos", "hacia ti" → "hacia vos",
+   "sin ti" → "sin vos", "contra ti" → "contra vos", "sobre ti" → "sobre vos", etc.
+   También aplica al reflexivo enfático: "a ti mismo/a" → "a vos mismo/a", "definirte
+   a ti mismo" → "definirte a vos mismo", "hazlo por ti mismo" → "hacelo por vos mismo".
+   El mismo CAVEAT de registro arcaico que vale para el voseo se aplica acá: si el
+   contexto es claramente decimonónico/aristocrático, mantener "ti".
 
    CAVEAT — Registro arcaico/literario: si la oración tiene marcas claras de
    registro decimonónico o aristocrático (ej. "su señoría", "vuestra merced",
@@ -46,7 +57,7 @@ A) VOSEO (cuando hay 2ª persona singular informal):
 B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezcan):
    coger → agarrar/tomar  |  ordenador → computadora
    móvil → celular        |  conducir → manejar
-   aparcar → estacionar   |  enfadado → enojado
+   enfadado → enojado
    vestíbulo → hall       |  americana (=EEUU) → norteamericana
    no tenía un duro → no tenía un mango
    aquí → acá (sustitución obligatoria en TODOS los registros: narrativa, diálogo,
@@ -95,20 +106,21 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      años con cariño" en narrativa); (b) sentido transitivo de "hacer recordar" o "traer
      a memoria" ("esto me recuerda a..."); (c) imperativo institucional ("recuerde
      guardar el comprobante"). En la duda, mantener.)
-   pequeño/a → chico/a, pero según la construcción:
-     - Comparativo → "el/la más chico/a": "el más pequeño de los hermanos" → "el más
-       chico de los hermanos". ✓
-     - Adjetivo standalone de edad → diminutivo del sustantivo o agregar "más":
-       "mi hija pequeña" → "mi hijita" o "mi hija más chica" (NO "mi hija chica" solo).
-       "el perro pequeño" → "el perrito". En la duda, preferir diminutivo del sustantivo.
-     MANTENER "pequeño/a" cuando: (a) tamaño físico de objeto ("una mesa pequeña");
-     (b) sentido figurado abstracto ("un pequeño detalle", "pequeña diferencia",
-     "pequeña empresa"); (c) registro literario o formal.
-   chaqueta → campera (sustitución directa cuando refiere a una prenda casual/deportiva
-     o de abrigo: "una chaqueta de cuero" → "una campera de cuero", "envío de chaquetas"
-     → "envío de camperas". MANTENER "chaqueta" si el contexto la equipara claramente a
-     un saco formal de traje masculino (uso poco frecuente en NLI). En la duda, cambiar
-     a "campera". Cada ocurrencia es un cambio B.)
+   pequeño/a → chico/a por defecto en casi todos los contextos. Evidencia: corpus AR
+   muestra "chico/a" ~16x más frecuente que "pequeño/a" (3,360 vs 205 en 30k artículos
+   de medios argentinos), tanto para tamaño físico como para edad y sentidos figurados.
+     - Tamaño físico de objeto: "una mesa pequeña" → "una mesa chica", "un país
+       pequeño" → "un país chico", "emprendimientos pequeños" → "emprendimientos chicos".
+     - Comparativo: "el más pequeño de los hermanos" → "el más chico de los hermanos".
+     - Edad standalone: preferir diminutivo del sustantivo ("mi hija pequeña" → "mi
+       hijita", "el perro pequeño" → "el perrito") o "más chico/a" ("mi hija más chica").
+       Evitar "mi hija chica" solo (suena raro). En la duda, diminutivo del sustantivo.
+     - Cantidad/abstracto acotado: "una pequeña diferencia" → "una diferencia chica",
+       "un pequeño detalle" → "un detalle chico" o "un detalle menor" según ritmo.
+   MANTENER "pequeño/a" cuando: (a) registro literario o formal explícito;
+   (b) compuestos lexicalizados ("pequeña y mediana empresa" / "PyME" como categoría
+   jurídico-económica, "pequeño productor"); (c) matiz de "ínfimo/insignificante" donde
+   "chico" lo neutralizaría. En la duda, cambiar a chico.
    ello → eso (sustitución directa en registro conversacional/no estrictamente formal:
      "a través de todo ello" → "a través de todo eso", "por ello" → "por eso", "con
      ello" → "con eso". "Ello" es marcadamente peninsular/literario en RP, donde el
@@ -141,13 +153,146 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      propio o título formal que contenga "Young"; (c) registro académico, estadístico
      o formal ("población joven", "trabajadores jóvenes" en estadística/sociología).
      En la duda, cambiar. Cada ocurrencia es un cambio B.)
-   coche → auto
-   autobús → colectivo    |  piso (=apartamento) → departamento
+   dinero → plata (por defecto en casi todos los contextos: "tenemos mucho
+     dinero" → "tenemos mucha plata", "ahorrar dinero" → "ahorrar plata",
+     "no tengo dinero" → "no tengo plata", "las escuelas quieren dinero" →
+     "las escuelas quieren plata", "el gobierno pierde dinero" → "el gobierno
+     pierde plata". Cuidar concordancia de género: "mucho dinero" → "mucha
+     plata", "ese dinero" → "esa plata", "el dinero" → "la plata".
+     MANTENER "dinero" solo cuando genuinamente suena mal en RP:
+     (a) contextos de violencia o terrorismo organizado ("Al Qaeda recaudaba
+         dinero", "los talibanes querían dinero y armas") — en estos registros
+         "plata" resulta inapropiado;
+     (b) transferencias financieras con jerga muy técnica o extranjera ("el
+         hawaladar recibiría el dinero en rupias");
+     (c) compuestos lexicalizados: "lavado de dinero", "blanqueo de dinero",
+         "ruta del dinero", "desvío de dinero";
+     (d) donación formal explícita como acto institucional ("dar dinero a la
+         campaña").
+     Usar "fondos" cuando una organización o agencia recauda, asigna o
+     administra fondos presupuestarios: "las agencias recaudan fondos",
+     "la junta asignó fondos".
+     En la duda, cambiar a plata. Cada cambio es tipo B.)
+   coche → auto    |  piso (=apartamento) → departamento
+   autobús → traducción contextual según tipo de servicio (en RP no hay una palabra
+     única para "bus"):
+     - urbano de línea / transporte público de ciudad ("el autobús número 60", "tomar
+       el autobús al trabajo", "esperar el autobús en la parada"): → "colectivo".
+     - escolar ("autobús escolar", "el autobús de la escuela"): → "combi escolar" o
+       "transporte escolar". En AR el transporte escolar suele ser una combi/van,
+       no un bus amarillo estilo USA.
+     - larga distancia / interurbano ("autobús a Mendoza", "autobús nocturno", "autobús
+       de la terminal", servicio entre ciudades): → "micro" u "ómnibus".
+     - DEFAULT si el contexto no especifica claramente el tipo: → "colectivo".
+     Cada ocurrencia es un cambio B.
+   carretera → ruta (vía interurbana/rural: "por la carretera" → "por la ruta". Usar
+     "autopista" si el contexto implica acceso controlado/peaje. NUNCA reemplazar por
+     "calle" o "avenida": carretera refiere a vías fuera de la ciudad, no urbanas.)
+   jersey → buzo (prenda de punto/abrigo informal: "llevaba un jersey" → "llevaba un
+     buzo"; si el contexto implica tejido/pulóver formal, preferir "pulóver". Cada
+     ocurrencia es un cambio B. [Pendiente revisión Opus])
+   tío → che / tipo según uso (NO reemplazar cuando es pariente):
+     - familiar (uncle): MANTENER ("mi tío", "la casa de tu tío", "el tío de Juan").
+     - vocativo coloquial peninsular ("¿ves, tío?", "personalidad doble, tío"):
+       → "che" o simplemente eliminar si queda natural.
+     - referencia de género ("todo el mundo la trata como un tío"):
+       → "tipo" o "hombre" según contexto.
+     En la duda sobre si es familiar o coloquial, MANTENER. [Pendiente revisión Opus]
+   niño/a → en contexto coloquial/familiar puede usarse "nene/nena" o "chico/a":
+     "mi niño" (hablante sobre su hijo) → "mi nene". "los niños del barrio" → "los chicos del barrio".
+     MANTENER "niño/a" en registro narrativo, formal, académico o cuando el contexto no es claramente coloquial.
+     En la duda, mantener.
+   bote → según referente:
+     - embarcación pequeña (bote de remos, lancha chica) → mantener "bote" o "lancha" según tamaño.
+     - embarcación grande (contexto de barco/navío) → "barco".
+     - "bote de basura" → "tacho de basura".
+   arrojar → tirar (en RP no se dice "arrojar" en registro coloquial: "la gente nunca arroja dinero" → "la gente nunca tira dinero". 4 ocurrencias XNLI.)
    oye → traducción contextual (NO reemplazar mecánicamente):
      - con vocativo: oye tío → che flaco/pibe/amigo
      - indignación/sorpresa: pero oye → pero che
      - transición suave: oye, fueron → bueno, fueron
+   uh / hum / um → este... / mmm / emm (muletillas de hesitación anglófonas: ninguna es natural
+     en RP. Reemplazar por "este...", "mmm" o "emm" según el ritmo de la frase. Si ya hay un
+     "eh" en la misma oración, preferir "este..." para no duplicar. "uh-huh" → "ajá" o "sí, sí"
+     (huh solo aparece en el compuesto uh-huh). Cada ocurrencia es tipo B.)
+   tonto/a/s → boludo/a, tarado/a, gil, pavo/a, iluso/a según contexto. En RP coloquial
+     "tonto" suena suave y formal; cambiar por defecto. Mapeo según función:
+     - Insulto vocativo o predicativo a persona ("¡eres un tonto!", "sos tan tonto", "es la
+       verdad, tonto", "si no fueras un tonto"): preferir "boludo/a" (más neutro coloquial)
+       o "tarado/a" (más fuerte). "Iluso/a" si la nota es de ingenuidad sin agresión
+       ("Ogle fue un tonto al creer en Santa Claus" → "Ogle fue un iluso al creer...").
+     - Adjetivo de cosa abstracta (idea, gasto, palabras, juegos, escepticismo): "boludo/a"
+       ("una idea tonta" → "una idea boluda", "palabras tontas" → "palabras boludas",
+       "qué tan tonto sea el gasto" → "qué tan boludo sea el gasto" o "qué tan al pedo
+       sea el gasto").
+     - "Hacerse el tonto" → "hacerse el boludo" (locución fija RP con el sentido de
+       fingir desconocimiento o no darse por enterado). "Hacerse el gil" NO sirve aquí:
+       en RP significa "actuar como tonto / no darse cuenta", no "fingir que no se sabe".
+     - Predicativo impersonal ("parece tonto separar X", "es tonto creer Y"): "parece
+       boludo separar X" o "es al pedo separar X".
+     MANTENER "tonto/a" SOLO en: (a) narrativa literaria pura (no diálogo) — ej. "el tonto
+     quijotesco corre hacia el peligro", "luce francamente tonto" en descripción narrativa;
+     (b) compuestos lexicalizados ("el tonto del pueblo"); (c) registro académico/formal
+     escrito. NOTA: en obras literarias con diálogos transcriptos (ej. Captain Blood), el
+     diálogo SÍ cambia ("¡era tan tonto!" → "¡era tan tarado!"), solo la voz narrativa
+     mantiene. En la duda, cambiar. Cada ocurrencia es tipo B.)
+   oh → traducción contextual (en RP no se usa "oh" salvo en registro literario/dramático
+     explícito; es marcadamente extranjero/transcripción de habla anglo). Reemplazo según
+     función:
+     - apertura suave de turno ("oh, pasé buena parte de mi tiempo...", "oh, chico, acá tenés...",
+       "oh, pero de todos modos...") → "ah" o "uy" (más coloquial); también puede eliminarse si
+       queda redundante.
+     - afirmación/reconocimiento ("oh, sí", "oh claro", "oh, ya veo") → "ah, sí" / "ah, claro" /
+       "ah, ya veo".
+     - sorpresa/exclamación con "Dios" ("oh Dios", "oh dios") → "ay Dios" o "Dios mío".
+     - doblada ("oh, oh") → "uy, uy" o "ay, ay".
+     MANTENER "oh" solo en: (a) registro literario explícito ("¡Oh, qué desdicha!"); (b) nombre
+     propio. En la duda, cambiar. Cada ocurrencia es tipo B.)
+   milla/s → kilómetro/s con CONVERSIÓN NUMÉRICA REAL (1 milla ≈ 1.609 km). En RP la unidad
+     de distancia terrestre es el kilómetro; "millas" suena foráneo salvo en contextos
+     marítimos. Reglas:
+     - Distancias terrestres (carreteras, terreno, vivienda, ciudad, países, USA/Texas/etc):
+       CONVERTIR usando 1 mi ≈ 1.609 km y redondear a un número natural cercano.
+       Ejemplos: "5 millas" → "8 km" (5×1.609=8.05); "100 millas" → "160 km";
+       "cien millas al este de Texas" → "ciento sesenta kilómetros al este de Texas";
+       "media milla" → "800 metros" (o "0,8 km"); "diez millas" → "16 km".
+     - Si la oración escribe el número en letras, escribir el resultado también en letras
+       ("cien millas" → "ciento sesenta kilómetros"). Si está en dígitos, mantener dígitos
+       ("5 millas" → "8 km").
+     - Registrar como tipo B (sustitución léxica + adaptación cultural-métrica).
+     MANTENER "milla/s" SIN CONVERTIR SOLO en contexto náutico/marítimo: barcos,
+     navegación, océano, distancias entre embarcaciones, tierra vista desde el mar,
+     alcance de cañones navales, etc. En náutica argentina la milla náutica (1852 m)
+     es el estándar internacional adoptado por la Armada, prefectura y cartografía
+     hidrográfica. Ejemplos que MANTIENEN: "a tres millas de distancia" (barco viendo
+     costa), "media milla hasta el rango" (cañones navales), "por millas, solo un océano",
+     "un par de millas después de ellos vinieron barcos".
+
+     NOMBRES PROPIOS CON UNIDAD MÉTRICA (excepción controlada a la Restricción 2):
+     cuando un nombre propio incorpora la unidad "milla/mile" como parte semántica
+     (no como referencia única intraducible), adaptar la unidad para preservar la
+     metáfora en RP. Ejemplos: "Milla de Oro" → "Kilómetro de Oro"; "Golden Mile"
+     → "Golden Kilometer". Aplicar consistentemente en prem y en hyp (la consistencia
+     del nombre propio adaptado es obligatoria, igual que la Restricción 6 de v2 para
+     referentes culturales).
+     CUIDADO NLI: si el par premisa-hipótesis usa números relacionados (ej. prem "5 millas",
+     hyp "menos de 10 km"), convertir AMBOS lados coherentemente para preservar la relación
+     lógica. Esta es la única excepción permitida a la Restricción 5 fuera del referente
+     cultural E.1/E.2: la consistencia de unidad métrica entre prem y hyp es obligatoria.
    esto... (muletilla) → eso... o este...
+   pronto → MANTENER por defecto. NO es peninsularismo: "pronto" es estándar en RP en
+     todos los registros, igual que la construcción "tan pronto como". Alternativas
+     coloquiales como "ni bien", "apenas", "enseguida", "rápido" son válidas pero NO
+     obligatorias; aplicarlas SOLO si la oración es claramente coloquial-conversacional
+     y la alternativa suena más natural. Default: mantener "pronto". No registrar como
+     cambio salvo que efectivamente se reemplace.
+   vale → dale/bueno (afirmación/acuerdo en registro coloquial: "vale, nos vemos" →
+     "dale, nos vemos", "vale, entendido" → "bueno, entendido", "¿vale?" →
+     "¿dale?" o "¿sí?". "Vale" es marcadamente peninsular; en RP la afirmación
+     habitual es "dale" (más coloquial) o "bueno" (más neutro).
+     MANTENER si: (a) es verbo "valer" conjugado ("no vale mentir", "¿cuánto vale?");
+     (b) nombre propio que contenga "Vale"; (c) registro formal escrito.
+     En la duda, cambiar. [Pendiente revisión Opus])
    pues → traducción contextual (NO reemplazar mecánicamente):
      - muletilla / introductor de turno ("pues no lo sé", "pues sí, fue ayer"):
        → "bueno", "este...", "y..." (o eliminar si queda redundante).

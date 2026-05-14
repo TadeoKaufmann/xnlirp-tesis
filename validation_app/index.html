@@ -81,38 +81,18 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .text-box { margin-bottom: 14px; }
-  .sticky-question {
-    position: sticky;
-    top: 0;
-    background: var(--card);
-    z-index: 10;
-    margin: -24px -24px 0;
-    padding: 16px 24px 14px;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-    border-radius: var(--radius) var(--radius) 0 0;
-  }
-  .sticky-question .question { margin-top: 0; margin-bottom: 12px; }
-  .sticky-question .options { grid-template-columns: repeat(3, 1fr); }
   .text-cols {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    margin-top: 18px;
     margin-bottom: 18px;
   }
-  .comment-cols {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 14px;
-  }
-  .comment-label {
-    display: block;
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-bottom: 4px;
-    font-weight: 500;
+  .text-col textarea {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    min-height: 50px;
+    width: 100%;
+    box-sizing: border-box;
   }
   .text-label {
     font-size: 0.72rem;
@@ -297,8 +277,8 @@
 <div class="container">
   <header>
     <h1>Validación lingüística</h1>
-    <p>¿Suena natural en rioplatense?</p>
-    <p class="instructions">Evaluá si los pares de texto suenan naturales en rioplatense. Si algo suena raro, escribí en el comentario qué cambiarías. No importa si los textos no tienen relación entre sí, eso es normal.</p>
+    <p>¿Suena natural en castellano?</p>
+    <p class="instructions">Evaluá si la premisa y la hipótesis suenan naturales en castellano. Si algo suena raro, escribí en el comentario qué cambiarías. No importa si la premisa y la hipótesis no tienen relación entre sí, eso es normal.</p>
   </header>
 
   <main id="app">
@@ -310,8 +290,8 @@
       <div class="card card-anim" style="text-align: center; padding: 36px 24px;">
         <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
         <h2>¡Bienvenido/a!</h2>
-        <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones y nos vas a decir si suenan naturales en rioplatense.</p>
-        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva unos 15 minutos.</p>
+        <p class="muted" style="margin: 12px 0 10px;">Muchas gracias por empezar. Vas a ver pares de oraciones en castellano y nos vas a decir si suenan naturales.</p>
+        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
     </div>
@@ -320,27 +300,23 @@
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
-        <div class="sticky-question">
-          <div class="question">¿Estos textos suenan naturales en rioplatense?</div>
-          <div class="options" id="options-respuesta">
-            <button class="option" data-value="si">Sí</button>
-            <button class="option" data-value="parcialmente">Parcialmente</button>
-            <button class="option" data-value="no">No</button>
-          </div>
-        </div>
         <div class="text-cols">
           <div class="text-col">
-            <div class="text-label">Texto 1</div>
+            <div class="text-label">Premisa</div>
             <div class="text-content" id="text-prem"></div>
-            <span class="comment-label" style="margin-top:8px;">Comentario</span>
-            <textarea id="correccion-prem" placeholder="¿Algo raro? (opcional)"></textarea>
+            <textarea id="correccion-prem" placeholder="¿Algo raro en la premisa?"></textarea>
           </div>
           <div class="text-col">
-            <div class="text-label">Texto 2</div>
+            <div class="text-label">Hipótesis</div>
             <div class="text-content" id="text-hyp"></div>
-            <span class="comment-label" style="margin-top:8px;">Comentario</span>
-            <textarea id="correccion-hyp" placeholder="¿Algo raro? (opcional)"></textarea>
+            <textarea id="correccion-hyp" placeholder="¿Algo raro en la hipótesis?"></textarea>
           </div>
+        </div>
+        <div class="question">¿Este texto suena natural en castellano?</div>
+        <div class="options" id="options-respuesta">
+          <button class="option" data-value="si">Sí</button>
+          <button class="option" data-value="parcialmente">Parcialmente</button>
+          <button class="option" data-value="no">No</button>
         </div>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
@@ -353,7 +329,7 @@
     <div id="screen-final" class="hidden">
       <div class="card card-anim">
         <h2>Casi listo</h2>
-        <p class="muted" style="margin-bottom: 22px;">Para finalizar, tres preguntas breves.</p>
+        <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
         <div class="field">
           <label for="region">¿De qué región sos?</label>
           <select id="region">
@@ -398,10 +374,6 @@
             <button class="option" data-quiere="false">No</button>
           </div>
         </div>
-        <div class="field">
-          <label for="feedback-formato">¿Qué opinás del formato de las preguntas? (opcional)</label>
-          <textarea id="feedback-formato" placeholder="Cualquier comentario sobre cómo están planteadas las preguntas…" style="min-height:72px;"></textarea>
-        </div>
         <button class="btn btn-primary btn-block" id="btn-submit">Enviar respuestas</button>
       </div>
     </div>
@@ -440,8 +412,7 @@
 
 <script>
   // ── Config ──────────────────────────────────────────────────────────────
-  const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
+ ;
 
   // ── Validaciones piloto del batch 200-259 (referencia, mayo 2026) ──────
   // Anotador e34cf881-10c8-4050-916f-00e239bb6239 sobre el batch de 60
@@ -495,8 +466,69 @@
   //   2578: parcialmente — "Carolina del Sur por Misiones" (sigue en INSTANCES,
   //          puede re-validarse via la app si hace falta).
 
-  // ── Instancias (cargadas desde Supabase en init) ────────────────────────
-  let INSTANCES = [];
+  // ── Instancias ──────────────────────────────────────────────────────────
+  const INSTANCES = [
+    {"idx": 2078, "prem": "Sofias, cerca de la estación de metro de Megaro Mousikis.", "hyp": "Sofias está a tiro de piedra de la estación de metro Megaro Mousikis."},
+    {"idx": 4117, "prem": "Cuando esta técnica funciona, obtenés una historia poderosa, aunque una cuyo tema no se revela hasta alrededor del tercer párrafo.", "hyp": "Esta técnica de escribir historias vale la pena cuando alcanzás el tercer párrafo."},
+    {"idx": 59, "prem": "Bueno, llegó hasta el punto en que hay dos o tres aeronaves que llegan en una semana y no sabía a dónde volaban.", "hyp": "Nunca llega ningún avión."},
+    {"idx": 1619, "prem": "Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.", "hyp": "Usted ha concedido, según tengo entendido, la autorización del rey al hombre por su valentía."},
+    {"idx": 4047, "prem": "Sin embargo, hay un premio de consolación para la humanidad.", "hyp": "El premio de consolación es una licuadora de dos velocidades gratis para todos."},
+    {"idx": 3446, "prem": "Rababah, que había vivido en Connecticut, Nueva York, y en Nueva Jersey, dijo a los investigadores que había recomendado Paterson, en Nueva Jersey, como un lugar con una comunidad de habla árabe donde quizá Hazmi y Hanjour podrían querer asentarse.", "hyp": "Rababah recomendó que sólo permaneciesen en Nueva York."},
+    {"idx": 90, "prem": "¡Y en realidad era ligera!", "hyp": "Comió mucha comida, pero no aumentó de peso."},
+    {"idx": 1249, "prem": "Los niños deberían llamar a la puerta de sus vecinos y", "hyp": "Los niños nunca pondrían un pie en la propiedad de sus vecinos."},
+    {"idx": 2723, "prem": "El tiempo desde la realización del pedido hasta la finalización de las actividades de puesta en marcha es de 46 semanas para ambas unidades.", "hyp": "Hay otras unidades que podrían completar estos pedidos más rápidamente por un precio más alto."},
+    {"idx": 1754, "prem": "Por fin le da un motivo de queja.", "hyp": "La muerte de un miembro de la familia le había causado mucha tristeza."},
+    {"idx": 3877, "prem": "¿Buscás un poco de equilibrio?", "hyp": "Podemos ayudarte a conseguir equilibrio ahora mismo."},
+    {"idx": 1335, "prem": "Por tanto, a medida que aumenta la diversidad de objetos en la web, la diversidad de posibles nichos de nuevos bienes y servicios aumenta con más rapidez todavía.", "hyp": "Cuantos más objetos haya en la web, más difícil se hace la existencia de nichos de mercado."},
+    {"idx": 2921, "prem": "Retirada de bonos antes de fondos fiduciarios y fondos especiales (excepto los fondos fiduciarios rotatorios)", "hyp": "Los fideicomisos con fondos rotativos facilitan la obtención de tu dinero."},
+    {"idx": 3652, "prem": ", clases más pequeñas, uso de tecnología), y pasar de una falta de espacio para apoyo a los estudiantes desde hace tiempo (casilleros, servicio de comidas, oficinas para organizaciones estudiantiles).", "hyp": "Hay muchos más casilleros de los que los estudiantes necesitarían en algún momento."},
+    {"idx": 3661, "prem": "En la celebración del 90º cumpleaños de la Escuela de Medicina de la Universidad de Indiana, vemos lo mucho que debemos a los soñadores y a sus sueños.", "hyp": "La Facultad de Medicina de la Universidad de Indiana debe mucho a los soñadores"},
+    {"idx": 3925, "prem": "Con su membresía podrá acudir a actividades solo para miembros y tendrá credenciales completas para todas las sesiones de congresos oficiales.", "hyp": "Ingresará a los eventos sólo para miembros que se realizan cada dos semanas."},
+    {"idx": 4556, "prem": "No se sugiere que estos sujetos estén prohibidos, solo que es difícil, incluso después de veinte años de aculturización, que un forastero perciba mucho de lo que es divertido acerca de los suyos.", "hyp": "Estos temas son difíciles de entender para los forasteros."},
+    {"idx": 3615, "prem": "Los docentes con títulos de la Social Health Association ofrecen presentaciones en el colegio en tres", "hyp": "Todos los educadores tienen maestrías."},
+    {"idx": 1310, "prem": "Si Godzilla está mejor cuando se empareja con los ecovecinos de la primera especie que con esa especie, esa especie se extingue en su nicho y se ve reemplazada por Godzilla.", "hyp": "Es técnicamente imposible para una especie extinguirse."},
+    {"idx": 4157, "prem": "Rudolph Giuliani defiende su gestión en el manejo del tiroteo de Amadou Diallo en Newsweek. [El Departamento de Policía de Nueva York] no es el KKK, comenta.", "hyp": "Rudolph Giuliani hizo una declaración a la revista Newsweek sobre su manejo del tiroteo de Amadou Diallo."},
+    {"idx": 1471, "prem": "Tanto implícitamente como explícitamente, con trabajo modesto, el objeto del pistón puede descubrir que se encaja en el orificio del cilindro en el objeto del bloque del motor para crear un pistón completo en un cilindro.", "hyp": "El bloque del motor tiene un agujero en las motocicletas."},
+    {"idx": 815, "prem": "Bueno tengo una novia que tiene una hija adolescente y cada año antes de que empiece la escuela me pide que vaya con ella a comprar ropa porque discuten demasiado.", "hyp": "La hija de mi novia se niega a ir de compras conmigo."},
+    {"idx": 4719, "prem": "Él lo rimaba con pandemonium; a juzgar por las demandas que proliferan en los espacios de estacionamiento de condominio, barbacoas en el balcón y mascotas haciendo caca en los pasillos, podría haber tenido razón al usar el neologismo.", "hyp": "La convirtió en una palabra que rimaba."},
+    {"idx": 2758, "prem": "La siguiente figura ilustra las estructuras organizativas tradicionales centralizadas y descentralizadas, en comparación con la combinación híbrida utilizada hoy en día por las principales organizaciones.", "hyp": "Las organizaciones líderes usan un modelo híbrido."},
+    {"idx": 4918, "prem": "Parece ser una estación de paso entre el politeísmo y el monoteísmo, un concepto útil que representa un eslabón perdido en el proceso evolutivo.", "hyp": "Podría ser un intermedio entre el politeísmo y el monoteísmo."},
+    {"idx": 954, "prem": "sí, bueno, su nombre es Valen porque es acortamiento de Valentina y todo el mundo la trata como un tipo", "hyp": "Ella insiste en que todos usen su nombre completo."},
+    {"idx": 2524, "prem": "En consecuencia, los responsables de la toma de decisiones y los gerentes del gobierno están adoptando nuevas formas de pensar, considerando diferentes formas de lograr los objetivos y utilizando nueva información para guiar las decisiones.", "hyp": "Los representantes del gobierno intentan aumentar su poder pensando de manera diferente."},
+    {"idx": 4075, "prem": "Lawrence Singleton, un famoso violador que amputó los antebrazos de sus víctimas y luego pasó solo ocho años en prisión, fue detenido por apuñalar hasta la muerte de otra mujer en Florida.", "hyp": "Para todos era obvio que su tiempo en prisión lo había rehabilitado por completo."},
+    {"idx": 4672, "prem": "Todo el tiempo que estuve arrodillado con mi frente en la madera frente a mí, y estaba pensando en mí mientras rezaba, estaba un poco avergonzado.", "hyp": "Puse mi cabeza en el altar."},
+    {"idx": 3261, "prem": "Varios pisos de fuego hubieran superado la capacidad de extinción de incendios de las fuerzas disponibles", "hyp": "Todo el edificio podría haber ardido y hubiéramos podido extinguir los incendios."},
+    {"idx": 3618, "prem": "El año pasado, el 17 % del presupuesto de operaciones del museo vino de contribuciones de donantes leales.", "hyp": "El año pasado, menos de una cuarta parte del presupuesto operativo del museo provino de donaciones."},
+    {"idx": 1603, "prem": "Lo estuve buscando este año pasado.", "hyp": "Solo lo he estado siguiendo durante una semana."},
+    {"idx": 3904, "prem": "Incluso con la continua generosidad de los donantes, el museo tiene programas y operaciones que no reciben financiación todos los años.", "hyp": "Los museos no siempre obtienen todos los fondos que necesitan."},
+    {"idx": 1254, "prem": "No era una posición bicultural o binacional, sino una posición entre culturas, una posición que cuelga en el espacio.", "hyp": "Todo el mundo sabe que solo había una cultura."},
+    {"idx": 1306, "prem": "Por eso es tan desconcertante que el vestido y la decoración no combinen.", "hyp": "No es normal que el vestido y la decoración no estén en armonía."},
+    {"idx": 2785, "prem": "Un proveedor alemán de sistemas SCR, instaló SCR en una parte de la capacidad alemana dentro de los períodos de interrupción que constaban de menos de cuatro semanas.", "hyp": "Un sistema SCR alemán funciona en Alemania."},
+    {"idx": 280, "prem": "Su hermana pudo pasar por blanca, y de hecho pasó por blanca.", "hyp": "Generalmente se suponía que su hermana era blanca."},
+    {"idx": 2090, "prem": "El Teatro de Danza Folklórica Dora Stratou presenta interpretaciones de canciones, bailes y música tradicional griega en un auditorio de tipo folklórico tradicional en Philopappos Hill de mayo a septiembre, todos los días excepto los lunes.", "hyp": "Desde mayo hasta septiembre habrá actividades de danza en la colina Filopapos."},
+    {"idx": 2601, "prem": "Por ejemplo, una capital de estado que visitamos es el hogar de más de 600 compañías de software.", "hyp": "Las capitales son los mejores lugares para las compañías de software."},
+    {"idx": 4722, "prem": "Ella insistió en que él volara a casa, que significa que ella quería que volara a casa, aunque si lo hizo o no sería revelado en un capítulo posterior.", "hyp": "A pesar de que ella le dijo que volviera a casa, no está seguro si lo hizo o no."},
+    {"idx": 3555, "prem": "El acceso a nuestro recinto estará abierto a cualquier persona que disponga de una computadora y un módem.", "hyp": "La gente no necesita nada para acceder a los terrenos."},
+    {"idx": 560, "prem": "Acá están las cosas realmente mal, acaba de producirse un tiroteo en la autopista, a tres manzanas de nuestra casa.", "hyp": "Hubo un tiroteo cerca de mi casa, realmente no es bueno en esta área."},
+    {"idx": 4223, "prem": "Sospecho que parte de la respuesta es sociológica.", "hyp": "La cuestión está puramente basada en la psicología."},
+    {"idx": 1842, "prem": "Aunque incluso algunos de ellos deberían saberlo mejor, ya que todavía hay algunos en Barbados con nosotros, y se conocen con el Coronel Bishop, como vos y yo.", "hyp": "Ninguno de nosotros conoce al coronel Bishop."},
+    {"idx": 4288, "prem": "Ahora, estos no son problemas de los que los libertarios de torre de marfil harían caso.", "hyp": "Los libertarios de torre de marfil estarían interesados en estos temas."},
+    {"idx": 1233, "prem": "Sentado solo como juez de circuito, el Presidente Taney interpretó que la disposición constitucional requería autorización del Congreso para suspender el mandato.", "hyp": "Taney dijo que el Congreso podría detener la orden durante 10 minutos."},
+    {"idx": 4641, "prem": "Los oradores que quieren impresionar a sus audiencias saben que tienen que trasladar los puntos y los hechos clave, luego anunciarlos, repetirlos, dramatizarlos, explicarlos y embellecerlos.", "hyp": "La repetición es un elemento de las impresionantes técnicas del discurso."},
+    {"idx": 3948, "prem": "Si bien las cifras son impresionantes, las becas a menudo son críticas para reclutar a los mejores estudiantes con necesidades financieras.", "hyp": "Los mejores estudiantes con necesidades financieras se benefician de becas."},
+    {"idx": 4348, "prem": "Walcott se preparó para ser pintor (como su padre, maestro de escuela, que murió cuando Walcott era un bebé) y The Bounty es su libro más pictórico, en cuanto a método y tema.", "hyp": "El padre de Walcott prefirió su trabajo como pintor en vez de su trabajo como docente."},
+    {"idx": 4409, "prem": "La implicación más sorprendente de la teoría CMP es que la preocupación por la posición relativa desaparece en las sociedades donde las parejas son asignadas por mecanismos distintos a la riqueza.", "hyp": "La teoría de CMP es sobre cometas."},
+    {"idx": 289, "prem": "Y acá estoy pensando que va a venir como, ya sabés, para sacarlo conmigo, ya sabés, regañarme como si hubiera podido cambiarlo.", "hyp": "Pensé que venía para pelear."},
+    {"idx": 1515, "prem": "Ahí, a no más de tres millas de distancia, había tierra, una pared irregular de intenso color verde que llenaba el horizonte occidental.", "hyp": "Un paisaje exuberante estaba a la vista."},
+    {"idx": 2633, "prem": "La suspensión temporal de la representación legal durante la ausencia de un cliente buscando una continuación no es una alternativa viable para retirarse formalmente del caso.", "hyp": "No es bueno detener la representación legal."},
+    {"idx": 3992, "prem": "Por favor, dá ahora para que podamos seguir dándote a vos, a tus amigos y a tus vecinos.", "hyp": "Dejaremos de recaudar fondos si nos das 1000$ ahora."},
+    {"idx": 493, "prem": "Es lo suficientemente mayor como para ser mi papá.", "hyp": "Él es mucho más joven que yo."},
+    {"idx": 4806, "prem": "El tono de pulso no es un término técnico.", "hyp": "El manual técnico oficial indica que 'pulso-tono' es el término correcto en este caso."},
+    {"idx": 2452, "prem": "El edificio une dos iglesias idénticas, la Franzoesischer Dom (o catedral francesa) al norte, construida para los inmigrantes hugonotes, y la Deutscher Dom (catedral alemana) al sur.", "hyp": "Ambas iglesias tienen agujas altas y grandes."},
+    {"idx": 445, "prem": "En cualquier caso, nos desplegamos, y puedo decir ahora que por este motivo nos desplegaron a Kadina, en Okinawa, y esto fue en 1968.", "hyp": "Nunca terminamos desplegando a nadie."},
+    {"idx": 3242, "prem": "La oficina legal del FBI en París se puso en contacto por primera vez con el Gobierno francés el 16 o 17 de agosto, poco después de hablar por teléfono con el agente del caso de Mineápolis.", "hyp": "El FBI abrió una oficina en París en 1925."},
+    {"idx": 4111, "prem": "Entonces, ¿por qué es mejor que convertirse en un abrigo de piel?", "hyp": "Si el animal ya está muerto y la piel se va a desechar o quemar si no se usa, ¿convertirla en una abrigo de piel es la mejor opción y una forma de reciclaje?"}
+  ];
 
   // ── Mensajes de aliento ─────────────────────────────────────────────────
   const MESSAGES = [
@@ -525,8 +557,6 @@
   const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
   let selectedQuiereMas = null;
-  let feedbackFormato = '';
-  let pendingFirstUnanswered = 0; // instancia a abrir al pulsar "Empezar/Continuar"
   const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
 
   // ── Helpers ─────────────────────────────────────────────────────────────
@@ -570,7 +600,6 @@
   function renderInstance(i) {
     if (i < 0 || i >= availableInstances.length) return;
     currentIndex = i;
-    window.scrollTo(0, 0);
     const inst = availableInstances[i];
 
     document.getElementById('text-prem').textContent = inst.prem;
@@ -601,14 +630,13 @@
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
-  async function doSave(idx, extraFields = {}) {
+  async function doSave(idx) {
     const r = responses.get(idx);
     if (!r || !r.respuesta) return;
     const payload = {
       respuesta: r.respuesta,
       comentario_prem: r.comentario_prem || null,
-      comentario_hyp: r.comentario_hyp || null,
-      ...extraFields
+      comentario_hyp: r.comentario_hyp || null
     };
     if (r.dbId) {
       const { error } = await sb.from('Respuestas').update(payload).eq('id', r.dbId);
@@ -651,11 +679,20 @@
 
     try {
       await flushAllSaves();
-      // Actualizar region y quiere_mas en un solo UPDATE para todas las filas del anotador
-      const { error: updErr } = await sb.from('Respuestas')
-        .update({ region: selectedRegion, quiere_mas: selectedQuiereMas, feedback_formato: feedbackFormato || null })
-        .eq('anotador_id', anotadorId);
-      if (updErr) throw updErr;
+      // Actualizar region y quiere_mas en cada fila por su id primario
+      // (filtrar por anotador_id falla silenciosamente con RLS anónimo)
+      const updates = [];
+      for (const [, r] of responses.entries()) {
+        if (r.dbId) {
+          updates.push(
+            sb.from('Respuestas')
+              .update({ region: selectedRegion, quiere_mas: selectedQuiereMas })
+              .eq('id', r.dbId)
+              .then(({ error }) => { if (error) throw error; })
+          );
+        }
+      }
+      await Promise.all(updates);
       showScreen('screen-thanks');
       if (selectedQuiereMas) {
         document.getElementById('btn-seguir').classList.remove('hidden');
@@ -668,84 +705,12 @@
     }
   }
 
-  // ── Reservas (anti-race-condition) ──────────────────────────────────────
-  // Tabla `reservas` (idx PRIMARY KEY) actúa como mutex distribuido. Cuando un
-  // anotador entra, intenta insertar reservas para su batch; el PK garantiza
-  // exclusividad atómica. Si pierde una carrera, busca reemplazos. Las reservas
-  // expiran a las 2h (renovamos las propias en cada init).
-  const RESERVA_TTL_MS = 2 * 60 * 60 * 1000;
-
-  async function reservarBatch(candidateBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, intento) {
-    const yaRespondidos = new Set(
-      candidateBatch
-        .filter(i => { const r = responses.get(i.idx); return r && r.respuesta; })
-        .map(i => i.idx)
-    );
-
-    const nuevosAReservar = candidateBatch.filter(i =>
-      !reservasMias.has(i.idx) && !yaRespondidos.has(i.idx)
-    );
-    if (nuevosAReservar.length === 0) return candidateBatch;
-
-    let insertedIdxs = new Set();
-    try {
-      const { data: ins, error } = await sb
-        .from('reservas')
-        .upsert(
-          nuevosAReservar.map(i => ({ idx: i.idx, anotador_id: anotadorId })),
-          { onConflict: 'idx', ignoreDuplicates: true }
-        )
-        .select('idx');
-      if (error) throw error;
-      insertedIdxs = new Set((ins || []).map(r => r.idx));
-    } catch (err) {
-      // Si la reserva falla, devolvemos el batch tal cual: el PK del INSERT en
-      // Respuestas y el filtro de otherAnnotated en próximas cargas siguen siendo
-      // garantías. Mejor degradar que bloquear.
-      console.warn('reservarBatch insert (degradando)', err);
-      return candidateBatch;
-    }
-
-    for (const idx of insertedIdxs) reservasMias.add(idx);
-
-    const perdidos = nuevosAReservar.filter(i => !insertedIdxs.has(i.idx));
-    if (perdidos.length === 0) return candidateBatch;
-
-    for (const p of perdidos) reservasAjenas.add(p.idx);
-
-    const batchSinPerdidos = candidateBatch.filter(i =>
-      !perdidos.some(p => p.idx === i.idx)
-    );
-
-    if (intento >= 2) return batchSinPerdidos;
-
-    const enBatch = new Set(batchSinPerdidos.map(i => i.idx));
-    const reemplazos = allAvailable
-      .filter(i =>
-        !enBatch.has(i.idx) &&
-        !reservasAjenas.has(i.idx) &&
-        !otherAnnotated.has(i.idx) &&
-        !reservasMias.has(i.idx)
-      )
-      .slice(0, perdidos.length);
-
-    if (reemplazos.length === 0) return batchSinPerdidos;
-
-    const nuevoBatch = [...batchSinPerdidos, ...reemplazos];
-    return reservarBatch(nuevoBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, intento + 1);
-  }
-
   // ── Init ────────────────────────────────────────────────────────────────
   async function init() {
     anotadorId = getOrCreateAnotadorId();
 
     let allRows;
     try {
-      // Cargar instancias desde Supabase
-      const { data: instData, error: instErr } = await sb.from('instancias').select('idx, prem, hyp');
-      if (instErr) throw instErr;
-      INSTANCES = instData || [];
-
       const { data, error } = await sb.from('Respuestas')
         .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, region, quiere_mas');
       if (error) throw error;
@@ -754,13 +719,6 @@
       console.error('init', err);
       document.getElementById('error-message').textContent =
         err.message || 'No se pudo conectar con el servidor.';
-      showScreen('screen-error');
-      return;
-    }
-
-    if (INSTANCES.length === 0) {
-      document.getElementById('error-message').textContent =
-        'No hay instancias cargadas en la base. Ejecutá validation_app/supabase_setup.sql en Supabase.';
       showScreen('screen-error');
       return;
     }
@@ -782,37 +740,11 @@
       }
     }
 
-    // Cargar reservas activas (últimas 2h). Si falla, seguimos sin reservas —
-    // el PK de reservas igual evita doble-claim cuando intentamos insertar.
-    // Antes de leer, limpiamos las expiradas (>2h) para que sus idx vuelvan al
-    // pool. La RLS de la tabla solo permite borrar las que ya están expiradas.
-    const reservasMias = new Set();
-    const reservasAjenas = new Set();
-    const cutoff = new Date(Date.now() - RESERVA_TTL_MS).toISOString();
-    try {
-      await sb.from('reservas').delete().lt('created_at', cutoff);
-    } catch (err) {
-      console.warn('cleanup reservas expiradas', err);
-    }
-    try {
-      const { data: resData, error: resErr } = await sb.from('reservas')
-        .select('idx, anotador_id, created_at')
-        .gte('created_at', cutoff);
-      if (resErr) throw resErr;
-      for (const r of (resData || [])) {
-        if (r.anotador_id === anotadorId) reservasMias.add(r.idx);
-        else reservasAjenas.add(r.idx);
-      }
-    } catch (err) {
-      console.warn('loadReservas (degradando sin reservas)', err);
-    }
-
     const TEST_MODE = new URLSearchParams(location.search).get('test') === 'true';
-    const BATCH_SIZE = TEST_MODE ? 1 : 15;
+    const BATCH_SIZE = TEST_MODE ? 5 : 15;
 
-    // allAvailable = instancias no respondidas por otros y no reservadas activamente por otros
     const allAvailable = INSTANCES
-      .filter(inst => !otherAnnotated.has(inst.idx) && !reservasAjenas.has(inst.idx))
+      .filter(inst => !otherAnnotated.has(inst.idx))
       .sort((a, b) => a.idx - b.idx);
 
     if (allAvailable.length === 0) {
@@ -825,36 +757,14 @@
     const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
     const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
 
-    // "Retomar" solo si hay reservas activas para alguna instancia en progreso.
-    // Sin reservas, esas respuestas son de sesiones anteriores completadas (ej. test=true)
-    // y hay que arrancar un batch fresco en lugar de mezclarlas con instancias nuevas.
-    const hasActiveInProgress = inProgress.some(i => reservasMias.has(i.idx));
-
-    let candidateBatch;
-    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE && hasActiveInProgress) {
-      // Retomar batch en curso: lo ya respondido + completar hasta BATCH_SIZE
+    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
+      // Retomar batch en curso: lo ya respondido + completar hasta 30
       const doneIdxs = new Set(inProgress.map(i => i.idx));
       const fill = unanswered.filter(i => !doneIdxs.has(i.idx)).slice(0, BATCH_SIZE - inProgress.length);
-      candidateBatch = [...inProgress, ...fill];
+      availableInstances = [...inProgress, ...fill].sort((a, b) => a.idx - b.idx);
     } else {
-      // Batch fresco o siguiente: primeras BATCH_SIZE sin responder
-      candidateBatch = unanswered.slice(0, BATCH_SIZE);
-    }
-
-    // Atomic claim de los idxs nuevos del batch (mutex distribuido)
-    const finalBatch = await reservarBatch(candidateBatch, allAvailable, reservasMias, reservasAjenas, otherAnnotated, 0);
-    availableInstances = finalBatch.sort((a, b) => a.idx - b.idx);
-
-    // Renovar reservas previas para que no expiren mientras el usuario trabaja
-    if (reservasMias.size > 0) {
-      try {
-        await sb.from('reservas')
-          .update({ created_at: new Date().toISOString() })
-          .in('idx', [...reservasMias])
-          .eq('anotador_id', anotadorId);
-      } catch (err) {
-        console.warn('renovar reservas', err);
-      }
+      // Batch fresco o siguiente: primeras 30 sin responder
+      availableInstances = unanswered.slice(0, BATCH_SIZE);
     }
 
     if (availableInstances.length === 0) {
@@ -885,29 +795,21 @@
       const r = responses.get(inst.idx);
       return !r || !r.respuesta;
     });
-    pendingFirstUnanswered = firstUnanswered >= 0 ? firstUnanswered : 0;
 
     const answeredInBatch = availableInstances.length - unanswered.filter(i =>
       availableInstances.some(a => a.idx === i.idx)
     ).length;
 
-    // Siempre mostramos la pantalla de presentación al entrar; el botón
-    // "Empezar / Continuar" lleva a la primera instancia sin responder. Si el
-    // usuario ya tiene respuestas en el batch, ajustamos el mensaje y el CTA.
-    const n = availableInstances.length;
-    const remaining = n - answeredInBatch;
-    const mins = TEST_MODE ? 1 : Math.max(5, Math.round(remaining));
-    const minutosTxt = `lleva ${TEST_MODE ? 'un' : 'unos ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}`;
-    const statsEl = document.getElementById('welcome-stats');
-    const btnEmpezar = document.getElementById('btn-empezar');
     if (answeredInBatch === 0) {
-      statsEl.textContent = `Son ${n} instancia${n === 1 ? '' : 's'}, ${minutosTxt}.`;
-      btnEmpezar.textContent = 'Empezar →';
+      const n = availableInstances.length;
+      const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 3));
+      document.getElementById('welcome-stats').textContent =
+        `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
+      showScreen('screen-welcome');
     } else {
-      statsEl.textContent = `Ya respondiste ${answeredInBatch} de ${n}. Te quedan ${remaining}, ${minutosTxt}.`;
-      btnEmpezar.textContent = 'Continuar →';
+      showScreen('screen-instance');
+      renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
     }
-    showScreen('screen-welcome');
   }
 
   // ── Placeholders dinámicos ───────────────────────────────────────────────
@@ -916,7 +818,7 @@
       'si':           'Podés agregar un comentario si querés',
       'parcialmente': '¿Qué parte suena rara?',
       'no':           '¿Qué suena raro?',
-    }[value] || '¿Algo raro? (opcional)';
+    }[value] || '¿Algo suena raro? (opcional)';
     document.getElementById('correccion-prem').placeholder = ph;
     document.getElementById('correccion-hyp').placeholder  = ph;
   }
@@ -1007,11 +909,7 @@
 
   document.getElementById('btn-empezar').addEventListener('click', () => {
     showScreen('screen-instance');
-    renderInstance(pendingFirstUnanswered);
-  });
-
-  document.getElementById('feedback-formato').addEventListener('input', e => {
-    feedbackFormato = e.target.value;
+    renderInstance(0);
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
