@@ -355,7 +355,7 @@
               <p id="text-prem"></p>
               <p id="text-hyp"></p>
             </div>
-            <div class="word-hint">Tocá una palabra para marcarla en rojo. Tocala de nuevo para escribir la correcta. Enter para confirmar, Esc para cancelar.</div>
+            <div class="word-hint">Tocá una palabra → rojo. Tocala de nuevo para escribir la corrección (Enter para confirmar). Para deshacer: Esc, o borrá el texto y tocá afuera. Click en la corrección azul también deshace.</div>
             <textarea id="correccion-prem" placeholder="¿Algo raro? ¿Qué cambiarías?"></textarea>
             <textarea id="correccion-hyp" style="display:none;"></textarea>
           </div>
@@ -1054,8 +1054,14 @@
       span.contentEditable = 'false';
       span.classList.remove('editing');
       const newVal = span.textContent.trim();
-      if (cancelled || !newVal || newVal === original) {
-        // Cancelado, vacío o sin cambios → vuelve a estado marcado (rojo)
+      if (cancelled || !newVal) {
+        // Esc o input vacío → deshacer marca completa, vuelve a normal
+        span.classList.remove('marked', 'replaced');
+        span.textContent = original;
+        span.removeAttribute('title');
+        await updateMark(instIdx, source, pos, () => null);
+      } else if (newVal === original) {
+        // Sin cambios → queda como marcado (rojo)
         span.classList.add('marked');
         span.textContent = original;
         span.removeAttribute('title');
