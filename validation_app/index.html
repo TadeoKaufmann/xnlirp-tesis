@@ -119,6 +119,10 @@
     padding: 1px 2px;
     margin: 0 -2px;
     transition: background 0.12s, color 0.12s;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.05);
   }
   .word:hover { background: rgba(0, 0, 0, 0.06); }
   .word.marked {
@@ -141,6 +145,9 @@
     border-radius: 3px;
     min-width: 30px;
     font-weight: 500;
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
   }
   .word.unmark-flash {
     background: #d1fae5 !important;
@@ -360,7 +367,7 @@
               <p id="text-prem"></p>
               <p id="text-hyp"></p>
             </div>
-            <div class="word-hint">Tocá una palabra → rojo. Tocala de nuevo para escribir la corrección. <b>Mantené apretado</b> sobre una palabra marcada para deshacer.</div>
+            <div class="word-hint">Tocá una palabra para marcarla en rojo (tocala de nuevo para desmarcar). <b>Mantené apretado</b> sobre una palabra para escribir la corrección.</div>
             <textarea id="correccion-prem" placeholder="¿Algo raro? ¿Qué cambiarías?"></textarea>
             <textarea id="correccion-hyp" style="display:none;"></textarea>
           </div>
@@ -1036,11 +1043,14 @@
     const source = span.dataset.source;
     const pos = parseInt(span.dataset.pos, 10);
     const original = span.dataset.original;
-    span.classList.remove('marked');
+    // Si la palabra ya tenía reemplazo (azul), arrancamos editando ese valor
+    const initText = span.classList.contains('replaced') ? span.textContent : original;
+    span.classList.remove('marked', 'replaced');
     span.classList.add('editing');
+    span.removeAttribute('title');
     span.contentEditable = 'true';
     span.spellcheck = true;
-    span.textContent = original;
+    span.textContent = initText;
     span.focus();
     const range = document.createRange();
     range.selectNodeContents(span);
@@ -1059,18 +1069,12 @@
       span.contentEditable = 'false';
       span.classList.remove('editing');
       const newVal = span.textContent.trim();
-      if (cancelled || !newVal) {
-        // Esc o input vacío → deshacer marca completa, vuelve a normal
+      if (cancelled || !newVal || newVal === original) {
+        // Esc, vacío o sin cambios → deshacer, vuelve a normal
         span.classList.remove('marked', 'replaced');
         span.textContent = original;
         span.removeAttribute('title');
         await updateMark(instIdx, source, pos, () => null);
-      } else if (newVal === original) {
-        // Sin cambios → queda como marcado (rojo)
-        span.classList.add('marked');
-        span.textContent = original;
-        span.removeAttribute('title');
-        await updateMark(instIdx, source, pos, () => ({ source, pos, palabra: original }));
       } else {
         // Reemplazo válido → azul
         span.classList.add('replaced');
@@ -1093,23 +1097,14 @@
   document.querySelector('.combined-text').addEventListener('pointerdown', e => {
     const span = e.target.closest('.word');
     if (!span || span.classList.contains('editing')) return;
-    if (!span.classList.contains('marked') && !span.classList.contains('replaced')) return;
     longPressStart = { x: e.clientX, y: e.clientY };
-    longPressTimer = setTimeout(async () => {
+    longPressTimer = setTimeout(() => {
       longPressTimer = null;
       longPressFired = true;
       const inst = availableInstances[currentIndex];
       if (!inst) return;
-      const source = span.dataset.source;
-      const pos = parseInt(span.dataset.pos, 10);
-      const original = span.dataset.original;
-      span.classList.remove('marked', 'replaced');
-      span.textContent = original;
-      span.removeAttribute('title');
-      span.classList.add('unmark-flash');
-      setTimeout(() => span.classList.remove('unmark-flash'), 400);
       if (navigator.vibrate) navigator.vibrate(30);
-      await updateMark(inst.idx, source, pos, () => null);
+      enterEditMode(span, inst.idx);
     }, LONG_PRESS_MS);
   });
 
@@ -1136,17 +1131,14 @@
     const pos = parseInt(span.dataset.pos, 10);
     const original = span.dataset.original;
 
-    if (span.classList.contains('replaced')) {
-      // Click sobre reemplazo → volver a normal
-      span.classList.remove('replaced');
+    if (span.classList.contains('marked') || span.classList.contains('replaced')) {
+      // Tap sobre marca (roja o azul) → desmarcar, vuelve a normal
+      span.classList.remove('marked', 'replaced');
       span.textContent = original;
       span.removeAttribute('title');
       await updateMark(inst.idx, source, pos, () => null);
-    } else if (span.classList.contains('marked')) {
-      // Click sobre marcado → entrar a edit mode
-      enterEditMode(span, inst.idx);
     } else {
-      // Click sobre normal → marcar en rojo
+      // Tap sobre normal → marcar en rojo
       span.classList.add('marked');
       await updateMark(inst.idx, source, pos, () => ({ source, pos, palabra: original }));
     }
