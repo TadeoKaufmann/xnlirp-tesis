@@ -126,6 +126,22 @@
     color: #b91c1c;
     font-weight: 500;
   }
+  .word.replaced {
+    background: #dbeafe;
+    color: #1e40af;
+    font-weight: 500;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+  .word.editing {
+    background: white;
+    color: var(--text);
+    outline: 2px solid var(--green);
+    outline-offset: 1px;
+    border-radius: 3px;
+    min-width: 30px;
+    font-weight: 500;
+  }
   .word-hint {
     font-size: 0.78rem;
     color: var(--muted);
@@ -339,7 +355,7 @@
               <p id="text-prem"></p>
               <p id="text-hyp"></p>
             </div>
-            <div class="word-hint">Tocá una palabra que no suene rioplatense para marcarla. Tocala otra vez para desmarcar.</div>
+            <div class="word-hint">Tocá una palabra para marcarla en rojo. Tocala de nuevo para escribir la correcta. Enter para confirmar, Esc para cancelar.</div>
             <textarea id="correccion-prem" placeholder="¿Algo raro? ¿Qué cambiarías?"></textarea>
             <textarea id="correccion-hyp" style="display:none;"></textarea>
           </div>
@@ -636,7 +652,7 @@
     document.getElementById('progress-fill').style.width = pct + '%';
   }
 
-  function renderClickableText(elemId, text, source, markedSet) {
+  function renderClickableText(elemId, text, source, marks) {
     const el = document.getElementById(elemId);
     el.innerHTML = '';
     const tokens = text.split(/(\s+)/);
@@ -647,10 +663,21 @@
         el.appendChild(document.createTextNode(tok));
       } else {
         const span = document.createElement('span');
-        span.className = 'word' + (markedSet.has(`${source}:${pos}`) ? ' marked' : '');
+        span.className = 'word';
         span.dataset.pos = pos;
         span.dataset.source = source;
-        span.textContent = tok;
+        span.dataset.original = tok;
+        const mark = marks.find(m => m.source === source && m.pos === pos);
+        if (mark && mark.reemplazo) {
+          span.classList.add('replaced');
+          span.textContent = mark.reemplazo;
+          span.title = `original: ${tok}`;
+        } else if (mark) {
+          span.classList.add('marked');
+          span.textContent = tok;
+        } else {
+          span.textContent = tok;
+        }
         el.appendChild(span);
         pos++;
       }
@@ -663,9 +690,9 @@
     const inst = availableInstances[i];
 
     const r0 = responses.get(inst.idx) || {};
-    const markedSet = new Set((r0.palabras_marcadas || []).map(m => `${m.source}:${m.pos}`));
-    renderClickableText('text-prem', inst.prem, 'prem', markedSet);
-    renderClickableText('text-hyp', inst.hyp, 'hyp', markedSet);
+    const marks = r0.palabras_marcadas || [];
+    renderClickableText('text-prem', inst.prem, 'prem', marks);
+    renderClickableText('text-hyp', inst.hyp, 'hyp', marks);
 
     const card = document.getElementById('instance-card');
     card.classList.remove('card-anim');
@@ -983,27 +1010,91 @@
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
 
-  // ── Click en palabras (event delegation) ─────────────────────────────────
+  // ── Click en palabras (event delegation, 3 estados) ──────────────────────
+  function updateMark(instIdx, source, pos, mutate) {
+    const existing = responses.get(instIdx) || {};
+    const marks = (existing.palabras_marcadas || []).slice();
+    const i = marks.findIndex(m => m.source === source && m.pos === pos);
+    const updated = mutate(i >= 0 ? marks[i] : null);
+    if (updated === null) {
+      if (i >= 0) marks.splice(i, 1);
+    } else if (i >= 0) {
+      marks[i] = updated;
+    } else {
+      marks.push(updated);
+    }
+    responses.set(instIdx, { ...existing, palabras_marcadas: marks });
+    return saveResponse(instIdx);
+  }
+
+  function enterEditMode(span, instIdx) {
+    const source = span.dataset.source;
+    const pos = parseInt(span.dataset.pos, 10);
+    const original = span.dataset.original;
+    span.classList.remove('marked');
+    span.classList.add('editing');
+    span.contentEditable = 'true';
+    span.spellcheck = true;
+    span.textContent = original;
+    span.focus();
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    let cancelled = false;
+    const onKey = e => {
+      if (e.key === 'Enter') { e.preventDefault(); span.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); cancelled = true; span.textContent = original; span.blur(); }
+    };
+    const onBlur = async () => {
+      span.removeEventListener('keydown', onKey);
+      span.removeEventListener('blur', onBlur);
+      span.contentEditable = 'false';
+      span.classList.remove('editing');
+      const newVal = span.textContent.trim();
+      if (cancelled || !newVal || newVal === original) {
+        // Cancelado, vacío o sin cambios → vuelve a estado marcado (rojo)
+        span.classList.add('marked');
+        span.textContent = original;
+        span.removeAttribute('title');
+        await updateMark(instIdx, source, pos, () => ({ source, pos, palabra: original }));
+      } else {
+        // Reemplazo válido → azul
+        span.classList.add('replaced');
+        span.textContent = newVal;
+        span.title = `original: ${original}`;
+        await updateMark(instIdx, source, pos, () => ({ source, pos, palabra: original, reemplazo: newVal }));
+      }
+    };
+    span.addEventListener('keydown', onKey);
+    span.addEventListener('blur', onBlur);
+  }
+
   document.querySelector('.combined-text').addEventListener('click', async e => {
     const span = e.target.closest('.word');
-    if (!span) return;
+    if (!span || span.classList.contains('editing')) return;
     const inst = availableInstances[currentIndex];
     if (!inst) return;
     const source = span.dataset.source;
     const pos = parseInt(span.dataset.pos, 10);
-    const palabra = span.textContent;
-    const existing = responses.get(inst.idx) || {};
-    const marked = (existing.palabras_marcadas || []).slice();
-    const idx = marked.findIndex(m => m.source === source && m.pos === pos);
-    if (idx >= 0) {
-      marked.splice(idx, 1);
-      span.classList.remove('marked');
+    const original = span.dataset.original;
+
+    if (span.classList.contains('replaced')) {
+      // Click sobre reemplazo → volver a normal
+      span.classList.remove('replaced');
+      span.textContent = original;
+      span.removeAttribute('title');
+      await updateMark(inst.idx, source, pos, () => null);
+    } else if (span.classList.contains('marked')) {
+      // Click sobre marcado → entrar a edit mode
+      enterEditMode(span, inst.idx);
     } else {
-      marked.push({ source, pos, palabra });
+      // Click sobre normal → marcar en rojo
       span.classList.add('marked');
+      await updateMark(inst.idx, source, pos, () => ({ source, pos, palabra: original }));
     }
-    responses.set(inst.idx, { ...existing, palabras_marcadas: marked });
-    await saveResponse(inst.idx);
   });
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
