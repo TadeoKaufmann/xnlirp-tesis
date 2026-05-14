@@ -33,7 +33,7 @@ Datasets-Codigo/
 │       └── eval_xnli_pilot_30_annotated.md
 ├── notebooks/                             # exploración manual
 ├── validation_app/                        # encuesta web standalone para validación nativa
-│   └── index.html                         # single-page app (Supabase + vanilla JS), deploy a Netlify desde esta subcarpeta
+│   └── index.html                         # single-page app (Supabase + vanilla JS), deploy a Vercel desde esta subcarpeta
 ├── scripts/
 │   ├── check_env.py                       # verifica .env y credenciales
 │   ├── translate_xnli_pilot.py            # harness principal: modelo × T × variante prompt
@@ -41,17 +41,19 @@ Datasets-Codigo/
 │   ├── validate_translations.py           # validador independiente del gold (regex)
 │   ├── visualize_comparison.py            # genera HTML lado a lado
 │   ├── optimize_prompt_loop.py            # meta-loop automático (no usar en este flujo)
-│   ├── _annotate_held_out_70.py           # script que generó el held-out 70
-│   ├── _annotate_held_out_100.py          # script que generó el held-out 100
-│   ├── _ejemplos_xnli.txt                 # ejemplos anotados de decisiones por palabra/caso (referencia)
-│   ├── _extract_cluster.py                # extrae instancias por cluster cultural del XNLI full
 │   ├── generate_qa_dataset.py             # genera QA dataset desde textos RP
 │   ├── validate_qa_dataset.py             # valida QA dataset generado
-│   ├── analisis_peninsulares_xnli.py      # análisis de peninsularismos en XNLI full
-│   ├── analisis_vocab_xnli.py             # análisis de vocabulario XNLI
-│   ├── add_english_to_xnli_full.py        # agrega EN a instancias del XNLI full
-│   ├── download_xnli_full.py              # descarga XNLI full desde HuggingFace
-│   ├── sample_xnli_1000.py               # muestrea N instancias del XNLI full
+│   ├── sample_xnli_1000.py                # muestrea N instancias del XNLI full
+│   ├── _review_gold_200.txt               # bitácora de discrepancias gold vs runs (skill xnli-review-format)
+│   ├── _archive/                          # scripts y bitácoras one-off históricos (mayo 2026):
+│   │   ├── _ejemplos_xnli.txt                  # bitácora completa de decisiones léxicas/culturales (summary maestro al inicio)
+│   │   ├── _annotate_held_out_70.py            # script que generó el held-out 70
+│   │   ├── _annotate_held_out_100.py           # script que generó el held-out 100
+│   │   ├── _extract_cluster.py                 # extrae instancias por cluster cultural del XNLI full
+│   │   ├── _scan_cultural_candidates.py        # escaneo de cultural_candidates en outputs Gemini
+│   │   ├── analisis_peninsulares_xnli.py       # análisis de peninsularismos en XNLI full
+│   │   ├── analisis_vocab_xnli.py              # análisis de vocabulario XNLI
+│   │   └── add_english_to_xnli_full.py         # agrega EN a instancias del XNLI full
 │   └── prompts/
 │       ├── prompt_v1_minimal.txt           # dialectal puro (A/B/C/D); base de comparación
 │       ├── prompt_v2_cultural_inline.txt   # v1 + adaptación cultural conservadora (tipo E)
@@ -240,8 +242,8 @@ A partir de mayo 2026, el prompt v2 (`prompt_v2_cultural_inline.txt`) habilita *
   - gold 30 @ idem: type accuracy **93.3%** (A 91.3 / B 100 / C 100 / D 100).
   - held-out 100 @ idem (con gold corregido en sesión actual): type accuracy ≈ **95%** (5 errores reales).
 - **Validación post-cambios sobre subsets puntuales (8 instancias diversas, mayo 2026)**: 8/8 OK. Confirmó que (a) los 4 fixes del held-out 100 funcionan, (b) el voseo contemporáneo sigue aplicando bien, (c) la regla de clítico no se sobre-aplica en controles relativos/predicativos. Falta correr full sets para confirmar ausencia de regresiones globales.
-- **`validation_app/index.html`** (mayo 2026): app web standalone para validación nativa. Stack HTML + vanilla JS + Supabase JS (CDN). Tabla Supabase `respuestas` con columnas: `anotador_id`, `idx`, `respuesta` ∈ {si/parcialmente/no}, `comentario_prem`, `comentario_hyp`, `region`, `quiere_mas`. UUID anónimo en `localStorage`, distribución automática de instancias entre anotadores (filtra `idx` ya respondidos por otros), guardado incremental por `id` de fila. Las instancias se embeben como JSON literal en `INSTANCES` en el HTML; cuando se quiera cambiar el set, editar ese array. **TODO (Opus):** cuando el volumen escale a cientos o miles de instancias, migrar `INSTANCES` a una tabla Supabase `instancias` (`idx`, `prem`, `hyp`) y reemplazar el array hardcodeado por un `SELECT` al cargar la app. Insertar nuevos lotes sería un CSV upload en lugar de editar el HTML. Tarea sencilla (~30 min) pero no prioritaria mientras los lotes sean de 60. — *Claude Sonnet 4.6* **Deploy:** el repo está vinculado a Netlify vía GitHub — cualquier `git push` a `main` dispara un redeploy automático. La raíz de publicación es `validation_app/` (configurado en `validation_app/netlify.toml`, `publish = "."`). NO hacer drag & drop manual — commitear y pushear.
-- **Repo Git inicializado** (mayo 2026): `git init -b main` en la raíz. `.gitignore` excluye `.env`, `credentials/`, `.venv/`, `.claude/`, `results/` y `*.jsonl` con override `!data/processed/*.jsonl` y `!data/raw/**/*.jsonl` para conservar gold/dev sets en el repo. Commit inicial incluye `validation_app/`. Remote en GitHub configurado para push completo del proyecto. Netlify vinculado al repo GitHub con base directory `validation_app/`.
+- **`validation_app/index.html`** (mayo 2026): app web standalone para validación nativa. Stack HTML + vanilla JS + Supabase JS (CDN). Tabla Supabase `respuestas` con columnas: `anotador_id`, `idx`, `respuesta` ∈ {si/parcialmente/no}, `comentario_prem`, `comentario_hyp`, `region`, `quiere_mas`. UUID anónimo en `localStorage`, distribución automática de instancias entre anotadores (filtra `idx` ya respondidos por otros), guardado incremental por `id` de fila. Las instancias se embeben como JSON literal en `INSTANCES` en el HTML; cuando se quiera cambiar el set, editar ese array. **TODO (Opus):** cuando el volumen escale a cientos o miles de instancias, migrar `INSTANCES` a una tabla Supabase `instancias` (`idx`, `prem`, `hyp`) y reemplazar el array hardcodeado por un `SELECT` al cargar la app. Insertar nuevos lotes sería un CSV upload en lugar de editar el HTML. Tarea sencilla (~30 min) pero no prioritaria mientras los lotes sean de 60. — *Claude Sonnet 4.6* **Deploy:** el repo está vinculado a Vercel vía GitHub — cualquier `git push` a `main` dispara un redeploy automático. La raíz de publicación es `validation_app/`. NO hacer drag & drop manual — commitear y pushear.
+- **Repo Git inicializado** (mayo 2026): `git init -b main` en la raíz. `.gitignore` excluye `.env`, `credentials/`, `.venv/`, `.claude/`, `results/` y `*.jsonl` con override `!data/processed/*.jsonl` y `!data/raw/**/*.jsonl` para conservar gold/dev sets en el repo. Commit inicial incluye `validation_app/`. Remote en GitHub configurado para push completo del proyecto. Vercel vinculado al repo GitHub con base directory `validation_app/`.
 
 ## 5. Lo que NO debe hacer Claude Code nunca
 
