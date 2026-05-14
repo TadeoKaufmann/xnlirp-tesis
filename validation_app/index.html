@@ -113,6 +113,26 @@
   }
   .combined-text p { margin: 0; }
   .combined-text p + p { margin-top: 10px; }
+  .word {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 1px 2px;
+    margin: 0 -2px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .word:hover { background: rgba(0, 0, 0, 0.06); }
+  .word.marked {
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 500;
+  }
+  .word-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 10px 0 4px;
+    font-style: italic;
+  }
   .instructions {
     font-size: 0.85rem;
     color: var(--muted);
@@ -319,6 +339,7 @@
               <p id="text-prem"></p>
               <p id="text-hyp"></p>
             </div>
+            <div class="word-hint">Tocá una palabra que no suene rioplatense para marcarla. Tocala otra vez para desmarcar.</div>
             <textarea id="correccion-prem" placeholder="¿Algo raro? ¿Qué cambiarías?"></textarea>
             <textarea id="correccion-hyp" style="display:none;"></textarea>
           </div>
@@ -615,13 +636,36 @@
     document.getElementById('progress-fill').style.width = pct + '%';
   }
 
+  function renderClickableText(elemId, text, source, markedSet) {
+    const el = document.getElementById(elemId);
+    el.innerHTML = '';
+    const tokens = text.split(/(\s+)/);
+    let pos = 0;
+    for (const tok of tokens) {
+      if (!tok) continue;
+      if (/^\s+$/.test(tok)) {
+        el.appendChild(document.createTextNode(tok));
+      } else {
+        const span = document.createElement('span');
+        span.className = 'word' + (markedSet.has(`${source}:${pos}`) ? ' marked' : '');
+        span.dataset.pos = pos;
+        span.dataset.source = source;
+        span.textContent = tok;
+        el.appendChild(span);
+        pos++;
+      }
+    }
+  }
+
   function renderInstance(i) {
     if (i < 0 || i >= availableInstances.length) return;
     currentIndex = i;
     const inst = availableInstances[i];
 
-    document.getElementById('text-prem').textContent = inst.prem;
-    document.getElementById('text-hyp').textContent = inst.hyp;
+    const r0 = responses.get(inst.idx) || {};
+    const markedSet = new Set((r0.palabras_marcadas || []).map(m => `${m.source}:${m.pos}`));
+    renderClickableText('text-prem', inst.prem, 'prem', markedSet);
+    renderClickableText('text-hyp', inst.hyp, 'hyp', markedSet);
 
     const card = document.getElementById('instance-card');
     card.classList.remove('card-anim');
@@ -650,11 +694,15 @@
   // ── Persistencia ────────────────────────────────────────────────────────
   async function doSave(idx) {
     const r = responses.get(idx);
-    if (!r || !r.respuesta) return;
+    if (!r) return;
+    const hasResp  = !!r.respuesta;
+    const hasMarks = (r.palabras_marcadas || []).length > 0;
+    if (!hasResp && !hasMarks) return;
     const payload = {
-      respuesta: r.respuesta,
+      respuesta: r.respuesta || null,
       comentario_prem: r.comentario_prem || null,
-      comentario_hyp: r.comentario_hyp || null
+      comentario_hyp: r.comentario_hyp || null,
+      palabras_marcadas: r.palabras_marcadas || []
     };
     if (r.dbId) {
       const { error } = await sb.from('Respuestas').update(payload).eq('id', r.dbId);
@@ -730,7 +778,7 @@
     let allRows;
     try {
       const { data, error } = await sb.from('Respuestas')
-        .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, region, quiere_mas');
+        .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, palabras_marcadas, region, quiere_mas');
       if (error) throw error;
       allRows = data || [];
     } catch (err) {
@@ -750,6 +798,7 @@
           respuesta: row.respuesta,
           comentario_prem: row.comentario_prem || '',
           comentario_hyp: row.comentario_hyp || '',
+          palabras_marcadas: row.palabras_marcadas || [],
           dbId: row.id
         });
         if (row.region) myHasRegion = true;
@@ -933,6 +982,29 @@
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
+
+  // ── Click en palabras (event delegation) ─────────────────────────────────
+  document.querySelector('.combined-text').addEventListener('click', async e => {
+    const span = e.target.closest('.word');
+    if (!span) return;
+    const inst = availableInstances[currentIndex];
+    if (!inst) return;
+    const source = span.dataset.source;
+    const pos = parseInt(span.dataset.pos, 10);
+    const palabra = span.textContent;
+    const existing = responses.get(inst.idx) || {};
+    const marked = (existing.palabras_marcadas || []).slice();
+    const idx = marked.findIndex(m => m.source === source && m.pos === pos);
+    if (idx >= 0) {
+      marked.splice(idx, 1);
+      span.classList.remove('marked');
+    } else {
+      marked.push({ source, pos, palabra });
+      span.classList.add('marked');
+    }
+    responses.set(inst.idx, { ...existing, palabras_marcadas: marked });
+    await saveResponse(inst.idx);
+  });
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
     location.reload();
