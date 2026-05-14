@@ -1,0 +1,1086 @@
+
+========================================================================
+CASOS PARA REVISIÓN HUMANA — adaptación cultural Opus (mayo 2026)
+Clusters: 911_alqaeda / texas / california
+Instrucción: para cada grupo, decidir ADAPTAR / EXCLUIR / AJUSTAR
+========================================================================
+
+========================================================================
+PAPD / TORRES WTC — INSTITUCION PORTUARIA ESPECIFICA
+Decision propuesta: REVISAR — 'policía portuaria' puede confundir; verificar si NLI se sostiene con Prefectura Naval o PFA portuaria
+========================================================================
+
+ 1. [idx 3456 | contradiction]
+    PREM ES: Muchos oficiales del PAPD se encontraban en la planta baja del complejo-algunos ayudando en la evacuación, otros al mando del mostrador del PAPD en la World Trade Center 5 o ayudando en puestos de comando en el vestíbulo.
+    PREM RP: Muchos oficiales de la policía portuaria se encontraban en la planta baja del complejo: algunos ayudando en la evacuación, otros al mando del mostrador de la policía portuaria en el edificio 5 o ayudando en puestos de comando en el hall.
+    HYP  ES: El PAPD no estaba en ninguna parte en 5 WTC.
+    HYP  RP: La policía portuaria no estaba en ninguna parte en el edificio 5.
+    -> PAPD y WTC son referentes muy específicos. Generalicé pero la fidelidad al referente original se pierde; revisar si NLI tolera.
+
+ 2. [idx 3457 | entailment]
+    PREM ES: Muchos oficiales del PAPD se encontraban en la planta baja del complejo-algunos ayudando en la evacuación, otros al mando del mostrador del PAPD en la World Trade Center 5 o ayudando en puestos de comando en el vestíbulo.
+    PREM RP: Muchos oficiales de la policía portuaria se encontraban en la planta baja del complejo: algunos ayudando en la evacuación, otros al mando del mostrador de la policía portuaria en el edificio 5 o ayudando en puestos de comando en el hall.
+    HYP  ES: Había oficiales del PAPD ayudando en los puestos de mando del vestíbulo.
+    HYP  RP: Había oficiales de la policía portuaria ayudando en los puestos de mando del hall.
+    -> Ver idx 3456.
+
+ 3. [idx 3458 | neutral]
+    PREM ES: Muchos oficiales del PAPD se encontraban en la planta baja del complejo-algunos ayudando en la evacuación, otros al mando del mostrador del PAPD en la World Trade Center 5 o ayudando en puestos de comando en el vestíbulo.
+    PREM RP: Muchos oficiales de la policía portuaria se encontraban en la planta baja del complejo: algunos ayudando en la evacuación, otros al mando del mostrador de la policía portuaria en el edificio 5 o ayudando en puestos de comando en el hall.
+    HYP  ES: Estos oficiales fueron asignados a los equipos de radio.
+    HYP  RP: Estos oficiales fueron asignados a los equipos de radio.
+    -> Ver idx 3456.
+
+
+========================================================================
+KSM / YOUSEF / TRAMA MANILA → YUSUFI / LÓPEZ / COMPLOT 1988
+Decision propuesta: REVISAR — Opus invento un 'complot previo 1988' que no existio en AR. Verificar si la hyp 'En 1993 hubo un intento' sigue siendo entailment con la version RP
+========================================================================
+
+ 1. [idx 1521 | entailment]
+    PREM ES: Ramzi Yousef y Khalid Sheikh Mohammed planearon la trama aérea de Manila en 1995, y KSM ayudó a financiar el intento de Yousef de volar el World Trade Center en 1993.
+    PREM RP: Yusufi y López planearon un complot anterior en 1988, y López ayudó a financiar el intento de Yusufi de atentar contra la sede de la AMIA en 1992.
+    HYP  ES: En 1993 hubo un intento de explotar el World Trade Center.
+    HYP  RP: En 1992 hubo un intento de atentar contra la sede de la AMIA.
+    -> Construyo un 'atentado previo 1992' ficticio para preservar el NLI sobre 'hubo un intento'. AMIA 1994 sí fue precedido por la AEIE 1992 (atentado a la Embajada de Israel en Buenos Aires, 22 muertos), 
+
+ 2. [idx 1522 | contradiction]
+    PREM ES: Ramzi Yousef y Khalid Sheikh Mohammed planearon la trama aérea de Manila en 1995, y KSM ayudó a financiar el intento de Yousef de volar el World Trade Center en 1993.
+    PREM RP: Yusufi y López planearon un complot anterior en 1988, y López ayudó a financiar el intento de Yusufi de atentar contra la sede de la AMIA en 1992.
+    HYP  ES: Khalid Sheikh Mohammed era bien conocido por sus esfuerzos para erradicar el terrorismo en todo el mundo.
+    HYP  RP: López era bien conocido por sus esfuerzos para erradicar el terrorismo en todo el mundo.
+    -> Ver idx 1521.
+
+ 3. [idx 1523 | neutral]
+    PREM ES: Ramzi Yousef y Khalid Sheikh Mohammed planearon la trama aérea de Manila en 1995, y KSM ayudó a financiar el intento de Yousef de volar el World Trade Center en 1993.
+    PREM RP: Yusufi y López planearon un complot anterior en 1988, y López ayudó a financiar el intento de Yusufi de atentar contra la sede de la AMIA en 1992.
+    HYP  ES: Estas parcelas presentaron fallas y se descartaron más esfuerzos.
+    HYP  RP: Estos complots presentaron fallas y se descartaron más esfuerzos.
+    -> Ver idx 1521.
+
+
+========================================================================
+CÍRCULO SENATORIAL REPUBLICANO / CONVENCIÓN NACIONAL EN HOUSTON
+Decision propuesta: REVISAR — hyp dice 'la Convención solo ha estado en Houston una vez': dato factual sobre EEUU que no mapea a Córdoba. Opciones: (a) excluir; (b) cambiar hyp a 'la Convención solo ha estado en Córdoba una vez' (aceptable si es neutro ficticio)
+========================================================================
+
+ 1. [idx 3891 | neutral]
+    PREM ES: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial Republicano para celebrar nuestro espíritu en nuestra Convención Nacional Republicana en Houston, Texas, entre el 16 y el 20 de agosto.
+    PREM RP: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial del partido para celebrar nuestro espíritu en nuestra Convención Nacional del partido en Buenos Aires, entre el 16 y el 20 de agosto.
+    HYP  ES: La Convención Nacional Republicana sólo ha estado en Houston una vez.
+    HYP  RP: La Convención Nacional del partido solo estuvo en Buenos Aires una vez.
+    -> Convención Republicana es evento EEUU específico; generalizo a 'partido' pero pierde especificidad. Marco como candidate.
+
+ 2. [idx 3892 | entailment]
+    PREM ES: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial Republicano para celebrar nuestro espíritu en nuestra Convención Nacional Republicana en Houston, Texas, entre el 16 y el 20 de agosto.
+    PREM RP: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial del partido para celebrar nuestro espíritu en nuestra Convención Nacional del partido en Buenos Aires, entre el 16 y el 20 de agosto.
+    HYP  ES: La Convención Nacional Republicana en Houston fue en agosto.
+    HYP  RP: La Convención Nacional del partido en Buenos Aires fue en agosto.
+    -> Ver idx 3891.
+
+ 3. [idx 3893 | contradiction]
+    PREM ES: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial Republicano para celebrar nuestro espíritu en nuestra Convención Nacional Republicana en Houston, Texas, entre el 16 y el 20 de agosto.
+    PREM RP: Me supone una gran satisfacción invitarle a participar en el Círculo Interno Senatorial del partido para celebrar nuestro espíritu en nuestra Convención Nacional del partido en Buenos Aires, entre el 16 y el 20 de agosto.
+    HYP  ES: La convención nacional republicana siempre se realiza en abril.
+    HYP  RP: La convención nacional del partido siempre se realiza en abril.
+    -> Ver idx 3891.
+
+
+========================================================================
+REPÚBLICA DE TEXAS — MOVIMIENTO SECESIONISTA REAL EEUU AÑOS 90
+Decision propuesta: REVISAR — 'República de Córdoba' es ficticia (no existio). Opciones: (a) excluir; (b) adaptar a movimiento autonomista AR real (aunque debil paralelo); (c) mantener 'República de [provincia]' como movimiento ficticio si el NLI lo tolera
+========================================================================
+
+ 1. [idx 2115 | entailment]
+    PREM ES: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Texas.
+    PREM RP: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Córdoba.
+    HYP  ES: El viaje ayudó a dar sentido a las motivaciones de los creyentes de la República de Texas.
+    HYP  RP: El viaje ayudó a dar sentido a las motivaciones de los creyentes de la República de Córdoba.
+    -> República de Texas es movimiento real EEUU años 90s. Adaptación 'República de Córdoba' es ficticia (no existió). Mantengo paralelo nominal pero requiere revisión.
+
+ 2. [idx 2116 | neutral]
+    PREM ES: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Texas.
+    PREM RP: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Córdoba.
+    HYP  ES: El viaje a Texas fue divertido, aprendiendo acerca de las creencias y motivaciones cristianas.
+    HYP  RP: El viaje a Córdoba fue divertido, aprendiendo acerca de las creencias y motivaciones cristianas.
+    -> Ver idx 2115.
+
+ 3. [idx 2117 | contradiction]
+    PREM ES: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Texas.
+    PREM RP: El viaje valió la pena, al menos en términos de entender qué motiva a los creyentes de la República de Córdoba.
+    HYP  ES: El viaje fue una completa pérdida de tiempo, ahora el malentendido es incluso mayor.
+    HYP  RP: El viaje fue una completa pérdida de tiempo, ahora el malentendido es incluso mayor.
+    -> Ver idx 2115.
+
+
+========================================================================
+AUGUSTA (GEORGIA) + TEXAS — HISTORIA RACIAL POST-BELLUM EEUU
+Decision propuesta: REVISAR — contexto racial del sur de EEUU post-guerra civil. La hyp 'era blanca y se mudó a Texas' es load-bearing. Sin paralelo AR directo. Opcion: excluir.
+========================================================================
+
+ 1. [idx 18 | contradiction]
+    PREM ES: Y la abuela solía contar la historia sobre cómo su hermana y el marido de esta decidieron que se iban a trasladar a la ciudad, a Augusta, y hacerse pasar por blancos.
+    PREM RP: Y la abuela solía contar la historia sobre cómo su hermana y el marido de esta decidieron que se iban a trasladar a la ciudad, a Augusta, y hacerse pasar por blancos.
+    HYP  ES: La Hermana de la Abuela era blanca y se mudó a Texas.
+    HYP  RP: La hermana de la abuela era blanca y se mudó a Córdoba.
+    -> Premisa menciona Augusta (Georgia, EEUU) — histórico contexto racial post-bellum del sur de EEUU. La hyp 'mudó a Texas' es contradiction porque la prem dice Augusta. Mantengo Augusta en prem y solo ca
+
+================================================================
+INDIANA — 42 ocurrencias total (42 idx únicos)
+Decisión: RESUELTO — MANTENER. Topónimo EEUU (estado + universidad).
+================================================================
+
+ 1. [3635]
+    PREM: Para que las bibliotecas de la Universidad IUPUI tengan colecciones, acceso y servicios que cumplan con sus expectativas, se requieren amigos y socios dentro de la Universidad y en toda la comunidad, en todo el estado y en toda la nación.
+    HYP:  La Universidad de Indiana necesita 20 donaciones individuales.
+ 2. [3642]
+    PREM: Gerald L. Bepko 1995 Presidente de la Campaña United Way of Central Indiana
+    HYP:  Bepko fue elegido por votación popular.
+ 3. [3643]
+    PREM: Gerald L. Bepko 1995 Presidente de la Campaña United Way of Central Indiana
+    HYP:  En el año 1995, Bepko fue el jefe de la campaña.
+ 4. [3644]
+    PREM: Gerald L. Bepko 1995 Presidente de la Campaña United Way of Central Indiana
+    HYP:  Bepko era el director del comité de formas y medios.
+ 5. [3660]
+    PREM: En la celebración del 90º cumpleaños de la Escuela de Medicina de la Universidad de Indiana, vemos lo mucho que debemos a los soñadores y a sus sueños.
+    HYP:  La Escuela de Medicina de la Universidad de Indiana ha recaudado $1 millón de soñadores.
+ 6. [3661]
+    PREM: En la celebración del 90º cumpleaños de la Escuela de Medicina de la Universidad de Indiana, vemos lo mucho que debemos a los soñadores y a sus sueños.
+    HYP:  La Facultad de Medicina de la Universidad de Indiana debe mucho a los soñadores
+ 7. [3662]
+    PREM: En la celebración del 90º cumpleaños de la Escuela de Medicina de la Universidad de Indiana, vemos lo mucho que debemos a los soñadores y a sus sueños.
+    HYP:  La Facultad de Medicina de la Universidad de Indiana cerró en su 50.º aniversario.
+ 8. [3750]
+    PREM: Debido a la generosidad de la ley de impuestos de Indiana, una contribución a la Universidad de cualquier monto de hasta 200$ sólo le costará la mitad de esa cantidad, menos la deducción que reclama en su declaración de impuestos federales.
+    HYP:  Indiana es el único estado con esta generosa ley tributaria.
+ 9. [3751]
+    PREM: Debido a la generosidad de la ley de impuestos de Indiana, una contribución a la Universidad de cualquier monto de hasta 200$ sólo le costará la mitad de esa cantidad, menos la deducción que reclama en su declaración de impuestos federales.
+    HYP:  Las leyes de impuestos de Indiana hacen que le sea más fácil colaborar con la Universidad.
+10. [3752]
+    PREM: Debido a la generosidad de la ley de impuestos de Indiana, una contribución a la Universidad de cualquier monto de hasta 200$ sólo le costará la mitad de esa cantidad, menos la deducción que reclama en su declaración de impuestos federales.
+    HYP:  Afortunadamente para nosotros, Indiana no tiene ni una ley impositiva.
+11. [3814]
+    PREM: Eso también es cierto para los famosos Hoosiers como James Whitcomb Riley, Eugene V. Debs y Madame C.J.
+    HYP:  Eugene Debs practicó deportes en la Universidad de Indiana, en Indiana.
+12. [3815]
+    PREM: Eso también es cierto para los famosos Hoosiers como James Whitcomb Riley, Eugene V. Debs y Madame C.J.
+    HYP:  Eugene Debs era de Indiana.
+13. [3864]
+    PREM: Como beneficio adicional, ahora podemos ofrecerles a los donantes de $100 o más un 50 % de crédito fiscal del Programa de Asistencia a Vecindarios del Estado de Indiana .(NAP).
+    HYP:  Si das más de 100$, recibes un rembolso en un crédito fiscal.
+14. [3865]
+    PREM: Como beneficio adicional, ahora podemos ofrecerles a los donantes de $100 o más un 50 % de crédito fiscal del Programa de Asistencia a Vecindarios del Estado de Indiana .(NAP).
+    HYP:  El gobernador acaba de aprobar el crédito fiscal para las personas que donen más de 100 $.
+15. [3866]
+    PREM: Como beneficio adicional, ahora podemos ofrecerles a los donantes de $100 o más un 50 % de crédito fiscal del Programa de Asistencia a Vecindarios del Estado de Indiana .(NAP).
+    HYP:  Tienes que donar más de 1000 $ para obtener un crédito fiscal.
+
+================================================================
+INDIANAPOLIS / INDIANÁPOLIS — 27 ocurrencias total (27 idx únicos)
+Decisión: RESUELTO — MANTENER. Topónimo EEUU.
+D fix: idx 1755-1757 prem usa 'Indianapolis' sin tilde → normalizar a 'Indianápolis' (tipo D).
+================================================================
+
+ 1. [3507]
+    PREM: Indianápolis es de verdad uno de los mejores lugares que los actores pueden visitar para trabajar para muchos
+    HYP:  Los actores adoran Indianápolis por todas las agencias de casting allí.
+ 2. [3508]
+    PREM: Indianápolis es de verdad uno de los mejores lugares que los actores pueden visitar para trabajar para muchos
+    HYP:  Si eres un actor, deberías considerar mudarte a Indianápolis.
+ 3. [3509]
+    PREM: Indianápolis es de verdad uno de los mejores lugares que los actores pueden visitar para trabajar para muchos
+    HYP:  Es difícil encontrar trabajo en Indianápolis si estás en el negocio del cine o del teatro, ya que más bien es una ciudad tecnológica.
+ 4. [3519]
+    PREM: 00 ayudó a hacer posible que orientáramos, animáramos y entretuviéramos a casi 400 niños del área de Indianápolis.
+    HYP:  Gracias a nuestras generosas donaciones, pudimos invitar a Beyoncé a dar un concierto para los huérfanos de Indianápolis.
+ 5. [3520]
+    PREM: 00 ayudó a hacer posible que orientáramos, animáramos y entretuviéramos a casi 400 niños del área de Indianápolis.
+    HYP:  Esperábamos organizar una fiesta de Navidad para los niños, pero nunca hemos podido hacer nada por ellos.
+ 6. [3521]
+    PREM: 00 ayudó a hacer posible que orientáramos, animáramos y entretuviéramos a casi 400 niños del área de Indianápolis.
+    HYP:  Pudimos ayudar a muchos niños de Indianápolis.
+ 7. [3831]
+    PREM: Hice mi debut en Indianápolis como director de escena hace un mes con Inherit the Wind, un clásico del teatro americano, al que asistieron más de 5500 estudiantes de secundaria y preparatoria.
+    HYP:  He dirigido otras obras desde entonces.
+ 8. [3832]
+    PREM: Hice mi debut en Indianápolis como director de escena hace un mes con Inherit the Wind, un clásico del teatro americano, al que asistieron más de 5500 estudiantes de secundaria y preparatoria.
+    HYP:  Nunca he trabajado como director de escena.
+ 9. [3833]
+    PREM: Hice mi debut en Indianápolis como director de escena hace un mes con Inherit the Wind, un clásico del teatro americano, al que asistieron más de 5500 estudiantes de secundaria y preparatoria.
+    HYP:  Varios miles de estudiantes de secundaria asistieron a la obra que yo dirigía.
+10. [3894]
+    PREM: Usted está invitado a formar parte de esta nueva e importante empresa para fortalecer esta creciente asociación de dos grandes universidades estatales en Indianápolis.
+    HYP:  No hay escuelas estatales en Indianápolis.
+11. [3895]
+    PREM: Usted está invitado a formar parte de esta nueva e importante empresa para fortalecer esta creciente asociación de dos grandes universidades estatales en Indianápolis.
+    HYP:  Dos escuelas estatales en Indianápolis están uniendo fuerzas.
+12. [3896]
+    PREM: Usted está invitado a formar parte de esta nueva e importante empresa para fortalecer esta creciente asociación de dos grandes universidades estatales en Indianápolis.
+    HYP:  Dos escuelas estatales de Indianápolis se fusionarán el próximo año.
+13. [1755] [D: sin tilde en prem]
+    PREM: Gracias por apoyar al Museo de Arte de Indianapolis en el 1999.
+    HYP:  Gracias por su donación de 100 $ al Museo de Arte de Indianápolis.
+14. [1756] [D: sin tilde en prem]
+    PREM: Gracias por apoyar al Museo de Arte de Indianapolis en el 1999.
+    HYP:  Gracias, pero no agradecemos que hayan faltado a sus donaciones en 1999.
+15. [1757] [D: sin tilde en prem]
+    PREM: Gracias por apoyar al Museo de Arte de Indianapolis en el 1999.
+    HYP:  Estamos muy contentos de que ayudase al museo.
+
+================================================================
+JAMAICA + PORT ROYAL → BUENOS AIRES — 28 instancias únicas (prem+hyp pares)
+Decisión: RESUELTO en v2 (E.3 extendido). Mapeo agregado al prompt v2:
+  Jamaica → Buenos Aires
+  Port Royal → Buenos Aires
+  Gobernador de Jamaica → Gobernador de Buenos Aires (bajo Su Majestad española, época Bouchard pre-1816)
+  flota/escuadrón de Jamaica → flota/escuadrón de Buenos Aires (alternar con "del Río de la Plata" para evitar repetición)
+  Calverley → Calderón (nuevo personaje menor agregado al mapeo)
+  Su Majestad → MANTENER (rey español pre-1816)
+  Barbados → MANTENER por ahora (no es central)
+NOTA: en v2 todas estas oraciones reciben además TODAS las otras transposiciones E.3
+(Blood→Bouchard, Lord Julian→San Martín, Bishop→Rodríguez, Arabella→La Argentina,
+Royal Mary→La Heroína, "su señoría"→"mi General", "La sangre"→"Bouchard" — D fix).
+================================================================
+
+[1512] label=neutral
+  ES prem: Me complacerá llegar a Port Royal.   El Capitán Blood apartó un pergamino bajo la mirada de Calverley.
+  ES hyp:  Calverley sabía lo que contenía el pergamino.
+  RP prem: Me complacerá llegar a Buenos Aires.   El Capitán Bouchard apartó un pergamino bajo la mirada de Calderón.
+  RP hyp:  Calderón sabía lo que contenía el pergamino.
+
+[1513] label=entailment
+  ES prem: Me complacerá llegar a Port Royal.   El Capitán Blood apartó un pergamino bajo la mirada de Calverley.
+  ES hyp:  El Capitán Blood le dio a Calverley un documento.
+  RP prem: Me complacerá llegar a Buenos Aires.   El Capitán Bouchard apartó un pergamino bajo la mirada de Calderón.
+  RP hyp:  El Capitán Bouchard le dio a Calderón un documento.
+
+[1514] label=contradiction
+  ES prem: Me complacerá llegar a Port Royal.   El Capitán Blood apartó un pergamino bajo la mirada de Calverley.
+  ES hyp:  El Capitán Blood rompió el pergamino en pedazos.
+  RP prem: Me complacerá llegar a Buenos Aires.   El Capitán Bouchard apartó un pergamino bajo la mirada de Calderón.
+  RP hyp:  El Capitán Bouchard rompió el pergamino en pedazos.
+
+[1524] label=entailment
+  ES prem: Debería haber sabido que no debía acercarme tanto a Jamaica por la noche.
+  ES hyp:  Viajé cerca de Jamaica después de que el sol se había puesto.
+  RP prem: Debería haber sabido que no debía acercarme tanto a Buenos Aires por la noche.
+  RP hyp:  Viajé cerca de Buenos Aires después de que el sol se había puesto.
+
+[1525] label=neutral
+  ES prem: Debería haber sabido que no debía acercarme tanto a Jamaica por la noche.
+  ES hyp:  Viajé a Jamaica en un barco grande.
+  RP prem: Debería haber sabido que no debía acercarme tanto a Buenos Aires por la noche.
+  RP hyp:  Viajé a Buenos Aires en un barco grande.
+
+[1526] label=contradiction
+  ES prem: Debería haber sabido que no debía acercarme tanto a Jamaica por la noche.
+  ES hyp:  Mi esposa y yo llegamos a Jamaica a plena luz del día.
+  RP prem: Debería haber sabido que no debía acercarme tanto a Buenos Aires por la noche.
+  RP hyp:  Mi esposa y yo llegamos a Buenos Aires a plena luz del día.
+
+[1538] label=neutral
+  ES prem: Venía en el Royal Mary...
+  ES hyp:  El Royal Mary me llevaba a Jamaica.
+  RP prem: Venía en La Heroína...
+  RP hyp:  La Heroína me llevaba a Buenos Aires.
+
+[1590] label=neutral
+  ES prem: Creo que fue la esperanza de atrapar y colgar al Capitán Blood lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Jamaica.
+  ES hyp:  Creo que mi tío quería que el Capitán Sangre muriese por sus crímenes.
+  RP prem: Creo que fue la esperanza de atrapar y colgar al Capitán Bouchard lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Buenos Aires.
+  RP hyp:  Creo que mi tío quería que el Capitán Bouchard muriese por sus crímenes.   [+D "Capitán Sangre"→"Capitán Bouchard"; eliminación de error de traducción literal de "Blood"]
+
+[1591] label=entailment
+  ES prem: Creo que fue la esperanza de atrapar y colgar al Capitán Blood lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Jamaica.
+  ES hyp:  Mi tío dejó sus plantaciones de Barbados antes de aceptar un puesto en Jamaica.
+  RP prem: Creo que fue la esperanza de atrapar y colgar al Capitán Bouchard lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Buenos Aires.
+  RP hyp:  Mi tío dejó sus plantaciones de Barbados antes de aceptar un puesto en Buenos Aires.
+
+[1592] label=contradiction
+  ES prem: Creo que fue la esperanza de atrapar y colgar al Capitán Blood lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Jamaica.
+  ES hyp:  Mi tío solía amar al capitán Blood y nunca dejó sus plantaciones en Barbados.
+  RP prem: Creo que fue la esperanza de atrapar y colgar al Capitán Bouchard lo que hizo que mi tío dejase sus plantaciones en Barbados y aceptase el gobierno suplente de Buenos Aires.
+  RP hyp:  Mi tío solía amar al capitán Bouchard y nunca dejó sus plantaciones en Barbados.
+
+[1608] label=entailment
+  ES prem: Son barcos de la flota de Jamaica, su señoría le respondió.
+  ES hyp:  Su señoría le dijo que los barcos provenían de la flota de Jamaica.
+  RP prem: Son barcos de la flota de Buenos Aires, mi General le respondió.
+  RP hyp:  Mi General le dijo que los barcos provenían de la flota de Buenos Aires.
+
+[1609] label=neutral
+  ES prem: Son barcos de la flota de Jamaica, su señoría le respondió.
+  ES hyp:  Los barcos de la flota de Jamaica la impresionaron, por eso preguntó por ellos.
+  RP prem: Son barcos de la flota de Buenos Aires, mi General le respondió.
+  RP hyp:  Los barcos de la flota de Buenos Aires la impresionaron, por eso preguntó por ellos.
+
+[1610] label=contradiction
+  ES prem: Son barcos de la flota de Jamaica, su señoría le respondió.
+  ES hyp:  Son barcos de la flota estadounidense, le respondió su señoría.
+  RP prem: Son barcos de la flota de Buenos Aires, mi General le respondió.
+  RP hyp:  Son barcos de la flota estadounidense, le respondió mi General.   [NOTA: "estadounidense" se mantiene; la contradicción funciona porque Buenos Aires ≠ EEUU]
+
+[1791] label=contradiction
+  ES prem: En cuanto a mí, dijo Lord Julian, con la intención de liberar la salida de la Sra. Bishop de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo del Arabella hasta alcanzar Port Royal.
+  ES hyp:  Lord Julian bajó del Arabella tan pronto como pudo, dejando sola a la señorita Bishop.
+  RP prem: En cuanto a mí, dijo San Martín, con la intención de liberar la salida de la Sra. Rodríguez de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo de La Argentina hasta alcanzar Buenos Aires.
+  RP hyp:  San Martín bajó de La Argentina tan pronto como pudo, dejando sola a la señorita Rodríguez.
+
+[1792] label=entailment
+  ES prem: En cuanto a mí, dijo Lord Julian, con la intención de liberar la salida de la Sra. Bishop de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo del Arabella hasta alcanzar Port Royal.
+  ES hyp:  El señor Julian se quedó en el Arabella con la esperanza de proporcionar a la señorita Bishop un paseo libre de interferencias.
+  RP prem: En cuanto a mí, dijo San Martín, con la intención de liberar la salida de la Sra. Rodríguez de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo de La Argentina hasta alcanzar Buenos Aires.
+  RP hyp:  El señor San Martín se quedó en La Argentina con la esperanza de proporcionar a la señorita Rodríguez un paseo libre de interferencias.
+
+[1793] label=neutral
+  ES prem: En cuanto a mí, dijo Lord Julian, con la intención de liberar la salida de la Sra. Bishop de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo del Arabella hasta alcanzar Port Royal.
+  ES hyp:  Lord Julian estaba muy interesado en la señorita Bishop, se puede decir que le gustaba.
+  RP prem: En cuanto a mí, dijo San Martín, con la intención de liberar la salida de la Sra. Rodríguez de cualquier interferencia por parte de los bucaneros, deberé permanecer a bordo de La Argentina hasta alcanzar Buenos Aires.
+  RP hyp:  San Martín estaba muy interesado en la señorita Rodríguez, se puede decir que le gustaba.
+
+[1830] label=neutral
+  ES prem: HOSTILIDADES En el gran puerto de Port Royal, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, el Arabella estaba fondeado.
+  ES hyp:  El Arabella a menudo se enfrentaba solo a los mejores miembros de la tripulación.
+  RP prem: HOSTILIDADES En el gran puerto de Buenos Aires, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, La Argentina estaba fondeada.   [ajuste género: "el Arabella estaba fondeado" → "La Argentina estaba fondeada"]
+  RP hyp:  La Argentina a menudo se enfrentaba sola a los mejores miembros de la tripulación.   [ajuste género: solo→sola]
+
+[1831] label=contradiction
+  ES prem: HOSTILIDADES En el gran puerto de Port Royal, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, el Arabella estaba fondeado.
+  ES hyp:  El Arabella no se veía en el puerto de Port Royal, ya que era demasiado pequeño para el gran barco.
+  RP prem: HOSTILIDADES En el gran puerto de Buenos Aires, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, La Argentina estaba fondeada.
+  RP hyp:  La Argentina no se veía en el puerto de Buenos Aires, ya que era demasiado pequeño para el gran barco.
+
+[1832] label=entailment
+  ES prem: HOSTILIDADES En el gran puerto de Port Royal, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, el Arabella estaba fondeado.
+  ES hyp:  El barco llamado Arabella había atracado en el gran puerto de Port Royal.
+  RP prem: HOSTILIDADES En el gran puerto de Buenos Aires, lo suficientemente amplio como para dar amarre a los barcos de todas las armadas del mundo, La Argentina estaba fondeada.
+  RP hyp:  El barco llamado La Argentina había atracado en el gran puerto de Buenos Aires.
+
+[774] label=contradiction
+  ES prem: Hay una horca esperando a este granuja en Port Royal. La sangre habría intervenido, pero Lord Julian se lo impidió.
+  ES hyp:  Blood es una organización criminal internacional con sede en Port Royal que Lord Julian contrata con fines ilícitos.
+  RP prem: Hay una horca esperando a este granuja en Buenos Aires. Bouchard habría intervenido, pero San Martín se lo impidió.   [+D "La sangre"→"Bouchard"; error de traducción literal del nombre "Blood"]
+  RP hyp:  Bouchard es una organización criminal internacional con sede en Buenos Aires que San Martín contrata con fines ilícitos.
+
+[775] label=neutral
+  ES prem: Hay una horca esperando a este granuja en Port Royal. La sangre habría intervenido, pero Lord Julian se lo impidió.
+  ES hyp:  Entre los dominios de Lord Julián está Port Royal, una ciudad comercial que es un centro de actividades de la región.
+  RP prem: Hay una horca esperando a este granuja en Buenos Aires. Bouchard habría intervenido, pero San Martín se lo impidió.
+  RP hyp:  Entre los dominios de San Martín está Buenos Aires, una ciudad comercial que es un centro de actividades de la región.
+
+[776] label=entailment
+  ES prem: Hay una horca esperando a este granuja en Port Royal. La sangre habría intervenido, pero Lord Julian se lo impidió.
+  ES hyp:  Port Royal tiene instalaciones para castigar criminales.
+  RP prem: Hay una horca esperando a este granuja en Buenos Aires. Bouchard habría intervenido, pero San Martín se lo impidió.
+  RP hyp:  Buenos Aires tiene instalaciones para castigar criminales.
+
+[849] label=contradiction
+  ES prem: Había pasado una quincena en Port Royal, su barco era prácticamente uno más en el escuadrón de Jamaica.
+  ES hyp:  Nunca había estado en Port Royal.
+  RP prem: Había pasado una quincena en Buenos Aires, su barco era prácticamente uno más en el escuadrón del Río de la Plata.   [variante "Río de la Plata" para evitar repetir Buenos Aires en la misma oración]
+  RP hyp:  Nunca había estado en Buenos Aires.
+
+[850] label=entailment
+  ES prem: Había pasado una quincena en Port Royal, su barco era prácticamente uno más en el escuadrón de Jamaica.
+  ES hyp:  Pasó 2 semanas en Port Royal.
+  RP prem: Había pasado una quincena en Buenos Aires, su barco era prácticamente uno más en el escuadrón del Río de la Plata.
+  RP hyp:  Pasó 2 semanas en Buenos Aires.
+
+[851] label=neutral
+  ES prem: Había pasado una quincena en Port Royal, su barco era prácticamente uno más en el escuadrón de Jamaica.
+  ES hyp:  Él estaba haciendo reparaciones en su barco.
+  RP prem: Había pasado una quincena en Buenos Aires, su barco era prácticamente uno más en el escuadrón del Río de la Plata.
+  RP hyp:  Él estaba haciendo reparaciones en su barco.
+
+[951] label=entailment
+  ES prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Jamaica por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.
+  ES hyp:  Una persona que grita decide corregir el error de otra persona.
+  RP prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Buenos Aires por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.   [Gobernador de Jamaica→Gobernador de Buenos Aires; Su Majestad MANTIENE]
+  RP hyp:  Una persona que grita decide corregir el error de otra persona.
+
+[952] label=neutral
+  ES prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Jamaica por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.
+  ES hyp:  El vicegobernador de Su Majestad de Jamaica ya está muerto.
+  RP prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Buenos Aires por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.
+  RP hyp:  El vicegobernador de Su Majestad de Buenos Aires ya está muerto.
+
+[953] label=contradiction
+  ES prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Jamaica por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.
+  ES hyp:  Un hombre le dijo al otro que había hecho su trabajo a la perfección y que cualquier error era culpa suya.
+  RP prem: ¡No lo hagas, por Dios! ¿Y cómo llamarías a esto? Pero como Gobernador de Buenos Aires por orden de Su Majestad, me tomaré la libertad de corregir tu error a mi manera.
+  RP hyp:  Un hombre le dijo al otro que había hecho su trabajo a la perfección y que cualquier error era culpa suya.
+
+================================================================
+SEÑORÍA — 15 instancias XNLI (45 ocurrencias total)
+Decisión: RESUELTO. v1 MANTENER todo (caveat voseo arcaico). v2 aplica E.3
+Transposición Bouchard: "su señoría"→"mi General"/"Su Excelencia", Bishop→Rodríguez,
+Lord Julian Wade→San Martín. Al desaparecer marcadores ingleses, voseo se libera
+en v2 ("como tú"→"como vos").
+================================================================
+
+ORIGINALES:
+ 1. [idx 1608 prem] Son barcos de la flota de Jamaica, su señoría le respondió.
+ 2. [idx 1608 hyp]  Su señoría le dijo que los barcos provenían de la flota de Jamaica.
+ 3. [idx 1610 hyp]  Son barcos de la flota estadounidense, le respondió su señoría.
+ 4. [idx 1716 prem] Me retiro para dudarlo. El tono de su señoría no calmó nada de su rudeza.
+ 5. [idx 1716 hyp]  Su señoría habló bruscamente.
+ 6. [idx 1717 hyp]  Su Señoría era muda.
+ 7. [idx 1718 hyp]  Su señoría estaba enojado porque había descuidado mis deberes.
+ 8. [idx 1731 prem] Bueno, como estaba diciendo a su señoría, que pensaba como tú que tener a la Sra. Bishop fuera garantizaría nuestra seguridad, ni por su madre olvidaría ese esclavista lo que se le debe.
+ 9. [idx 1731 hyp]  No he hablado a su señoría en años.
+10. [idx 1732 hyp]  Hablé con su señoría justo ahora.
+11. [idx 1783 hyp]  Julian Wade recibió su señoría por derecho de nacimiento.
+12. [idx 1797 prem] Expresamente. Su señoría esperó un momento la respuesta.
+13. [idx 1797 hyp]  Su Señoría había respondido tras un tiempo.
+14. [idx 1956 prem] La Srta. Bishop también estaba a bordo del Royal Mary, y yo la rescaté junto con su señoría.
+15. [idx 1957 hyp]  Rescaté a la señorita Bishop y a su señoría juntos.
+
+TRADUCCIÓN v1 (minimal dialectal — MANTENER todo):
+ 1. Son barcos de la flota de Jamaica, su señoría le respondió.   [MANTENER]
+ 2. Su señoría le dijo que los barcos provenían de la flota de Jamaica.   [MANTENER]
+ 3. Son barcos de la flota estadounidense, le respondió su señoría.   [MANTENER]
+ 4. Me retiro para dudarlo. El tono de su señoría no calmó nada de su rudeza.   [MANTENER]
+ 5. Su señoría habló bruscamente.   [MANTENER]
+ 6. Su Señoría era muda.   [MANTENER]
+ 7. Su señoría estaba enojado porque había descuidado mis deberes.   [MANTENER]
+ 8. Bueno, como estaba diciendo a su señoría, que pensaba como tú que tener a la Sra. Bishop fuera garantizaría nuestra seguridad...   [MANTENER (caveat voseo arcaico)]
+ 9. No he hablado a su señoría en años.   [MANTENER PPC experiencial]
+10. Hablé con su señoría justo ahora.   [MANTENER]
+11. Julian Wade recibió su señoría por derecho de nacimiento.   [MANTENER]
+12. Expresamente. Su señoría esperó un momento la respuesta.   [MANTENER]
+13. Su Señoría había respondido tras un tiempo.   [MANTENER]
+14. La Srta. Bishop también estaba a bordo del Royal Mary, y yo la rescaté junto con su señoría.   [MANTENER]
+15. Rescaté a la señorita Bishop y a su señoría juntos.   [MANTENER]
+
+TRADUCCIÓN v2 cultural inline (TRANSPOSICIÓN BOUCHARD — E.3):
+ 1. Son barcos de la flota de Jamaica, mi General le respondió.   [señoría→mi General, destinatario San Martín]
+ 2. Mi General le dijo que los barcos provenían de la flota de Jamaica.   [Su señoría→Mi General]
+ 3. Son barcos de la flota estadounidense, le respondió mi General.   [señoría→mi General]
+ 4. Me retiro para dudarlo. El tono de mi General no calmó nada de su rudeza.   [señoría→mi General]
+ 5. Mi General habló bruscamente.   [Su señoría→Mi General]
+ 6. Su Excelencia era muda.   [Su Señoría→Su Excelencia, mayúscula formal preservada]
+ 7. Mi General estaba enojado porque había descuidado mis deberes.   [señoría→mi General]
+ 8. Bueno, como estaba diciendo a mi General, que pensaba como vos que tener a la Sra. Rodríguez fuera garantizaría nuestra seguridad, ni por su madre olvidaría ese esclavista lo que se le debe.   [señoría→mi General; Sra. Bishop→Sra. Rodríguez; como tú→como vos (voseo se libera al desactivar caveat arcaico)]
+ 9. No he hablado a mi General en años.   [señoría→mi General; PPC mantiene]
+10. Hablé con mi General justo ahora.   [señoría→mi General]
+11. San Martín recibió su rango por derecho de nacimiento.   [Julian Wade→San Martín; "su señoría" (título nobiliario) → "su rango" — acá señoría no es tratamiento sino el título mismo, se traduce como rango/grado]
+12. Expresamente. Mi General esperó un momento la respuesta.   [Su señoría→Mi General]
+13. Su Excelencia había respondido tras un tiempo.   [Su Señoría→Su Excelencia, mayúscula formal]
+14. La Srta. Rodríguez también estaba a bordo de La Heroína, y yo la rescaté junto con San Martín.   [Srta. Bishop→Srta. Rodríguez; Royal Mary→La Heroína (mapeo E.3); "su señoría"→San Martín (referente nominal)]
+15. Rescaté a la señorita Rodríguez y a San Martín juntos.   [señorita Bishop→señorita Rodríguez; "su señoría"→"San Martín"]
+
+================================================================
+PRONTO — 15 instancias XNLI (27 ocurrencias total)
+Decisión: RESUELTO — MANTENER por defecto (pronto es estándar en RP, no peninsularismo).
+Alternativas coloquiales (ni bien, apenas, enseguida, rápido) válidas pero NO obligatorias;
+solo aplicar si la oración es claramente coloquial-conversacional y suena más natural.
+Regla agregada al prompt. BONUS: regla `autobús` refinada contextualmente (urbano=colectivo,
+escolar=combi/transporte escolar, larga distancia=micro/ómnibus). Idx 12 combina ambas.
+================================================================
+
+ORIGINALES:
+ 1. [idx 672 hyp]   No tengo dudas de que sucederá muy pronto.
+ 2. [idx 785 hyp]   Volveremos a hablar muy pronto.
+ 3. [idx 1594 hyp]  Los detuve tan pronto los vi.
+ 4. [idx 1790 hyp]  Estaba bajo presión porque tenía muchas fechas límite muy pronto.
+ 5. [idx 1791 hyp]  Lord Julian bajó del Arabella tan pronto como pudo, dejando sola a la señorita Bishop.
+ 6. [idx 3123 hyp]  El Hellfire, que va en el Predator, puede estar listo pronto.
+ 7. [idx 3789 prem] Espero tener noticias tuyas pronto.
+ 8. [idx 3789 hyp]  Espero que hablemos pronto.
+ 9. [idx 3889 hyp]  Espero que nos lo envíes pronto.
+10. [idx 4608 prem] ...el Sr. Room escribió tan pronto como se dió cuenta de su desliz al considerar Bummel un río.
+11. [idx 4873 hyp]  Los editores no quieren darles a los investigadores las cintas del texto porque es posible que se publiquen demasiado pronto.
+12. [idx 0 hyp]     Llamó a su madre tan pronto como el autobús escolar lo dejó.
+13. [idx 117 prem]  Él es de Grecia y... vino a América, creo que fue en 1969 o 1970 y se casó pronto.
+14. [idx 365 hyp]   Los ladrones saben que los perros se calmaran pronto.
+15. [idx 1228 hyp]  Es mejor reservar pronto.
+
+TRADUCCIÓN RP (aplicando regla pronto + autobús contextual + otras reglas del prompt):
+ 1. No tengo dudas de que sucederá muy pronto.   [MANTENER, registro neutro/escrito]
+ 2. Volveremos a hablar muy pronto.   [MANTENER, registro neutro]
+ 3. Los detuve tan pronto los vi.   [MANTENER. Alternativa coloquial válida: "ni bien los vi" / "apenas los vi"]
+ 4. Estaba bajo presión porque tenía muchas fechas límite muy pronto.   [MANTENER, registro formal/escrito]
+ 5. Lord Julian bajó del Arabella tan pronto como pudo, dejando sola a la señorita Bishop.   [MANTENER, registro narrativo literario]
+ 6. El Hellfire, que va en el Predator, puede estar listo pronto.   [MANTENER, registro técnico/militar]
+ 7. Espero tener noticias tuyas pronto.   [MANTENER, registro de correspondencia formal]
+ 8. Espero que hablemos pronto.   [MANTENER]
+ 9. Espero que nos lo mandes pronto.   [enviar→mandar (regla colateral coloquial); pronto MANTIENE]
+10. ...el Sr. Room escribió tan pronto como se dio cuenta de su desliz al considerar Bummel un río.   [+D dió→dio (tilde diacrítica obsoleta para "dar"); pronto MANTIENE]
+11. Los editores no quieren darles a los investigadores las cintas del texto porque es posible que se publiquen demasiado pronto.   [MANTENER, registro formal]
+12. Llamó a su madre tan rápido como la combi escolar lo dejó.   [pronto→rápido (coloquial natural en este contexto); autobús escolar→combi escolar (regla autobús contextual)]
+13. Él es de Grecia y... vino a América, creo que fue en 1969 o 1970 y se casó pronto.   [MANTENER. Alternativa coloquial: "se casó al poco tiempo" o "se casó rápido"]
+14. Los ladrones saben que los perros se calmarán pronto.   [+D calmaran→calmarán (tilde faltante en futuro 3ª persona plural); pronto MANTIENE]
+15. Es mejor reservar pronto.   [MANTENER, registro neutro]
+
+================================================================
+MILLAS — 15 instancias XNLI (65 ocurrencias total: 50 plural + 15 singular)
+Decisión: RESUELTO — regla agregada al prompt. CONVERTIR millas→km con conversión
+numérica real (1 mi ≈ 1.609 km, redondear a natural) en distancias terrestres.
+MANTENER en (a) contexto náutico/marítimo (milla náutica = estándar AR), (b) nombre
+propio (Milla de Oro). Cuidado NLI: convertir ambos lados prem-hyp coherentemente.
+================================================================
+
+ORIGINALES:
+ 1. [idx 34 hyp]    La niña que me va a ayudar está a 5 millas de distancia.
+ 2. [idx 558 hyp]   El tiroteo fue al menos a 100 millas de donde vivo.
+ 3. [idx 855 prem]  Sí, usted sabe que generalmente hay. Tengo una granja a cien millas al este de aquí en el este de Texas.
+ 4. [idx 1515 prem] Allí, a no más de tres millas de distancia, había tierra, una pared irregular de intenso color verde que llenaba el horizonte occidental.
+ 5. [idx 1517 hyp]  No podían ver ninguna tierra por millas, solo un océano sin fin.
+ 6. [idx 1854 prem] Y a un par de millas después de ellos, vinieron apresurándose tres grandes barcos blancos.
+ 7. [idx 1947 prem] Antes de que hayamos corrido otra media milla deberíamos estar dentro del rango. Wolverstone juró en detalle...
+ 8. [idx 1949 hyp]  Wolverstone dejó escapar una maldición cuando se dio cuenta de que faltaba media milla hasta que estuvieran al alcance.
+ 9. [idx 2022 prem] ...la calle en los que se encuentran fue apodada Milla de Oro o Golden Mile.
+10. [idx 2022 hyp]  Ninguno de los rascacielos en la Milla de Oro son bancos.
+11. [idx 2023 hyp]  Los rascacielos en la Milla de Oro son bancos.
+12. [idx 2024 hyp]  Los rascacielos de la Milla de Oro albergan varios tipos de negocios, incluyendo bancos.
+13. [idx 2042 hyp]  Solían tener quinientas millas de frente costero.
+14. [idx 2064 hyp]  Milreu estaba a un mínimo de 10 millas de cualquier otro lugar.
+15. [idx 2163 hyp]  Coniera tiene 3 millas cuadradas.
+
+TRADUCCIÓN RP (aplicando regla millas + conversión + otras reglas del prompt):
+ 1. La nena que me va a ayudar está a 8 km de distancia.   [TERRESTRE: 5×1.609=8.05 → 8 km; niña→nena coloquial RP]
+ 2. El tiroteo fue al menos a 160 km de donde vivo.   [TERRESTRE: 100×1.609=160.9 → 160 km]
+ 3. Sí, usted sabe que generalmente hay. Tengo una granja a ciento sesenta kilómetros al este de acá en el este de Texas.   [TERRESTRE USA: cien→ciento sesenta (en letras porque el original lo está); aquí→acá]
+ 4. Allí, a no más de tres millas de distancia, había tierra, una pared irregular de intenso color verde que llenaba el horizonte occidental.   [NÁUTICO: barco viendo costa → MANTENER millas náuticas]
+ 5. No podían ver ninguna tierra por millas, solo un océano sin fin.   [NÁUTICO: océano → MANTENER]
+ 6. Y a un par de millas después de ellos, vinieron apresurándose tres grandes barcos blancos.   [NÁUTICO: barcos → MANTENER]
+ 7. Antes de que hayamos corrido otra media milla deberíamos estar dentro del rango. Wolverstone juró en detalle...   [NÁUTICO: cañones navales → MANTENER]
+ 8. Wolverstone dejó escapar una maldición cuando se dio cuenta de que faltaba media milla hasta que estuvieran al alcance.   [NÁUTICO: alcance de cañón → MANTENER]
+ 9. ...la calle en los que se encuentran fue apodada Kilómetro de Oro o Golden Kilometer.   [NOMBRE PROPIO CON UNIDAD: adaptar para preservar metáfora; Milla de Oro→Kilómetro de Oro, Golden Mile→Golden Kilometer]
+10. Ninguno de los rascacielos en el Kilómetro de Oro son bancos.   [NOMBRE PROPIO: Milla de Oro→Kilómetro de Oro; "en la"→"en el" por género de "kilómetro"]
+11. Los rascacielos en el Kilómetro de Oro son bancos.   [NOMBRE PROPIO: ídem + ajuste de género]
+12. Los rascacielos del Kilómetro de Oro albergan varios tipos de negocios, incluyendo bancos.   [NOMBRE PROPIO: ídem; "de la"→"del" por género]
+13. Solían tener ochocientos kilómetros de frente costero.   [TERRESTRE/GEOGRÁFICO: 500×1.609=804.5 → ochocientos (letras porque original está en letras); costa terrestre, no náutica]
+14. Milreu estaba a un mínimo de 16 km de cualquier otro lugar.   [TERRESTRE: 10×1.609=16.09 → 16 km]
+15. Coniera tiene 8 kilómetros cuadrados.   [TERRESTRE/ÁREA: 1 mi²≈2.59 km²; 3×2.59=7.77 → 8 km²; "millas cuadradas"→"kilómetros cuadrados"]
+
+================================================================
+HABÍAN — 15 instancias XNLI (70 ocurrencias total)
+Decisión: MAYORITARIAMENTE MANTENER (pluscuamperfecto: habían + participio, idéntico
+en RP). EXCEPCIÓN UNA: idx 8 "En el Caribe habían piratas" → error gramatical clásico
+(haber existencial impersonal, va siempre en singular) → corregir a "había piratas"
+como tipo D. Este es probablemente el motivo por el que el usuario agregó "habían" a
+la lista. No hace falta nueva regla en el prompt: D2 (typos/errores gramaticales)
+ya cubre este caso.
+================================================================
+
+ 1. [idx 60 prem]  Ellos ya habían tenido su entrenamiento en los trajes presurizados...   [pluscuamperfecto, mantener]
+ 2. [idx 132 prem] Él dijo que habían subido al norte.   [pluscuamperfecto, mantener]
+ 3. [idx 175 hyp]  Me habían causado tanto dolor que no podía soportarlo más.   [pluscuamperfecto, mantener]
+ 4. [idx 210 prem] ...la gente sabía que habían intentado hacer algo que era realmente tabú...   [pluscuamperfecto, mantener]
+ 5. [idx 540 hyp]  Eso es por lo que se habían esforzado.   [pluscuamperfecto, mantener]
+ 6. [idx 1102 hyp] Las partículas ya se habían incorporado.   [pluscuamperfecto, mantener]
+ 7. [idx 1539 hyp] Ogle admitió que habían escapado de la trampa por su culpa.   [pluscuamperfecto, mantener]
+ 8. [idx 2399 hyp] En el Caribe habían piratas.   ⚠ ERROR GRAMATICAL → "En el Caribe había piratas" (tipo D, haber existencial es impersonal)
+ 9. [idx 3088 hyp] Los secuestradores habían estado un tiempo en Irán.   [pluscuamperfecto, mantener]
+10. [idx 3098 hyp] Varios de sus hermanos habían estado en Chechenia.   [pluscuamperfecto, mantener]
+11. [idx 3128 hyp] Es cierto que todos en el Congreso habían sido informados de los APD.   [pluscuamperfecto, mantener]
+12. [idx 3132 prem] ...habían decidido no descender inmediatamente después del impacto.   [pluscuamperfecto, mantener]
+13. [idx 3144 prem] ...casi dos tercios de los líderes conocidos de Al Qaeda habían sido asesinados o capturados.   [pluscuamperfecto, mantener]
+14. [idx 3187 hyp] ...los Estados Unidos y los talibanes se habían aliado contra Al Qaeda.   [pluscuamperfecto, mantener]
+15. [idx 3270 hyp] Los controladores habían visto el vuelo antes.   [pluscuamperfecto, mantener]
+
+================================================================
+EH — 15 instancias XNLI (93 ocurrencias total)
+Decisión: RESUELTO — MANTENER. "Eh" como muletilla de hesitación es idéntico en RP
+y en español neutro. Los ejemplos lo confirman ("uh, eh, es para tal y cual" → solo
+cambia uh, eh queda; "y, eh, Kaiser..." → eh queda). Cero cambios a aplicar.
+================================================================
+
+ 1. Hay algunas proyecciones del flujo de caja y, uh, eh, es para tal y cual Cutty, el nombre del cliente.
+ 2. Tienen que atravesar una serie de cámaras de altitud, eh, paseos antes de que comiencen incluso a volar en U2 o a volar
+ 3. Bueno, pues llego allí esta mañana y, eh, olvido cómo... Creo que hice una pregunta, o él entró, o yo qué sé.
+ 4. Se vive y se aprende, ya sabes, cuando pruebas, eh, avión.
+ 5. Fue la única baja de la Crisis de Cuba y, eh, Kaiser, eh, se hizo con las imágenes y voló directo a Andrews Air Force
+ 6. Eh, vivía a las afuera de St. Louis, entre Jefferson City y St. Louis, MO.
+ 7. Empecé de inmediato, eh, entrenando con los otros dos muchachos que estaban en el lugar.
+ 8. Una vez fuimos a esa cosa, eh, allí, regresamos de un evento y encendimos las luces alrededor del campamento y había una
+ 9. Tengo una hija más pequeña ahora y es difícil llevarla allí y eso, pero voy a, eh...
+10. no somos verdaderos naturalistas ni nada pero eh
+11. sí, recuerdo a mis abuelos y solía salir a la calle y recoger las latas y eh
+12. y ah, él dijo bruscamente, salió bruscamente de él eh, probablemente era un noventa y cinco por ciento
+13. eh, Bailando con lobos, acabamos de verla algo tarde... ¿qué más he visto? eh... El silencio de los corderos
+14. eh, nunca organicé uno, pero tenemos uno, vamos a tener uno en el Día de los Caídos, supongo que han tenido uno en los ú
+15. Cuando era niño, eh...
+
+================================================================
+TI — 15 instancias XNLI (47 ocurrencias total)
+Decisión: RESUELTO — regla `ti → vos` agregada al voseo (sección A) en v1 y v2.
+Aplica a TODAS las preposiciones (a/para/de/por/en/hacia/sin/contra/sobre) y al
+reflexivo enfático "a ti mismo → a vos mismo". Caveat de registro arcaico igual
+que voseo. Ningún caso del XNLI requiere mantener.
+================================================================
+
+ORIGINALES:
+ 1. [idx 517 hyp]  Cuesta mucho vestirte a ti mismo.
+ 2. [idx 1761 prem] A través de ella y a través de ti.
+ 3. [idx 1800 prem] Ya sabes, Peter, que solo Lord Julian se ha interpuesto entre Bishop y su odio hacia ti.
+ 4. [idx 1836 prem] Buenos días a ti, dijo, y añadió He metido la mata de mala manera, así que lo he hecho.
+ 5. [idx 1836 hyp]  Buenas noches para ti, le dijo.
+ 6. [idx 1938 prem] Me pregunto, ahora, dijo en breve, si la jugarreta está funcionando en ti.
+ 7. [idx 1939 hyp]  Él cuestionó si los actos maliciosos fueron causados por ti o no.
+ 8. [idx 3650 hyp]  No necesitamos saber nada de ti.
+ 9. [idx 3990 prem] Por favor, da ahora para que podamos seguir dándote a ti, a tus amigos y a tus vecinos.
+10. [idx 4173 prem] La mejor táctica para salir de una situación empañada por tu propia imperfección es definirte a ti mismo como el término medio, superior a los de tu izquierda y tu derecha.
+11. [idx 4341 hyp]  Prudie dice que debes quedártelo para ti.
+12. [idx 384 prem]  etiquétalos o te dirán qué hacer; te dirán qué hacer, pero tendrás que hacerlo todo por ti mismo
+13. [idx 384 hyp]   Después de que te digan qué hacer, sigue adelante y hazlo por ti mismo.
+14. [idx 790 hyp]   Recibí algunas noticias antes de enviar por ti, Capitán Blood.
+15. [idx 963 hyp]   No importa lo que pienso de ti.
+
+TRADUCCIÓN RP (aplicando regla ti → vos + otras reglas del prompt):
+ 1. Cuesta mucho vestirte a vos mismo.   [a ti → a vos]
+ 2. A través de ella y a través de vos.   [de ti → de vos]
+ 3. Ya sabés, Peter, que solo Lord Julian se ha interpuesto entre Bishop y su odio hacia vos.   [voseo sabes→sabés; hacia ti→hacia vos; PPC se mantiene (estado vigente)]
+ 4. Buenos días a vos, dijo, y añadió: "Metí la pata de mala manera, así que ya está hecho".   [a ti→a vos; +D mata→pata (typo); PPC he metido→metí (acción puntual coloquial); he hecho→está hecho]
+ 5. Buenas noches para vos, le dijo.   [para ti→para vos]
+ 6. Me pregunto, ahora, dijo en breve, si la jugarreta está funcionando en vos.   [en ti→en vos]
+ 7. Él cuestionó si los actos maliciosos fueron causados por vos o no.   [por ti→por vos]
+ 8. No necesitamos saber nada de vos.   [de ti→de vos]
+ 9. Por favor, da ahora para que podamos seguir dándote a vos, a tus amigos y a tus vecinos.   [a ti→a vos]
+10. La mejor táctica para salir de una situación empañada por tu propia imperfección es definirte a vos mismo como el término medio, superior a los de tu izquierda y tu derecha.   [a ti mismo→a vos mismo, reflexivo enfático]
+11. Prudie dice que debés quedártelo para vos.   [voseo debes→debés; para ti→para vos]
+12. etiquetalos o te van a decir qué hacer; te van a decir qué hacer, pero tendrás que hacerlo todo por vos mismo.   [voseo etiquétalos→etiquetalos; por ti mismo→por vos mismo; "tendrás" futuro NO cambia]
+13. Después de que te digan qué hacer, seguí adelante y hacelo por vos mismo.   [voseo sigue→seguí, hazlo→hacelo; por ti mismo→por vos mismo]
+14. Recibí algunas noticias antes de mandar por vos, Capitán Blood.   [por ti→por vos; enviar→mandar coloquial]
+15. No importa lo que pienso de vos.   [de ti→de vos]
+
+================================================================
+TONTO/A/S — 15 instancias XNLI (29 ocurrencias total; 18 instancias únicas en full 7.5k)
+Decisión: RESUELTO — regla contextual `tonto → boludo/tarado/gil/iluso/pavo` agregada
+al prompt. Insulto a persona → boludo/tarado/iluso; adjetivo de cosa abstracta → boludo/a;
+"hacerse el tonto" → "hacerse el gil/boludo"; predicativo impersonal → "al pedo/boludo".
+Mantener solo en narrativa literaria pura (idx 6 "el tonto quijotesco"), compuestos
+lexicalizados o registro académico.
+================================================================
+
+ORIGINALES:
+ 1. Esa es una idea tonta que descarté la semana pasada.
+ 2. Eran muy inteligentes, pero se hicieron los tontos cuando estaban cerca de otros que no los conocían muy bien.
+ 3. Es cierto, puede que nos hubieramos quedado cortos el próximo año si no nos lo hubiéramos gastado todo este año y, por ello, no importa cómo de tonto sea el gasto que nos desharemos de ese dinero
+ 4. Porque la verdad es que un edificio, sin importar qué tan útil, bien construido o hermoso sea, no simpatiza con la forma en que se visten las personas, y se arriesga a lucir no solo anacrónico, sino francamente tonto.
+ 5. No creo que Lord Julian fuera sentencioso, ¡era tan tonto!
+ 6. Y en este momento, el tonto quijotesco corre hacia el peligro en nuestro nombre.
+ 7. Si estás pensando en tocar las fibras sensibles del obispo, eres un tonto más grande de lo que siempre había pensado, Ogle. Tú estabas con todo menos con pistolas.
+ 8. Ogle sería un tonto si hubiera esperado tirar de las fibras del corazón del obispo.
+ 9. ¡Sin duda eres tan tonto como para pensarlo, Peter!
+10. Es la verdad, tonto.
+11. Y si no fueras un tonto, Ogle, no necesitarías que te dijera esto.
+12. Ogle parece ser bastante tonto, como uno afirmó.
+13. Ogle fue un tonto al creer en la existencia de Santa Claus.
+14. Me gusta hacer juegos de palabras tontos.
+15. Parece tonto separar el queso gruyere de Gruyere, el lugar de Suiza de donde viene en realidad, este último ni siquiera es una entrada en las secciones geográficas de ninguno de los dos diccionarios.
+
+TRADUCCIÓN RP (aplicando regla tonto + otras reglas del prompt):
+ 1. Esa es una idea boluda que descarté la semana pasada.   [tonta→boluda]
+ 2. Eran muy inteligentes, pero se hicieron los boludos cuando estaban cerca de otros que no los conocían muy bien.   [se hicieron los tontos → se hicieron los boludos, locución fija RP de "fingir que no se sabe / no se entiende"]
+ 3. Es cierto, puede que nos hubiéramos quedado cortos el próximo año si no nos lo hubiéramos gastado todo este año y, por eso, no importa qué tan boludo sea el gasto del que nos vamos a deshacer de esa plata.   [+D hubieramos→hubiéramos; ello→eso; cómo de→qué tan; tonto→boludo; dinero→plata]
+ 4. Porque la verdad es que un edificio, sin importar qué tan útil, bien construido o hermoso sea, no simpatiza con la forma en que se visten las personas, y se arriesga a lucir no solo anacrónico, sino francamente ridículo.   [tonto→ridículo en registro de ensayo/descripción formal; "boludo" sería demasiado bajada]
+ 5. No creo que Lord Julian fuera sentencioso, ¡era tan tarado!   [tonto→tarado; diálogo, no mantener aunque sea Captain Blood]
+ 6. Y en este momento, el tonto quijotesco corre hacia el peligro en nuestro nombre.   [MANTENER — narrativa literaria pura, referencia al Quijote]
+ 7. Si estás pensando en tocar las fibras sensibles del obispo, sos un boludo más grande de lo que siempre había pensado, Ogle. Vos estabas con todo menos con pistolas.   [voseo eres→sos, tú→vos; tonto→boludo]
+ 8. Ogle sería un iluso si hubiera esperado tirar de las fibras del corazón del obispo.   [tonto→iluso, matiz de ingenuidad]
+ 9. ¡Sin duda sos tan tarado como para pensarlo, Peter!   [voseo eres→sos; tonto→tarado]
+10. Es la verdad, tarado.   [vocativo, tonto→tarado]
+11. Y si no fueras un boludo, Ogle, no necesitarías que te dijera esto.   [tonto→boludo]
+12. Ogle parece ser bastante boludo, como uno afirmó.   [tonto→boludo]
+13. Ogle fue un iluso al creer en la existencia de Santa Claus.   [tonto→iluso, matiz de credulidad; en v2 además: Santa Claus → Papá Noel]
+14. Me gusta hacer juegos de palabras boludos.   [tontos→boludos]
+15. Parece boludo separar el queso gruyere de Gruyere, el lugar de Suiza de donde viene en realidad, este último ni siquiera es una entrada en las secciones geográficas de ninguno de los dos diccionarios.   [tonto→boludo en predicativo impersonal; alternativa: "es al pedo separar..."]
+
+================================================================
+OH — 15 instancias XNLI (90 ocurrencias total)
+Decisión: RESUELTO — regla contextual agregada al prompt v1/v2. Apertura suave → ah/uy;
+afirmación → ah, sí / ah, claro / ah, ya veo; sorpresa con Dios → ay Dios / Dios mío;
+doblada → uy, uy. Mantener solo en registro literario explícito o nombre propio.
+================================================================
+
+ORIGINALES:
+ 1. Y, oh, pero, oh, pensaría, por la noche no me pude dormir.
+ 2. Oh, todavía era el único nueve dos dos que había puesto alguna vez la inyección en el regulador.
+ 3. Oh, pasé buena parte de mi tiempo en, esto, actividades especiales.
+ 4. Oh, lo que vale una vida humana y si se puede o no rehabiliar a alguien.
+ 5. oh, chico, aquí tienes un extraño problema de cableado
+ 6. oh, pero de todos modos mis hijos ahora tienen veintiuno y veinticuatro, así que no tengo que
+ 7. esa era su meta oh
+ 8. oh, eso de verdad no es realmente, oh consistente
+ 9. oh, oh Dios, bueno, eso suena como una aventura
+10. Locust Hill oh claro, sí, genial
+11. oh así que de ahí viene lo que dices
+12. y, oh Dios, me viene a la mente que pagó mil ochocientos dólares por un loro y eso fue simplemente alucinante
+13. oh, ya veo, el estado no lo necesita, es como... es bastante... es bastante inusual, ¿no?
+14. oh, sí, bueno algunos lugares son buenos en cuanto a enviarlos por UPS u otras maneras, pero
+15. oh dios, acabó de nombrar el curso uh, se me acaba de olvidar pero es el Parlamento de la Paz
+
+TRADUCCIÓN RP (aplicando regla oh + otras reglas del prompt):
+ 1. Y, ah, pero, ah, pensaría, a la noche no me pude dormir.
+ 2. Ah, todavía era el único nueve dos dos que había puesto alguna vez la inyección en el regulador.
+ 3. Ah, pasé buena parte de mi tiempo en, este, actividades especiales.
+ 4. Ah, lo que vale una vida humana y si se puede o no rehabilitar a alguien.   [+D: rehabiliar→rehabilitar]
+ 5. uy, chico, acá tenés un extraño problema de cableado   [oh→uy, aquí→acá, voseo tienes→tenés]
+ 6. ah, pero de todos modos mis hijos ahora tienen veintiuno y veinticuatro, así que no tengo que
+ 7. esa era su meta, ah   [oh final → ah; o eliminar]
+ 8. ah, eso de verdad no es realmente, ah, consistente
+ 9. uy, ay Dios, bueno, eso suena como una aventura   [oh doblada+oh Dios → uy + ay Dios]
+10. Locust Hill, ah claro, sí, genial
+11. ah, así que de ahí viene lo que decís   [voseo dices→decís]
+12. y, ay Dios, me viene a la mente que pagó mil ochocientos dólares por un loro y eso fue simplemente alucinante   [oh Dios → ay Dios]
+13. ah, ya veo, el estado no lo necesita, es como... es bastante... es bastante inusual, ¿no?
+14. ah, sí, bueno algunos lugares son buenos en cuanto a mandarlos por UPS u otras maneras, pero   [oh→ah; enviar→mandar coloquial agente impersonal]
+15. ay dios, acabó de nombrar el curso, este, se me acaba de olvidar pero es el Parlamento de la Paz   [oh dios→ay dios; uh→este]
+
+================================================================
+BOTE/S — 21 instancias XNLI (28 ocurrencias total)
+Decisión: mantener "bote" = embarcación (20/21 casos). ÚNICO caso de cambio: "bote de basura" → "tacho de basura".
+================================================================
+
+ 1. El mar estaba lleno de pequeños peces que salpicaban contra el bote.
+ 2. Nuestro bote navegó pacíficamente cerca de las costas de Inglaterra.
+ 3. Ella lo dejó y, después con Wolverstone, apoyado en la barandilla, observó cómo se acercaba ese bote, tripulado por una docena de hombres.
+ 4. El bote que se acercaba era muy pequeño y solo llevaba a 3 personas.
+ 5. Conseguiré mi sombrero, mi bastón y mi espada, y desembarcaré en el bote.
+ 6. Voy a desembarcar solo en el bote pequeño.
+ 7. Voy a ir a tierra en el bote pequeño.
+ 8. Un bote que se había acercado y que había pasado desapercibido desde la orilla llegó rayando y chocando contra el gran casco.
+ 9. Cuando el bote colisionó con el Arabella, se escuchó un fuerte sonido.
+10. El Arabella es un bote con un exterior rojo.
+11. El bote chocó deliberadamente con Arabella sabiendo que estaba allí.
+12. Vire, capitán. y hágales señales para que envíen un bote y asegúrense de que esa señorita está aquí.
+13. La señorita había llegado bastante temprano y, como resultado, el bote aún no había llegado a tierra.
+14. La sangre se metió en un bote.
+15. La sangre se metió en un bote púrpura.
+16. A los niños les gustará poder construir botes en miniatura.
+17. Puede alquilar los botes de un pasajero.
+18. Los botes se crearon para facilitar el acceso a los barcos que llegaban.
+19. *** Después de cortar los antebrazos de sus víctimas, intentó esconderlos en un bote de basura. → TACHO DE BASURA
+20. Si vas por debajo, y consigues tu equipo y tu mujer, serás enviado a bordo de uno de los barcos de la flota. Señaló el bote.
+21. No había forma de saber si el bote seguiría avanzando.
+
+================================================================
+NIÑO/S — 15 instancias XNLI (35 ocurrencias total)
+Pregunta: ¿reemplazar por nene/pibe/chico en contexto coloquial?
+================================================================
+
+ 1. Pero ellos estaban divididos acerca de quiénes eran las manos de campo y quiénes eran los niños de la casa, era algo así.
+ 2. Un niño murió de los cinco.
+ 3. El niño que murió había nacido con problemas de salud.
+ 4. Todo el mundo se sirve champán, pero no todos se terminan lo que se sirven; lo que queda en las copas se lo beben los niños.
+ 5. Los niños bebieron 3 botellas de champaña.
+ 6. Los niños bebieron un poco de champán.
+ 7. Probablemente es la primera cosa que recuerdo de cuando era un niño pequeño, especialmente cuando había hecho algo malo.
+ 8. La guardería está abierta todos los días para niños menores de cinco años solamente.
+ 9. sabes, todos mis hijos son geniales, muy buenos, y creo que no, aprende de los niños mayores también.
+10. Ha aprendido de los otros niños mayores pero toda mi descendencia eclipsa.
+11. Mmm tengo un niño una niña que tiene dieciocho meses.
+12. Tengo muchos niños.
+13. Sí, tengo dos dos niños, uno de doce y otro de dieciséis años.
+14. También tengo una hija que es más joven que los niños.
+15. Mi madre terminó no siendo una de sus favoritas al principio y, ah, así que fue relegada a trabajar en el campo mientras los niños jugaban.
+
+================================================================
+UH — 15 instancias XNLI (anglicismo de hesitación, 54 ocurrencias total)
+Nota: "uh" es una muletilla inglesa que quedó en la traducción al ES. En RP no se usa.
+Equivalentes RP: "eh", "este...", "mmm". "uh-huh" → "ajá" / "sí, sí".
+================================================================
+
+ 1. Hay algunas proyecciones del flujo de caja y, uh, eh, es para tal y cual Cutty, el nombre del cliente.
+ 2. sí, eso es justamente lo que he hecho hoy, me he llevado uh Darkman, la has visto uh no la he visto, me imagino que la vi.
+ 3. no, no necesariamente, uh, puede ser alguien de la casa que te ayuda a gestionar X cantidad de dólares.
+ 4. oh dios, acabó de nombrar el curso uh, se me acaba de olvidar pero es el Parlamento de la Paz.
+ 5. mmm son bastante aseados, son una especie de país de pasto azul uh son muy divertidos de verdad me parece que lo son.
+ 6. uh-huh tuyo es un cuatro puertas.
+ 7. la mayor parte del tiempo cuando usted ve el autobús uh usted sabe, los autobuses con el diésel, esto es uh aquellos son los mejores.
+ 8. Y, uh, así que es una planta de plástico gigante, creo que tienen una cuota de mercado de un setenta o un setenta y cinco.
+ 9. sí, otra cosa que no entiendo son cosas como vender tecnología y uh incluso maquinaria militar a gobiernos extranjeros.
+10. Michael Santo of, of Firewell and Company, of Buffalo, NY, they was the one that uh, manufactured, uh, invented the high.
+11. Solo perdimos dos, tres aviones mientras estábamos allí, y, uh, fase de prueba.
+12. Bueno, supongo que supongo tan bien que no sé, realmente no he resuelto todos mis sentimientos en las pruebas de drogas.
+13. uh-huh oh ella es genial ella es tu sabes que es un personaje ella se sentara con cualquiera.
+14. uh-huh, todo bien, adiós.
+15. no, no necesariamente, uh, puede ser alguien de la casa que te ayuda a gestionar X cantidad de dólares.
+
+================================================================
+DINERO — instancias XNLI donde Gemini mantuvo "dinero" (no cambió a plata)
+Regla v1 anterior (coloquial-only). Con la regla nueva (plata=default) la mayoría debería cambiar.
+================================================================
+
+ 1. Ahorrar dinero ahora es una forma de acumular activos y poder jubilarse antes.
+ 2. Las reformas le cuestan dinero al gobierno.
+ 3. Al mismo tiempo, la sociedad de Arabia Saudita era un lugar donde Al Qaeda recaudaba dinero directamente de personas y organizaciones benéficas.
+ 4. Al Qaeda también recibió dinero de negocios.
+ 5. Al Qaeda no recibió dinero de los saudíes.
+ 6. En Arabia Saudita, Al Qaeda recibió dinero de personas individuales y de organizaciones benéficas.
+ 7. A veces las personas pueden escapar de la congelación de activos si le pagan a alguien mucho dinero por ayuda.
+ 8. Este plan fue abandonado porque los talibanes querían grandes cantidades de dinero y armas para la cooperación.
+ 9. Las agencias pueden saber si tienen éxito por la cantidad de dinero que recaudan.
+10. El último receptor en Pakistán iría entonces al hawaladar pakistaní y recibiría el dinero, en rupias, del dinero que el hawaladar pakistaní tenga a mano.
+11. El último destinatario tendría que viajar a Turquía para obtener su dinero.
+12. KSM puede haber ordenado a Binalshibh que envíe dinero a Moussaoui para ayudar a preparar a Moussaoui como potencial piloto sustituto de Jarrah.
+13. Podríamos mantener bajos nuestros precios si realmente quisiéramos, sin su dinero, pero a nuestro jefe le gustan sus lujos.
+14. A todos los que reciban esta carta: No donen su dinero, es una estafa.
+15. La Escuela de Enfermería cumplió todos sus objetivos financieros, por lo que no necesita más dinero.
+16. No tenemos ningún punto de referencia en lo que respecta al dinero.
+17. Las escuelas de derecho no se preocupan sobre el calibre de los estudiantes, solo quieren dinero.
+18. Dar dinero a la campaña ayuda mucho al museo.
+19. El museo no puede hacer nada con el dinero que reciben.
+20. Esperamos que disfrute hablando con ellos, pero puede ahorrarse el dinero de las tareas administrativas de la IRT enviando hoy mismos su donación en el sobre de devolución.
+
+--- CUENTOS RIOPLATENSES (Travi et al. 2026) ---
+
+DINERO (2 ocurrencias — 1 texto, registro ensayístico):
+  [Cómo funcionan los bolsillos] "...los bolsillos no siempre estuvieron ahí, listos para que en ellos olvidemos dinero o incluso, escondamos nuestras manos..."
+  [Cómo funcionan los bolsillos] "...Tan pequeñas y ridículas eran que prácticamente no podían llevar dinero en ellas, dado que la tarea de administrar las finanzas debía quedarle a los caballeros..."
+
+PLATA = dinero (3 ocurrencias — 3 textos, registro narrativo/coloquial):
+  [La salud de los enfermos] "...que Alejandro estaba juntando plata en el extranjero para el casamiento..."
+  [Rubí y el lago danzante] "...El flaquito de túnica les explicó qué era un circo, y les compró el animal por muy buena plata..."
+  [Wakefield] "...Tiene algo de plata de la herencia de su padre (una plata que nunca blanqueó con la esposa) y paga en el hotel un año de alquiler por adelantado..."
+
+================================================================
+ESCUELA — 15 instancias XNLI (contexto: ¿mantener "escuela" o cambiar a "colegio"?)
+Corpus AR: escuela 1,645 vs colegio 903 (ratio 1.8x favor escuela).
+Decisión: mantener "escuela"; usar "colegio" solo si el contexto indica secundaria explícitamente.
+================================================================
+
+ 1. Me han... me han elegido entre 15 personas para ir a esa escuela, y no voy a ir, no voy a ir.
+ 2. No fui elegido para asistir a la escuela.
+ 3. Mmm, ¿ninguno? Dijiste que no recuerdas haber leído nada en particular, pero, cuando ya eras mayor en la escuela, ¿no había algo que recuerdes?
+ 4. No puedo recordar lo que fue, pero de repente me puse muy nervioso pensando que iba a ir a la escuela por primera vez y no era capaz de parar.
+ 5. Estaba muy relajado acerca de comenzar la escuela.
+ 6. Estaba preocupado por ir a la escuela.
+ 7. Me dijo que debería asumir que la escuela estaría bien.
+ 8. Bueno tengo una novia que tiene una hija adolescente y cada año antes de que empiece la escuela me pide que vaya con ella de compras.
+ 9. Sí, eso es cierto, pero creo que me refiero incluso a algo más drástico que eso, me refiero a abandonar la escuela.
+10. Una vez que los estudiantes se van, la escuela ya no tendrá actividades después de la escuela.
+11. Algunos de los miembros de este grupo han donado más de 100k $ a la escuela.
+12. Planeamos pedirle a este grupo que haga contribuciones monetarias a la Escuela pero cuanto antes.
+13. La escuela de enfermería necesita tus regalos generosos para seguir y mantener su excelencia educativa.
+14. Por favor, done $100 millones de dólares a la Escuela de Enfermería, o perderá su estatua conmemorativa.
+15. Las escuelas de derecho no se preocupan sobre el calibre de los estudiantes, solo quieren dinero.
+
+================================================================
+EH — 15 instancias XNLI (muletilla de pausa en habla oral transcrita)
+Decisión: mantener "eh". No es peninsularismo — es relleno de hesitación natural en RP también.
+RP usa además "este..." pero cambiar mecánicamente introduciría ruido.
+================================================================
+
+ 1. Hay algunas proyecciones del flujo de caja y, uh, eh, es para tal y cual Cutty, el nombre del cliente.
+ 2. Tienen que atravesar una serie de cámaras de altitud, eh, paseos antes de que comiencen incluso a volar en U2.
+ 3. Bueno, pues llego allí esta mañana y, eh, olvido cómo... Creo que hice una pregunta, o él entró, o yo qué sé.
+ 4. Se vive y se aprende, ya sabes, cuando pruebas, eh, avión.
+ 5. Fue la única baja de la Crisis de Cuba y, eh, Kaiser, eh, se hizo con las imágenes y voló directo a Andrews Air Force.
+ 6. Eh, vivía a las afueras de St. Louis, entre Jefferson City y St. Louis, MO.
+ 7. Empecé de inmediato, eh, entrenando con los otros dos muchachos que estaban en el lugar.
+ 8. Una vez fuimos a esa cosa, eh, allí, regresamos de un evento y encendimos las luces alrededor del campamento.
+ 9. Tengo una hija más pequeña ahora y es difícil llevarla allí y eso, pero voy a, eh...
+10. no somos verdaderos naturalistas ni nada pero eh
+11. sí, recuerdo a mis abuelos y solía salir a la calle y recoger las latas y eh
+12. y ah, él dijo bruscamente, salió bruscamente de él eh, probablemente era un noventa y cinco por ciento
+13. eh, Bailando con lobos, acabamos de verla algo tarde... ¿qué más he visto? eh... El silencio de los corderos
+14. Cuando era niño, eh...
+15. Eso es algo único en el sentido de que, eh, pasé cerca de 16 años de mi carrera profesional en actividades especiales.
+
+================================================================
+PLATA — 15 instancias donde el rerun cambió dinero→plata (prompt v1 nuevo)
+Formato: ES original → RP traducido
+================================================================
+
+ 1. ES: Ella estaba interesada en saber más acerca de como ganaban dinero las cooperativas de ahorro y crédito.
+    RP: Ella estaba interesada en saber más acerca de como ganaban plata las cooperativas de ahorro y crédito.
+
+ 2. ES: Es cierto, puede que nos hubieramos quedado cortos el próximo año si no nos lo hubiéramos gastado todo este año y, por ello, no importa cómo de tonto sea el gasto que nos desharemos de ese dinero.
+    RP: [mantuvo dinero — "desharemos de ese dinero" sin referente claro → sin cambio]
+
+ 3. ES: Tenemos mucho mas dinero del que podriamos necesitar.
+    RP: Tenemos mucha más plata de la que podríamos necesitar.
+
+ 4. ES: Las facturas de asistencia médica son siempre mucho dinero.
+    RP: Las facturas de asistencia médica son siempre mucha plata.
+
+ 5. ES: Bios Group ha gastado una gran cantidad de dinero en bruto en su creación.
+    RP: Bios Group ha gastado una gran cantidad de plata en bruto en su creación.
+
+ 6. ES: La gente nunca arroja dinero porque da mala suerte.
+    RP: La gente nunca arroja plata porque da mala suerte.
+
+ 7. ES: Puntos finales de salud salvó el dinero del hospital.
+    RP: Puntos finales de salud salvó la plata del hospital.
+
+ 8. ES: Centrelink tenía muchas estrategias para enseñarle a la gente a informar los ingresos porque el gobierno estaba perdiendo mucho dinero por los errores.
+    RP: Centrelink tenía muchas estrategias para enseñarle a la gente a informar los ingresos porque el gobierno estaba perdiendo mucha plata por los errores.
+
+ 9. ES: Si no ahorras dinero, no tendrás dinero.
+    RP: Si no ahorrás plata, no tendrás plata.
+
+10. ES: Si gastas los ahorros significa que ahorras mucho dinero.
+    RP: Si gastás los ahorros significa que ahorrás mucha plata.
+
+11. ES: cuando no tenemos un conjunto de diseños y medidas adecuado en las estanterías, un estudio de caso explicativo puede ahorrar dinero en la implementación.
+    RP: cuando no tenemos un conjunto de diseños y medidas adecuado en las estanterías, un estudio de caso explicativo puede ahorrar plata en la implementación.
+
+12. ES: Los estudios de casos exploratorios pueden ahorrar tiempo y dinero.
+    RP: Los estudios de casos exploratorios pueden ahorrar tiempo y plata.
+
+13. ES: Aunque los miembros de la junta de CVR consideraron dar el dinero como un préstamo, no como una subvención.
+    RP: Aunque los miembros de la junta de CVR consideraron dar la plata como un préstamo, no como una subvención.
+
+14. ES: Los miembros de la junta de CVR no consiguieron llegar a un acuerdo en relación a la cesión del dinero.
+    RP: Los miembros de la junta de CVR no consiguieron llegar a un acuerdo en relación a la cesión de la plata.
+
+15. ES: Ahorrar dinero ahora es una forma de acumular activos y poder jubilarse antes.
+    RP: Ahorrar plata ahora es una forma de acumular activos y poder jubilarse antes.
+
+================================================================
+ESPANOLES — 26 ocurrencias total
+Decision: RESUELTO — MANTENER. Gentilicio historico/etnico/cultural.
+Gemini lo deja igual en todos los casos. Sin cambios en 'espanoles'.
+================================================================
+
+ 1. [idx 1290 | entailment]
+    PREM ES: Publicaciones de viajeros americanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    PREM RP: Publicaciones de viajeros norteamericanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    HYP  ES: Los primeros estadounidenses representaban negativamente a los mexicanos españoles.
+    HYP  RP: Los primeros estadounidenses representaban negativamente a los mexicanos españoles.
+    -> tipo=B | americanos → norteamericanos (léxico peninsular → rioplatense)
+
+ 2. [idx 1291 | neutral]
+    PREM ES: Publicaciones de viajeros americanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    PREM RP: Publicaciones de viajeros norteamericanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    HYP  ES: A los primeros americanos no les gustaban los mexicanos españoles.
+    HYP  RP: A los primeros norteamericanos no les gustaban los mexicanos españoles.
+    -> tipo=B | americanos → norteamericanos (léxico peninsular → rioplatense); americanos → norteamericanos (léxico peninsular → rioplatense)
+
+ 3. [idx 1292 | contradiction]
+    PREM ES: Publicaciones de viajeros americanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    PREM RP: Publicaciones de viajeros norteamericanos anteriores al sudoeste y a México que describen a los mexicanos no solo de forma espantosa, sino que con una pasión extrema.
+    HYP  ES: Los primeros americanos hablaban de las cosas buenas que los mexicanos españoles hicieron.
+    HYP  RP: Los primeros norteamericanos hablaban de las cosas buenas que los mexicanos españoles hicieron.
+    -> tipo=B | americanos → norteamericanos (léxico peninsular); americanos → norteamericanos (léxico peninsular)
+
+ 4. [idx 1545 | entailment]
+    PREM ES: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    PREM RP: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    HYP  ES: Los españoles te tenían, antes de que él te liberara.
+    HYP  RP: Los españoles te tenían, antes de que él te liberara.
+    -> tipo=A
+
+ 5. [idx 1546 | neutral]
+    PREM ES: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    PREM RP: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    HYP  ES: Los españoles planearon lanzarte por la borda durante la noche.
+    HYP  RP: Los españoles planearon lanzarte por la borda durante la noche.
+    -> tipo=A
+
+ 6. [idx 1547 | contradiction]
+    PREM ES: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    PREM RP: Tus motivos fueron sin duda dignos... tu gratitud hacia él por librarte de los españoles.
+    HYP  ES: Lo odias por librarte de los españoles.
+    HYP  RP: Lo odiás por librarte de los españoles.
+    -> tipo=C | odias → odiás (voseo)
+
+ 7. [idx 2190 | neutral]
+    PREM ES: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    PREM RP: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    HYP  ES: Los españoles tenían 100 personas ayudando.
+    HYP  RP: Los españoles tenían 100 personas ayudando.
+    -> tipo=A
+
+ 8. [idx 2191 | contradiction]
+    PREM ES: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    PREM RP: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    HYP  ES: Los españoles no tuvieron ayuda.
+    HYP  RP: Los españoles no tuvieron ayuda.
+    -> tipo=A
+
+ 9. [idx 2192 | entailment]
+    PREM ES: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    PREM RP: Con refuerzos, los españoles consiguieron establecer una cabeza de playa.
+    HYP  ES: Los españoles hicieron una cabeza de playa.
+    HYP  RP: Los españoles hicieron una cabeza de playa.
+    -> tipo=A
+
+10. [idx 2418 | contradiction]
+    PREM ES: La colección de Madrid de los Viejos Maestros españoles Velázquez, El Greco, Goya, Zurbarán y más no tiene rival en el mundo.
+    PREM RP: La colección de Madrid de los Viejos Maestros españoles Velázquez, El Greco, Goya, Zurbarán y más no tiene rival en el mundo.
+    HYP  ES: Madrid todavía no tiene una colección.
+    HYP  RP: Madrid todavía no tiene una colección.
+    -> tipo=A
+
+================================================================
+REY — 51 ocurrencias total
+Decision: RESUELTO — MANTENER. Titulo historico/real en contexto colonial
+(Captain Blood, pre-1816). En v2 con E.3: Rey/Su Majestad tambien se mantiene
+(Bouchard pre-independencia, rey espanol vigente).
+Inconsistencia menor: idx 1617/1618 deberian aplicar PPC igual que 1619.
+================================================================
+
+ 1. [idx 793 | neutral]
+    PREM ES: Bueno, no creo que él quiera hacer eso, pero él sería como un estadista veterano o lo que sea.
+    PREM RP: Bueno, no creo que él quiera hacer eso, pero él sería como un estadista veterano o lo que sea.
+    HYP  ES: No creo que él quiera ser rey.
+    HYP  RP: No creo que él quiera ser rey.
+    -> tipo=A
+
+ 2. [idx 1560 | neutral]
+    PREM ES: No concedo la comisión al Rey a la ligera.
+    PREM RP: No concedo la comisión al Rey a la ligera.
+    HYP  ES: Otorgar la comisión del Rey va en contra de mis principios morales.
+    HYP  RP: Otorgar la comisión del Rey va en contra de mis principios morales.
+    -> tipo=A
+
+ 3. [idx 1561 | entailment]
+    PREM ES: No concedo la comisión al Rey a la ligera.
+    PREM RP: No concedo la comisión al Rey a la ligera.
+    HYP  ES: He pensado mucho en la comisión del Rey.
+    HYP  RP: Pensé mucho en la comisión del Rey.
+    -> tipo=B | He pensado → Pensé (PPC → pretérito simple RP)
+
+ 4. [idx 1562 | contradiction]
+    PREM ES: No concedo la comisión al Rey a la ligera.
+    PREM RP: No concedo la comisión al Rey a la ligera.
+    HYP  ES: Firmé la orden para conceder la comisión del Rey sin pensarlo dos veces.
+    HYP  RP: Firmé la orden para conceder la comisión del Rey sin pensarlo dos veces.
+    -> tipo=A
+
+ 5. [idx 1617 | contradiction]
+    PREM ES: Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    PREM RP: Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    HYP  ES: Estoy seguro de que no otorgaste la comisión del Rey a este hombre, dijo alegremente.
+    HYP  RP: Estoy seguro de que no otorgaste la comisión del Rey a este hombre, dijo alegremente.
+    -> tipo=A [PPC en prem deberia cambiar — inconsistencia vs idx 1619]
+
+ 6. [idx 1618 | entailment]
+    PREM ES: Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    PREM RP: Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    HYP  ES: Su tono denunció la amargura de su resentimiento.
+    HYP  RP: Su tono denunció la amargura de su resentimiento.
+    -> tipo=A [PPC en prem deberia cambiar — inconsistencia vs idx 1619]
+
+ 7. [idx 1619 | neutral]
+    PREM ES: Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    PREM RP: Otorgó, según me contaron, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.
+    HYP  ES: Usted ha concedido, según tengo entendido, la autorización del rey al hombre por su valentía.
+    HYP  RP: Usted concedió, según tengo entendido, la autorización del rey al hombre por su valentía.
+    -> tipo=B | Ha otorgado → Otorgó (PPC → pretérito simple RP); me han contado → me contaron (PPC → pretérito simple RP); ha concedido → concedió (PPC → pretérito simple RP)
+
+ 8. [idx 1962 | neutral]
+    PREM ES: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    PREM RP: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    HYP  ES: Yo podría servir al rey, pero eso no me haría muy feliz.
+    HYP  RP: Yo podría servir al rey, pero eso no me haría muy feliz.
+    -> tipo=A
+
+ 9. [idx 1963 | contradiction]
+    PREM ES: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    PREM RP: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    HYP  ES: ¡Seré feliz sirviendo al rey!
+    HYP  RP: ¡Seré feliz sirviendo al rey!
+    -> tipo=A
+
+10. [idx 1964 | entailment]
+    PREM ES: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    PREM RP: Me pudriré en el infierno o si alguna vez sirvo al Rey, él gritó con una gran furia.
+    HYP  ES: ¡Nunca serviré al rey!
+    HYP  RP: ¡Nunca serviré al rey!
+    -> tipo=A
