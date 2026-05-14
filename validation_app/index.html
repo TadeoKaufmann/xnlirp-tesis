@@ -860,7 +860,7 @@
     }
 
     const TEST_MODE = new URLSearchParams(location.search).get('test') === 'true';
-    const BATCH_SIZE = TEST_MODE ? 1 : 15;
+    const BATCH_SIZE = TEST_MODE ? 3 : 15;
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
