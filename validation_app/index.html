@@ -167,6 +167,22 @@
     outline-offset: 2px;
     transition: background 0.12s, color 0.12s, outline 0.12s;
   }
+  /* Demo on welcome screen */
+  .welcome-line {
+    text-align: left;
+    line-height: 1.6;
+    margin: 0 0 18px;
+    padding: 0 4px;
+  }
+  .demo-tag {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-weight: 500;
+  }
+  .demo-tag.marked   { background: #fee2e2; color: #b91c1c; }
+  .demo-tag.replaced { background: #dbeafe; color: #1e40af; text-decoration: underline dotted; text-underline-offset: 3px; }
+  .demo-prompt { font-size: 0.85em; color: var(--muted); }
   .word-hint {
     font-size: 0.78rem;
     color: var(--muted);
@@ -361,11 +377,18 @@
     </div>
 
     <div id="screen-welcome" class="hidden">
-      <div class="card card-anim" style="text-align: center; padding: 36px 24px;">
-        <div style="font-size: 2.4rem; margin-bottom: 14px;">👋</div>
-        <h2>¡Bienvenido/a!</h2>
-        <p class="muted" style="margin: 12px 0 10px;">¡Gracias por empezar! Vas a leer unos textos. Tu trabajo: marcar las palabras que no te suenen rioplatenses. Si sabés cómo deberían ir, escribí la corrección; si no, un breve comentario de por qué las marcaste.</p>
-        <p class="muted" style="margin-bottom: 28px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
+      <div class="card card-anim" style="padding: 36px 24px; text-align: center;">
+        <div style="font-size: 2.4rem; margin-bottom: 8px;">👋</div>
+        <h2 style="margin-bottom: 22px;">¡Bienvenido/a! ¡Gracias!</h2>
+        <p class="muted welcome-line">
+          Vas a leer unos textos. <span class="demo-tag marked">Marcá</span> clickeando las palabras que no suenen rioplatenses.<br>
+          <span class="demo-prompt">Probá acá:</span> <span class="word demo-word" data-original="coche">coche</span>
+        </p>
+        <p class="muted welcome-line">
+          <span class="demo-tag replaced">Escribí la corrección</span> si la sabés (mantené apretado y soltá).<br>
+          <span class="demo-prompt">Probá acá:</span> <span class="word demo-word" data-original="móvil">móvil</span>
+        </p>
+        <p class="muted" style="margin-bottom: 22px; font-size: 0.85rem;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
         <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
       </div>
     </div>
@@ -413,37 +436,31 @@
           <label for="region">¿De qué región sos?</label>
           <select id="region">
             <option value="">Seleccioná una región…</option>
-            <optgroup label="Buenos Aires">
-              <option value="buenos_aires_amba">Buenos Aires AMBA</option>
-              <option value="buenos_aires_interior">Buenos Aires interior</option>
-            </optgroup>
-            <optgroup label="Otras provincias">
-              <option value="catamarca">Catamarca</option>
-              <option value="chaco">Chaco</option>
-              <option value="chubut">Chubut</option>
-              <option value="cordoba">Córdoba</option>
-              <option value="corrientes">Corrientes</option>
-              <option value="entre_rios">Entre Ríos</option>
-              <option value="formosa">Formosa</option>
-              <option value="jujuy">Jujuy</option>
-              <option value="la_pampa">La Pampa</option>
-              <option value="la_rioja">La Rioja</option>
-              <option value="mendoza">Mendoza</option>
-              <option value="misiones">Misiones</option>
-              <option value="neuquen">Neuquén</option>
-              <option value="rio_negro">Río Negro</option>
-              <option value="salta">Salta</option>
-              <option value="san_juan">San Juan</option>
-              <option value="san_luis">San Luis</option>
-              <option value="santa_cruz">Santa Cruz</option>
-              <option value="santa_fe">Santa Fe</option>
-              <option value="santiago_del_estero">Santiago del Estero</option>
-              <option value="tierra_del_fuego">Tierra del Fuego</option>
-              <option value="tucuman">Tucumán</option>
-            </optgroup>
-            <optgroup label="Uruguay">
-              <option value="uruguay">Uruguay</option>
-            </optgroup>
+            <option value="buenos_aires_amba">Buenos Aires AMBA</option>
+            <option value="buenos_aires_interior">Buenos Aires interior</option>
+            <option value="catamarca">Catamarca</option>
+            <option value="chaco">Chaco</option>
+            <option value="chubut">Chubut</option>
+            <option value="cordoba">Córdoba</option>
+            <option value="corrientes">Corrientes</option>
+            <option value="entre_rios">Entre Ríos</option>
+            <option value="formosa">Formosa</option>
+            <option value="jujuy">Jujuy</option>
+            <option value="la_pampa">La Pampa</option>
+            <option value="la_rioja">La Rioja</option>
+            <option value="mendoza">Mendoza</option>
+            <option value="misiones">Misiones</option>
+            <option value="neuquen">Neuquén</option>
+            <option value="rio_negro">Río Negro</option>
+            <option value="salta">Salta</option>
+            <option value="san_juan">San Juan</option>
+            <option value="san_luis">San Luis</option>
+            <option value="santa_cruz">Santa Cruz</option>
+            <option value="santa_fe">Santa Fe</option>
+            <option value="santiago_del_estero">Santiago del Estero</option>
+            <option value="tierra_del_fuego">Tierra del Fuego</option>
+            <option value="tucuman">Tucumán</option>
+            <option value="uruguay">Uruguay</option>
           </select>
         </div>
         <div class="field">
@@ -1186,6 +1203,98 @@
   document.getElementById('btn-seguir').addEventListener('click', () => {
     location.reload();
   });
+
+  // ── Demo words en pantalla de bienvenida (interactivos sin guardar) ─────
+  function initDemoWord(span) {
+    if (!span.dataset.original) span.dataset.original = span.textContent;
+    let timer = null, armed = false, start = null;
+    span.addEventListener('contextmenu', e => e.preventDefault());
+    span.addEventListener('pointerdown', e => {
+      if (span.classList.contains('editing')) return;
+      start = { x: e.clientX, y: e.clientY };
+      armed = false;
+      timer = setTimeout(() => {
+        armed = true;
+        span.classList.add('long-press-armed');
+        if (navigator.vibrate) navigator.vibrate([60, 30, 60]);
+      }, 500);
+    });
+    span.addEventListener('pointermove', e => {
+      if (!timer || !start) return;
+      if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) {
+        clearTimeout(timer); timer = null;
+        span.classList.remove('long-press-armed');
+      }
+    });
+    span.addEventListener('pointerup', () => {
+      if (!timer && !armed) return;
+      if (timer) { clearTimeout(timer); timer = null; }
+      if (armed) {
+        span.classList.remove('long-press-armed');
+        enterDemoEdit(span);
+        armed = false;
+      }
+    });
+    span.addEventListener('pointercancel', () => {
+      if (timer) { clearTimeout(timer); timer = null; }
+      span.classList.remove('long-press-armed');
+      armed = false;
+    });
+    span.addEventListener('click', e => {
+      if (span.classList.contains('editing')) return;
+      // si recién se ejecutó long-press, ignorar el click subsecuente
+      if (e.detail === 0) return;
+      if (span.classList.contains('marked') || span.classList.contains('replaced')) {
+        span.classList.remove('marked', 'replaced');
+        span.textContent = span.dataset.original;
+        span.removeAttribute('title');
+      } else {
+        span.classList.add('marked');
+      }
+    });
+  }
+
+  function enterDemoEdit(span) {
+    const original = span.dataset.original;
+    const initText = span.classList.contains('replaced') ? span.textContent : original;
+    span.classList.remove('marked', 'replaced');
+    span.classList.add('editing');
+    span.removeAttribute('title');
+    span.contentEditable = 'true';
+    span.spellcheck = true;
+    span.textContent = initText;
+    span.focus();
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    let cancelled = false;
+    const onKey = e => {
+      if (e.key === 'Enter') { e.preventDefault(); span.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); cancelled = true; span.textContent = original; span.blur(); }
+    };
+    const onBlur = () => {
+      span.removeEventListener('keydown', onKey);
+      span.removeEventListener('blur', onBlur);
+      span.contentEditable = 'false';
+      span.classList.remove('editing');
+      const newVal = span.textContent.trim();
+      if (cancelled || !newVal || newVal === original) {
+        span.classList.remove('marked', 'replaced');
+        span.textContent = original;
+        span.removeAttribute('title');
+      } else {
+        span.classList.add('replaced');
+        span.textContent = newVal;
+        span.title = `original: ${original}`;
+      }
+    };
+    span.addEventListener('keydown', onKey);
+    span.addEventListener('blur', onBlur);
+  }
+
+  document.querySelectorAll('#screen-welcome .demo-word').forEach(initDemoWord);
 
   init();
 </script>
