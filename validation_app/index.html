@@ -518,121 +518,14 @@
   const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
 
-  // ── Validaciones piloto del batch 200-259 (referencia, mayo 2026) ──────
-  // Anotador e34cf881-10c8-4050-916f-00e239bb6239 sobre el batch de 60
-  // instancias traducidas (pilot_500 posiciones 200-259). 29 respuestas.
-  // Fuente: validation_app/Respuestas_rows.csv filas 32-60.
-  // (Las filas 2-31 del CSV son contaminación — clicks rápidos sobre idxs del
-  // primer batch ya retirado, hechos para probar el flujo de Finalizar.)
-  //
-  //   44  : parcialmente
-  //   49  : no — "POR QUE SE LLAMA JOEEE???? Juan, Jose, Jorge, Javier, no JOE.
-  //          Porche no tiene nadie aca, a lo sumo entrada, galeria, etc..."
-  //   183 : no — "Pone ciudades Argentinas. que chota es TX. Repito, que chota
-  //          es Laughlin Air Force? Esta rara la oracion. No tiene cohesion. Yo
-  //          hubiese puesto: Habia recibido ordenes para ir a (Ciudad
-  //          ARGENTINA), pero cuando llegue AHI me entere de que tenia que irme
-  //          a (lugar o base en ARGENTINA)"
-  //   464 : si
-  //   535 : si
-  //   569 : parcialmente
-  //   596 : si
-  //   603 : no
-  //   614 : no
-  //   671 : parcialmente
-  //   702 : si
-  //   801 : no — "Cambiar oh dios por una frase mas argentina: Uy no, mierda,
-  //          pucha che, carajo, incluso uy dios. Acaba, no acabo. esta mal
-  //          traducida la hipotesis. Pone la Constitucion Nacional, que me
-  //          importa a mi el parlamento de la paz."
-  //   856 : parcialmente
-  //   917 : si
-  //   956 : parcialmente
-  //   971 : parcialmente — "Cambia Texas INSTRUMENTS, inventa una empresa con
-  //          la ciudad de Tres Arroyos."
-  //   1289: si
-  //   1301: si
-  //   1354: si
-  //   1428: si
-  //   1462: si
-  //   1464: si
-  //   1480: parcialmente — "cambiar ciencias por ciencia."
-  //   1500: si
-  //   1503: parcialmente — "aseguro, sin acento. Al corriente de, no sobre."
-  //   1689: parcialmente — "En vez de se dejo caer, se tiro en una silla"
-  //   1839: si
-  //   1990: si
-  //   2430: parcialmente — "Cambiar Dan Square por Plaza algo... cambiar estuvo
-  //          sin por se quedo sin."
-  //
-  // Validación perdida por el bug de Finalizar (pre-fix d9fe40a), recuperada
-  // del recuerdo del anotador:
-  //   2578: parcialmente — "Carolina del Sur por Misiones" (sigue en INSTANCES,
-  //          puede re-validarse via la app si hace falta).
+  let INSTANCES = [];
+  async function loadInstances() {
+    const { data, error } = await sb.from('instancias').select('idx, prem, hyp');
+    if (error) throw error;
+    INSTANCES = data || [];
+    console.log(`Cargadas ${INSTANCES.length} instancias desde Supabase`);
+  }
 
-  // ── Instancias ──────────────────────────────────────────────────────────
-  const INSTANCES = [
-    {"idx": 2078, "prem": "Sofias, cerca de la estación de metro de Megaro Mousikis.", "hyp": "Sofias está a tiro de piedra de la estación de metro Megaro Mousikis."},
-    {"idx": 4117, "prem": "Cuando esta técnica funciona, obtenés una historia poderosa, aunque una cuyo tema no se revela hasta alrededor del tercer párrafo.", "hyp": "Esta técnica de escribir historias vale la pena cuando alcanzás el tercer párrafo."},
-    {"idx": 59, "prem": "Bueno, llegó hasta el punto en que hay dos o tres aeronaves que llegan en una semana y no sabía a dónde volaban.", "hyp": "Nunca llega ningún avión."},
-    {"idx": 1619, "prem": "Ha otorgado, según me han contado, la comisión del Rey a este hombre. Su propio tono traicionó la amargura de su rencor.", "hyp": "Usted ha concedido, según tengo entendido, la autorización del rey al hombre por su valentía."},
-    {"idx": 4047, "prem": "Sin embargo, hay un premio de consolación para la humanidad.", "hyp": "El premio de consolación es una licuadora de dos velocidades gratis para todos."},
-    {"idx": 3446, "prem": "Rababah, que había vivido en Connecticut, Nueva York, y en Nueva Jersey, dijo a los investigadores que había recomendado Paterson, en Nueva Jersey, como un lugar con una comunidad de habla árabe donde quizá Hazmi y Hanjour podrían querer asentarse.", "hyp": "Rababah recomendó que sólo permaneciesen en Nueva York."},
-    {"idx": 90, "prem": "¡Y en realidad era ligera!", "hyp": "Comió mucha comida, pero no aumentó de peso."},
-    {"idx": 1249, "prem": "Los niños deberían llamar a la puerta de sus vecinos y", "hyp": "Los niños nunca pondrían un pie en la propiedad de sus vecinos."},
-    {"idx": 2723, "prem": "El tiempo desde la realización del pedido hasta la finalización de las actividades de puesta en marcha es de 46 semanas para ambas unidades.", "hyp": "Hay otras unidades que podrían completar estos pedidos más rápidamente por un precio más alto."},
-    {"idx": 1754, "prem": "Por fin le da un motivo de queja.", "hyp": "La muerte de un miembro de la familia le había causado mucha tristeza."},
-    {"idx": 3877, "prem": "¿Buscás un poco de equilibrio?", "hyp": "Podemos ayudarte a conseguir equilibrio ahora mismo."},
-    {"idx": 1335, "prem": "Por tanto, a medida que aumenta la diversidad de objetos en la web, la diversidad de posibles nichos de nuevos bienes y servicios aumenta con más rapidez todavía.", "hyp": "Cuantos más objetos haya en la web, más difícil se hace la existencia de nichos de mercado."},
-    {"idx": 2921, "prem": "Retirada de bonos antes de fondos fiduciarios y fondos especiales (excepto los fondos fiduciarios rotatorios)", "hyp": "Los fideicomisos con fondos rotativos facilitan la obtención de tu dinero."},
-    {"idx": 3652, "prem": ", clases más pequeñas, uso de tecnología), y pasar de una falta de espacio para apoyo a los estudiantes desde hace tiempo (casilleros, servicio de comidas, oficinas para organizaciones estudiantiles).", "hyp": "Hay muchos más casilleros de los que los estudiantes necesitarían en algún momento."},
-    {"idx": 3661, "prem": "En la celebración del 90º cumpleaños de la Escuela de Medicina de la Universidad de Indiana, vemos lo mucho que debemos a los soñadores y a sus sueños.", "hyp": "La Facultad de Medicina de la Universidad de Indiana debe mucho a los soñadores"},
-    {"idx": 3925, "prem": "Con su membresía podrá acudir a actividades solo para miembros y tendrá credenciales completas para todas las sesiones de congresos oficiales.", "hyp": "Ingresará a los eventos sólo para miembros que se realizan cada dos semanas."},
-    {"idx": 4556, "prem": "No se sugiere que estos sujetos estén prohibidos, solo que es difícil, incluso después de veinte años de aculturización, que un forastero perciba mucho de lo que es divertido acerca de los suyos.", "hyp": "Estos temas son difíciles de entender para los forasteros."},
-    {"idx": 3615, "prem": "Los docentes con títulos de la Social Health Association ofrecen presentaciones en el colegio en tres", "hyp": "Todos los educadores tienen maestrías."},
-    {"idx": 1310, "prem": "Si Godzilla está mejor cuando se empareja con los ecovecinos de la primera especie que con esa especie, esa especie se extingue en su nicho y se ve reemplazada por Godzilla.", "hyp": "Es técnicamente imposible para una especie extinguirse."},
-    {"idx": 4157, "prem": "Rudolph Giuliani defiende su gestión en el manejo del tiroteo de Amadou Diallo en Newsweek. [El Departamento de Policía de Nueva York] no es el KKK, comenta.", "hyp": "Rudolph Giuliani hizo una declaración a la revista Newsweek sobre su manejo del tiroteo de Amadou Diallo."},
-    {"idx": 1471, "prem": "Tanto implícitamente como explícitamente, con trabajo modesto, el objeto del pistón puede descubrir que se encaja en el orificio del cilindro en el objeto del bloque del motor para crear un pistón completo en un cilindro.", "hyp": "El bloque del motor tiene un agujero en las motocicletas."},
-    {"idx": 815, "prem": "Bueno tengo una novia que tiene una hija adolescente y cada año antes de que empiece la escuela me pide que vaya con ella a comprar ropa porque discuten demasiado.", "hyp": "La hija de mi novia se niega a ir de compras conmigo."},
-    {"idx": 4719, "prem": "Él lo rimaba con pandemonium; a juzgar por las demandas que proliferan en los espacios de estacionamiento de condominio, barbacoas en el balcón y mascotas haciendo caca en los pasillos, podría haber tenido razón al usar el neologismo.", "hyp": "La convirtió en una palabra que rimaba."},
-    {"idx": 2758, "prem": "La siguiente figura ilustra las estructuras organizativas tradicionales centralizadas y descentralizadas, en comparación con la combinación híbrida utilizada hoy en día por las principales organizaciones.", "hyp": "Las organizaciones líderes usan un modelo híbrido."},
-    {"idx": 4918, "prem": "Parece ser una estación de paso entre el politeísmo y el monoteísmo, un concepto útil que representa un eslabón perdido en el proceso evolutivo.", "hyp": "Podría ser un intermedio entre el politeísmo y el monoteísmo."},
-    {"idx": 954, "prem": "sí, bueno, su nombre es Valen porque es acortamiento de Valentina y todo el mundo la trata como un tipo", "hyp": "Ella insiste en que todos usen su nombre completo."},
-    {"idx": 2524, "prem": "En consecuencia, los responsables de la toma de decisiones y los gerentes del gobierno están adoptando nuevas formas de pensar, considerando diferentes formas de lograr los objetivos y utilizando nueva información para guiar las decisiones.", "hyp": "Los representantes del gobierno intentan aumentar su poder pensando de manera diferente."},
-    {"idx": 4075, "prem": "Lawrence Singleton, un famoso violador que amputó los antebrazos de sus víctimas y luego pasó solo ocho años en prisión, fue detenido por apuñalar hasta la muerte de otra mujer en Florida.", "hyp": "Para todos era obvio que su tiempo en prisión lo había rehabilitado por completo."},
-    {"idx": 4672, "prem": "Todo el tiempo que estuve arrodillado con mi frente en la madera frente a mí, y estaba pensando en mí mientras rezaba, estaba un poco avergonzado.", "hyp": "Puse mi cabeza en el altar."},
-    {"idx": 3261, "prem": "Varios pisos de fuego hubieran superado la capacidad de extinción de incendios de las fuerzas disponibles", "hyp": "Todo el edificio podría haber ardido y hubiéramos podido extinguir los incendios."},
-    {"idx": 3618, "prem": "El año pasado, el 17 % del presupuesto de operaciones del museo vino de contribuciones de donantes leales.", "hyp": "El año pasado, menos de una cuarta parte del presupuesto operativo del museo provino de donaciones."},
-    {"idx": 1603, "prem": "Lo estuve buscando este año pasado.", "hyp": "Solo lo he estado siguiendo durante una semana."},
-    {"idx": 3904, "prem": "Incluso con la continua generosidad de los donantes, el museo tiene programas y operaciones que no reciben financiación todos los años.", "hyp": "Los museos no siempre obtienen todos los fondos que necesitan."},
-    {"idx": 1254, "prem": "No era una posición bicultural o binacional, sino una posición entre culturas, una posición que cuelga en el espacio.", "hyp": "Todo el mundo sabe que solo había una cultura."},
-    {"idx": 1306, "prem": "Por eso es tan desconcertante que el vestido y la decoración no combinen.", "hyp": "No es normal que el vestido y la decoración no estén en armonía."},
-    {"idx": 2785, "prem": "Un proveedor alemán de sistemas SCR, instaló SCR en una parte de la capacidad alemana dentro de los períodos de interrupción que constaban de menos de cuatro semanas.", "hyp": "Un sistema SCR alemán funciona en Alemania."},
-    {"idx": 280, "prem": "Su hermana pudo pasar por blanca, y de hecho pasó por blanca.", "hyp": "Generalmente se suponía que su hermana era blanca."},
-    {"idx": 2090, "prem": "El Teatro de Danza Folklórica Dora Stratou presenta interpretaciones de canciones, bailes y música tradicional griega en un auditorio de tipo folklórico tradicional en Philopappos Hill de mayo a septiembre, todos los días excepto los lunes.", "hyp": "Desde mayo hasta septiembre habrá actividades de danza en la colina Filopapos."},
-    {"idx": 2601, "prem": "Por ejemplo, una capital de estado que visitamos es el hogar de más de 600 compañías de software.", "hyp": "Las capitales son los mejores lugares para las compañías de software."},
-    {"idx": 4722, "prem": "Ella insistió en que él volara a casa, que significa que ella quería que volara a casa, aunque si lo hizo o no sería revelado en un capítulo posterior.", "hyp": "A pesar de que ella le dijo que volviera a casa, no está seguro si lo hizo o no."},
-    {"idx": 3555, "prem": "El acceso a nuestro recinto estará abierto a cualquier persona que disponga de una computadora y un módem.", "hyp": "La gente no necesita nada para acceder a los terrenos."},
-    {"idx": 560, "prem": "Acá están las cosas realmente mal, acaba de producirse un tiroteo en la autopista, a tres manzanas de nuestra casa.", "hyp": "Hubo un tiroteo cerca de mi casa, realmente no es bueno en esta área."},
-    {"idx": 4223, "prem": "Sospecho que parte de la respuesta es sociológica.", "hyp": "La cuestión está puramente basada en la psicología."},
-    {"idx": 1842, "prem": "Aunque incluso algunos de ellos deberían saberlo mejor, ya que todavía hay algunos en Barbados con nosotros, y se conocen con el Coronel Bishop, como vos y yo.", "hyp": "Ninguno de nosotros conoce al coronel Bishop."},
-    {"idx": 4288, "prem": "Ahora, estos no son problemas de los que los libertarios de torre de marfil harían caso.", "hyp": "Los libertarios de torre de marfil estarían interesados en estos temas."},
-    {"idx": 1233, "prem": "Sentado solo como juez de circuito, el Presidente Taney interpretó que la disposición constitucional requería autorización del Congreso para suspender el mandato.", "hyp": "Taney dijo que el Congreso podría detener la orden durante 10 minutos."},
-    {"idx": 4641, "prem": "Los oradores que quieren impresionar a sus audiencias saben que tienen que trasladar los puntos y los hechos clave, luego anunciarlos, repetirlos, dramatizarlos, explicarlos y embellecerlos.", "hyp": "La repetición es un elemento de las impresionantes técnicas del discurso."},
-    {"idx": 3948, "prem": "Si bien las cifras son impresionantes, las becas a menudo son críticas para reclutar a los mejores estudiantes con necesidades financieras.", "hyp": "Los mejores estudiantes con necesidades financieras se benefician de becas."},
-    {"idx": 4348, "prem": "Walcott se preparó para ser pintor (como su padre, maestro de escuela, que murió cuando Walcott era un bebé) y The Bounty es su libro más pictórico, en cuanto a método y tema.", "hyp": "El padre de Walcott prefirió su trabajo como pintor en vez de su trabajo como docente."},
-    {"idx": 4409, "prem": "La implicación más sorprendente de la teoría CMP es que la preocupación por la posición relativa desaparece en las sociedades donde las parejas son asignadas por mecanismos distintos a la riqueza.", "hyp": "La teoría de CMP es sobre cometas."},
-    {"idx": 289, "prem": "Y acá estoy pensando que va a venir como, ya sabés, para sacarlo conmigo, ya sabés, regañarme como si hubiera podido cambiarlo.", "hyp": "Pensé que venía para pelear."},
-    {"idx": 1515, "prem": "Ahí, a no más de tres millas de distancia, había tierra, una pared irregular de intenso color verde que llenaba el horizonte occidental.", "hyp": "Un paisaje exuberante estaba a la vista."},
-    {"idx": 2633, "prem": "La suspensión temporal de la representación legal durante la ausencia de un cliente buscando una continuación no es una alternativa viable para retirarse formalmente del caso.", "hyp": "No es bueno detener la representación legal."},
-    {"idx": 3992, "prem": "Por favor, dá ahora para que podamos seguir dándote a vos, a tus amigos y a tus vecinos.", "hyp": "Dejaremos de recaudar fondos si nos das 1000$ ahora."},
-    {"idx": 493, "prem": "Es lo suficientemente mayor como para ser mi papá.", "hyp": "Él es mucho más joven que yo."},
-    {"idx": 4806, "prem": "El tono de pulso no es un término técnico.", "hyp": "El manual técnico oficial indica que 'pulso-tono' es el término correcto en este caso."},
-    {"idx": 2452, "prem": "El edificio une dos iglesias idénticas, la Franzoesischer Dom (o catedral francesa) al norte, construida para los inmigrantes hugonotes, y la Deutscher Dom (catedral alemana) al sur.", "hyp": "Ambas iglesias tienen agujas altas y grandes."},
-    {"idx": 445, "prem": "En cualquier caso, nos desplegamos, y puedo decir ahora que por este motivo nos desplegaron a Kadina, en Okinawa, y esto fue en 1968.", "hyp": "Nunca terminamos desplegando a nadie."},
-    {"idx": 3242, "prem": "La oficina legal del FBI en París se puso en contacto por primera vez con el Gobierno francés el 16 o 17 de agosto, poco después de hablar por teléfono con el agente del caso de Mineápolis.", "hyp": "El FBI abrió una oficina en París en 1925."},
-    {"idx": 4111, "prem": "Entonces, ¿por qué es mejor que convertirse en un abrigo de piel?", "hyp": "Si el animal ya está muerto y la piel se va a desechar o quemar si no se usa, ¿convertirla en una abrigo de piel es la mejor opción y una forma de reciclaje?"}
-  ];
 
   // ── Mensajes de aliento ─────────────────────────────────────────────────
   const MESSAGES = [
@@ -853,12 +746,34 @@
   async function init() {
     anotadorId = getOrCreateAnotadorId();
 
+    const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+
     let allRows;
+    let reservadasPorOtros = new Set();
     try {
-      const { data, error } = await sb.from('Respuestas')
-        .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, palabras_marcadas, region, quiere_mas');
-      if (error) throw error;
-      allRows = data || [];
+      await loadInstances();
+
+      // 1. Limpiar reservas expiradas (RLS permite DELETE solo si created_at < now() - 2h).
+      const cutoff = new Date(Date.now() - TWO_HOURS_MS).toISOString();
+      await sb.from('reservas').delete().lt('created_at', cutoff);
+
+      // 2. Fetch Respuestas + reservas activas en paralelo.
+      const [respRes, resRes] = await Promise.all([
+        sb.from('Respuestas')
+          .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, palabras_marcadas, region, quiere_mas'),
+        sb.from('reservas').select('idx, anotador_id, created_at')
+      ]);
+      if (respRes.error) throw respRes.error;
+      if (resRes.error) throw resRes.error;
+      allRows = respRes.data || [];
+
+      // 3. Construir set de idxs reservados por OTROS dentro de la ventana de 2h.
+      const now = Date.now();
+      for (const r of (resRes.data || [])) {
+        if (r.anotador_id !== anotadorId && (now - new Date(r.created_at).getTime()) < TWO_HOURS_MS) {
+          reservadasPorOtros.add(r.idx);
+        }
+      }
     } catch (err) {
       console.error('init', err);
       document.getElementById('error-message').textContent =
@@ -890,6 +805,7 @@
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
+      .filter(inst => !reservadasPorOtros.has(inst.idx))
       .sort((a, b) => a.idx - b.idx);
 
     if (allAvailable.length === 0) {
@@ -912,9 +828,27 @@
       availableInstances = unanswered.slice(0, BATCH_SIZE);
     }
 
+    // Reservar mi batch en `reservas` para evitar que otro usuario tome los mismos idxs.
+    // upsert con ignoreDuplicates: si otro ya lo reservó (PK conflict), no falla — los
+    // perdemos en el re-fetch siguiente y mostramos solo los que realmente ganamos.
+    if (availableInstances.length > 0) {
+      try {
+        const rows = availableInstances.map(i => ({ idx: i.idx, anotador_id: anotadorId }));
+        await sb.from('reservas').upsert(rows, { onConflict: 'idx', ignoreDuplicates: true });
+        const { data: misReservas, error: misErr } = await sb.from('reservas')
+          .select('idx')
+          .eq('anotador_id', anotadorId);
+        if (misErr) throw misErr;
+        const misIdxs = new Set((misReservas || []).map(r => r.idx));
+        availableInstances = availableInstances.filter(i => misIdxs.has(i.idx));
+      } catch (err) {
+        console.warn('reservar batch falló (sigo sin reservar)', err);
+      }
+    }
+
     if (availableInstances.length === 0) {
       document.getElementById('done-message').textContent =
-        'No hay instancias nuevas por ahora, volvé más tarde.';
+        'Otras personas están anotando en este momento. Volvé en unos minutos.';
       showScreen('screen-done');
       return;
     }
