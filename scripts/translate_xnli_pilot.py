@@ -33,7 +33,8 @@ PROMPTS_DIR = REPO_ROOT / "scripts" / "prompts"
 
 REQUIRED_OUTPUT_FIELDS = [
     "idx", "label", "prem_rp", "hyp_rp", "type",
-    "changes", "secondary_features", "cultural_candidates", "note"
+    "changes", "secondary_features", "cultural_candidates",
+    "review_flag", "review_note", "note"
 ]
 
 
@@ -159,6 +160,8 @@ def normalize_response(parsed: dict, original: dict) -> dict:
         "changes": parsed.get("changes", []) or [],
         "secondary_features": parsed.get("secondary_features", []) or [],
         "cultural_candidates": parsed.get("cultural_candidates", []) or [],
+        "review_flag": bool(parsed.get("review_flag", False)),
+        "review_note": parsed.get("review_note", "") or "",
         "note": parsed.get("note", "") or "",
     }
     out["lev_prem"] = Levenshtein.distance(out["prem_es"], out["prem_rp"])
