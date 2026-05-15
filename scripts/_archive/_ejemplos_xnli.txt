@@ -1,3 +1,181 @@
+============================================================================
+RESUMEN MAESTRO — _ejemplos_xnli.txt
+Última actualización: 2026-05-14
+Status: TODOS los análisis cerrados. Archivo se puede eliminar o archivar.
+============================================================================
+
+PROPÓSITO ORIGINAL:
+Bitácora de decisiones sobre adaptación dialectal y cultural de XNLI a RP.
+Cada sección analiza un fenómeno léxico/gramatical y registra la decisión
+final, que luego se trasladó al prompt v1 / v2 / opus_cultural.
+
+ESTADO ACTUAL (todo aplicado en prompt o jsonl):
+
+ADAPTACIÓN CULTURAL (Opus, mayo 2026):
+  - 5 grupos iniciales (PAPD, KSM/Yousef, Convención Houston, República Texas,
+    Augusta) → RESUELTOS en cultural_adaptations.jsonl.
+  - 83 instancias flaggeadas posteriormente → RESUELTAS hoy:
+      * 387 instancias finales (de 396; 9 descartadas por usar apellidos AR
+        en roles terroristas o sin paralelo AR aceptable).
+      * Descartados: 1566-1568, 1650-1652, 4200-4202.
+      * Cambios mayores: WTC vuelve a "Torres Gemelas" en castellano;
+        agentes relabel A/B/C/D; cifras AMIA reales (85 muertos);
+        cultura gaucha + Entre Ríos; Predator → drone; Belgrano → Deán Funes.
+  - 3 instancias Indiana truncadas (1827-1829) → confirmadas, sin flag.
+  - 0 review_flag activo en el jsonl.
+
+ANÁLISIS DIALECTAL WORD-BY-WORD — todas las reglas ya en el prompt:
+  Topónimos EEUU (mantener tal cual):
+    - INDIANA, INDIANAPOLIS, TEXAS, CALIFORNIA → mantener; tipo D para typos
+      (idx 1755-1757 "Indianapolis" sin tilde → "Indianápolis").
+
+  Captain Blood / E.3 (transposición Bouchard en v2):
+    - JAMAICA / PORT ROYAL → Buenos Aires
+    - SEÑORÍA → "mi General" / "Su Excelencia" (al desaparecer marcador
+      arcaico, voseo se libera: como tú → como vos)
+    - REY / Su Majestad → MANTENER (Bouchard pre-1816)
+
+  Léxico peninsular → RP (regla B en el prompt):
+    - MILLAS → kilómetros con conversión real; náutico mantiene millas;
+      "Milla de Oro" → "Kilómetro de Oro"
+    - DINERO → plata por defecto; mantener en terrorismo organizado,
+      compuestos lexicalizados, jerga técnica extranjera
+    - TONTO → boludo/tarado/iluso/gil/al pedo según contexto; mantener
+      en narrativa literaria pura y compuestos lexicalizados
+    - TI → vos (después de cualquier preposición + reflexivo enfático)
+    - BOTE → mantener (embarcación); "bote de basura" → "tacho"
+    - NIÑO/A → contexto coloquial nene/nena o chico/a; mantener en formal
+
+  Muletillas / interjecciones (regla B):
+    - UH / HUM / UM → este... / mmm / emm
+    - OH → ah / uy / ay Dios / Dios mío según función
+    - EH → MANTENER (idéntico en RP)
+    - PRONTO → MANTENER por defecto
+
+  Pluscuamperfecto y PPC:
+    - HABÍAN (pluscuamperfecto) → mantener; excepción idx 2399 "habían
+      piratas" = error gramatical de haber existencial impersonal → D.
+
+  Otros:
+    - ESCUELA → mantener (más frecuente que "colegio" en corpus AR)
+    - ESPAÑOLES → mantener (gentilicio histórico)
+
+CONCLUSIÓN:
+Toda la información de este archivo está reflejada en:
+  - scripts/prompts/prompt_v1_minimal.txt  (reglas dialectales)
+  - scripts/prompts/prompt_v2_cultural_inline.txt  (+ adaptación cultural)
+  - scripts/prompts/prompt_opus_cultural.txt  (+ E.4 clusters)
+  - data/processed/cultural_adaptations.jsonl  (387 instancias procesadas)
+  - CLAUDE.md  (decisiones de alto nivel)
+
+Este archivo se puede ARCHIVAR (mover a scripts/_archive/) o ELIMINAR.
+Si se conserva, sirve solo como bitácora histórica de cómo se llegó a las
+reglas actuales del prompt.
+
+
+
+____________________________________________________________________________
+2026-05-14 | Review de 83 instancias culturales flaggeadas — RESUELTO (0 flags)
+____________________________________________________________________________
+
+Total resultante: 387 instancias (de 396 originales; 9 descartadas).
+Review_flag activo: 0.
+
+CAMBIOS APLICADOS por categoría:
+
+CLUSTER 911_alqaeda (37 → 34 flaggeadas, ahora 0):
+  - idx 3060-3062: revertido a Torres Gemelas / Pentágono / Somerset PA en castellano,
+    fecha 11 de septiembre. No se transpone a AMIA.
+  - idx 3367: relabel A/B/C/D agentes sin solapamiento.
+  - idx 3411-3413: cifras AMIA reales (85 muertos, 300+ heridos) en lugar de 6/1000.
+  - idx 1521-1523 (triplet Hezbollah): aprobado as-is (ya estaba bien de antes).
+  - idx 1596-1598 (Bush→Menem-Musharraf): aprobado contrafáctico, sin calumnia.
+  - DESCARTADOS: idx 1566, 1567, 1568 (apellidos AR para terroristas: Suárez/Saliba/Salgado).
+  - El resto aprobado as-is.
+
+CLUSTER california (12 → 0 flaggeadas):
+  - idx 1104-1106: cultura vaquera → cultura gaucha, sonorenses → uruguayos,
+    California → Entre Ríos, chicano → argentino.
+  - idx 1485: California → Mendoza en hyp (preservando contradicción).
+  - idx 3813: Belgrano → Deán Funes, Doña Eugenia → Arturo Illia (ambos cordobeses reales).
+  - El resto aprobado as-is.
+
+CLUSTER fbi_cia (4 → 0 flaggeadas): todas aprobadas as-is.
+
+CLUSTER pak_afg (15 → 0 flaggeadas):
+  - idx 3225-3227 (Kandahar): campo Al-Faruq → La Enredadera, Kandahar → Entre Ríos.
+  - idx 3378-3380: Predator → drone (más reconocible en RP).
+  - DESCARTADOS: idx 4200-4202 (talibán anti-pastunes, sin paralelo AR aceptable).
+  - DESCARTADOS: idx 1650-1652 (secretario Rumsfeld plan militar talibanes).
+
+CLUSTER texas (15 → 0 flaggeadas): todas aprobadas as-is.
+  - idx 2115-2117 (República de Texas → "creyentes de la provincia de Córdoba")
+    aceptado como movimiento ficticio que preserva NLI.
+
+DESCARTADOS (9 idx, requieren instancias de refuerzo para llegar a 7500):
+  1566, 1567, 1568, 1650, 1651, 1652, 4200, 4201, 4202.
+
+PRINCIPIO RECTOR aplicado: el dataset es de inferencia, no factual. Las adaptaciones
+preservan NLI sin generar calumnias ni contrafácticos ofensivos. AMIA (1994) =
+Hezbollah/Irán; nunca apellidos argentinos en roles terroristas.
+
+
+
+____________________________________________________________________________
+2026-05-14 | Indiana cluster — instancias con review_flag (3/50)
+____________________________________________________________________________
+
+CATEGORÍA: Original ES sintácticamente trunco — Opus completó la oración
+============================================================================
+
+Triplet 1827-1828-1829 (comparten misma prem). El ES original termina en
+"el programa educativo de la IRT hoy en día" sin verbo principal — la frase
+queda colgando. Opus agregó "hoy es" para que la oración cierre. Verificar
+si el ES truncado es intencional del corpus o un error de transcripción.
+
+PREM ES (compartida): "Lo que comenzó como un grupo itinerante de actores en
+  1973 que actuó para estudiantes en ciudades como Gary, Elkhart y Terre
+  Haute, el programa educativo de la IRT hoy en día"
+PREM RP (compartida): "Lo que arrancó como un grupo itinerante de actores en
+  1973 que actuó para estudiantes en ciudades como Río Cuarto, Villa María y
+  Marcos Juárez, hoy es el programa educativo de la Comedia Cordobesa."
+
+ 1. [idx 1827 | contradiction | type=E]
+    HYP  ES: No había actores en Indiana en los años 70.
+    HYP  RP: No había actores en Córdoba en los años 70.
+
+    DIFERENCIAS: Indiana → Córdoba; (prem) Gary/Elkhart/Terre Haute → Río
+      Cuarto/Villa María/Marcos Juárez; IRT → Comedia Cordobesa; comenzó →
+      arrancó (B); +"hoy es" para cerrar la oración trunca.
+    DECISIÓN PROPUESTA: aceptar el cierre "hoy es" como reescritura
+      necesaria del corpus original mal transcrito, o rechazar y marcar la
+      instancia para exclusión.
+    CONTEXTO: Comedia Cordobesa es compañía teatral oficial real de la
+      provincia. Mapeo de ciudades (Río Cuarto, Villa María, Marcos Juárez)
+      son ciudades reales del interior cordobés, paralelo a Gary/Elkhart/
+      Terre Haute (ciudades chicas de Indiana).
+
+ 2. [idx 1828 | neutral | type=E]
+    HYP  ES: Algunos actores ganadores del Oscar recorrieron Indiana en 1973.
+    HYP  RP: Algunos actores ganadores del Martín Fierro recorrieron Córdoba
+      en 1973.
+
+    DIFERENCIAS: Indiana → Córdoba; Oscar → Martín Fierro.
+    DECISIÓN PROPUESTA: revisar si Oscar→Martín Fierro preserva la lógica
+      NLI. Oscar es cine, Martín Fierro es TV/teatro. La relación "neutral"
+      sí se sostiene (premio prestigioso de actuación). Aceptable.
+    CONTEXTO: misma frase trunca que 1827.
+
+ 3. [idx 1829 | entailment | type=E]
+    HYP  ES: Algunos actores hicieron una gira en Indiana en 1973.
+    HYP  RP: Algunos actores hicieron una gira por Córdoba en 1973.
+
+    DIFERENCIAS: Indiana → Córdoba; "en Córdoba" → "por Córdoba" (colocación
+      RP de "gira por X").
+    DECISIÓN PROPUESTA: aceptar. Cambio de preposición es natural en RP.
+    CONTEXTO: misma frase trunca que 1827.
+
+
 
 ========================================================================
 CASOS PARA REVISIÓN HUMANA — adaptación cultural Opus (mayo 2026)
@@ -732,7 +910,9 @@ TRADUCCIÓN RP (aplicando regla oh + otras reglas del prompt):
 
 ================================================================
 BOTE/S — 21 instancias XNLI (28 ocurrencias total)
-Decisión: mantener "bote" = embarcación (20/21 casos). ÚNICO caso de cambio: "bote de basura" → "tacho de basura".
+Decisión: RESUELTO — regla agregada al prompt. Embarcación chica → mantener "bote";
+embarcación grande/contexto naval → "barco"; "bote de basura" → "tacho de basura"
+(1 sola ocurrencia: idx 19).
 ================================================================
 
  1. El mar estaba lleno de pequeños peces que salpicaban contra el bote.

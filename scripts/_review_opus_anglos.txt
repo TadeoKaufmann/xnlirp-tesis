@@ -1,0 +1,480 @@
+____________________________________________________________________________
+2026-05-15 | 58 type=A de Opus a re-adaptar (nombres anglos + pachuco + yiddish)
+____________________________________________________________________________
+
+
+CATEGORÍA: Adaptar — nombres_anglos_figuras_publicas
+============================================================================
+
+ 1. [idx 549 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: McKim, para su disgusto, no solo perdió, sino que quedó tercero detrás de Howard y Cauldwell.
+    HYP  ES: Howard y Cauldwell eran mujeres.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Charles Follen McKim (1847-1909), arquitecto histórico real (McKim, Mead & White). Antropónimos se mantienen. Texto neutral en RP.
+
+ 2. [idx 550 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: McKim, para su disgusto, no solo perdió, sino que quedó tercero detrás de Howard y Cauldwell.
+    HYP  ES: McKim estaba muy feliz porque terminó primero.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem; sin cambios dialectales.
+
+ 3. [idx 551 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: McKim, para su disgusto, no solo perdió, sino que quedó tercero detrás de Howard y Cauldwell.
+    HYP  ES: McKim fue humillado porque terminó tercero.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 4. [idx 1137 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Desvío para ver la mansión diseñada por McKim Mead
+    HYP  ES: McKim Mead diseñó la mansión.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: McKim Mead se refiere a la firma McKim, Mead & White (arquitectos históricos). Mantener.
+
+ 5. [idx 1138 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Desvío para ver la mansión diseñada por McKim Mead
+    HYP  ES: Construir la mansión cuesta 2 millones de dólares.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 6. [idx 1139 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Desvío para ver la mansión diseñada por McKim Mead
+    HYP  ES: La mansión fue construída por Adam Sandler.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: 'construída' es variante ortográfica pre-2010 con tilde; no se corrige (cae en 'variantes ortográficas' que no son D).
+
+ 7. [idx 1186 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El plan es el generador, proclamó Le Corbusier. Pero con Gehry, el plan es el resultado.
+    HYP  ES: El plan no es importante
+
+    DIFERENCIAS: términos en input: gehry
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Le Corbusier y Frank Gehry son arquitectos reales famosos; se mantienen.
+
+ 8. [idx 1187 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El plan es el generador, proclamó Le Corbusier. Pero con Gehry, el plan es el resultado.
+    HYP  ES: El plan es invadir un país.
+
+    DIFERENCIAS: términos en input: gehry
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 9. [idx 1296 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Esta es la manera en la que vivimos hoy. Gehry parece estar diciendo, ¿por qué no la disfrutamos?
+    HYP  ES: A Gehry no le importa la felicidad.
+
+    DIFERENCIAS: términos en input: gehry
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Frank Gehry, arquitecto real. Mantener.
+
+ 10. [idx 1297 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Esta es la manera en la que vivimos hoy. Gehry parece estar diciendo, ¿por qué no la disfrutamos?
+    HYP  ES: Gehry es una persona feliz.
+
+    DIFERENCIAS: términos en input: gehry
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 11. [idx 1298 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Esta es la manera en la que vivimos hoy. Gehry parece estar diciendo, ¿por qué no la disfrutamos?
+    HYP  ES: Gehry parece decir disfrutar de la vida.
+
+    DIFERENCIAS: términos en input: gehry
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 12. [idx 1421 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: H. H. Richardson y su protegido Charles Follen McKim fueron ex alumnos, así como los asistentes de McKim, John M. Carrare y Thomas Hastings.
+    HYP  ES: H. H. Richardson, Charles Follen McKim, John M. Carrare y Thomas Hastings fueron todos ex alumnos.
+
+    DIFERENCIAS: términos en input: mckim
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Arquitectos históricos reales; nombres propios se mantienen.
+
+ 13. [idx 1527 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Pickard recuerda la presunta aseveración que se hizo en una sesión informativa el 12 de julio.
+    HYP  ES: Pickard no podía recordar nada de lo que habían dicho.
+
+    DIFERENCIAS: términos en input: pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Thomas Pickard (ex-FBI director); registro formal biográfico, 'recuerda' se mantiene (no 'acordarse de'). Sin marcadores peninsulares.
+
+ 14. [idx 1528 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Pickard recuerda la presunta aseveración que se hizo en una sesión informativa el 12 de julio.
+    HYP  ES: Pickard recordó que la sesión informativa cubría los hechos del accidente.
+
+    DIFERENCIAS: términos en input: pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 15. [idx 1529 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Pickard recuerda la presunta aseveración que se hizo en una sesión informativa el 12 de julio.
+    HYP  ES: Pickard recordó lo que se dijo en el informe.
+
+    DIFERENCIAS: términos en input: pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 16. [idx 2097 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Pynchon: Como corresponde a un hombre cauto, en lugar de alardear, Pynchon ha mantenido su vida privada en secreto.
+    HYP  ES: Se rumorea que Pynchon tiene un hijo y una hija.
+
+    DIFERENCIAS: términos en input: pynchon
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Thomas Pynchon, escritor real famoso. 'ha mantenido' = PPC con estado resultante vigente (sigue manteniéndola en secreto); NO cambiar a pretérito simple.
+
+ 17. [idx 2099 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Pynchon: Como corresponde a un hombre cauto, en lugar de alardear, Pynchon ha mantenido su vida privada en secreto.
+    HYP  ES: Hay un famoso programa de televisión sobre la vida privada de Pynchon, que protagoniza el mismísimo Pynchon.
+
+    DIFERENCIAS: términos en input: pynchon
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 18. [idx 2103 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Morrison se ha ganado el derecho a ser tan idiosincrático como, digamos, William Gaddis, Thomas Pynchon o William Faulkner.
+    HYP  ES: Gaddis y Pynchon no son tan idiosincráticos como Morrison.
+
+    DIFERENCIAS: términos en input: pynchon
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Toni Morrison, autora real; 'se ha ganado el derecho' = estado vigente, MANTENER PPC.
+
+ 19. [idx 2104 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Morrison se ha ganado el derecho a ser tan idiosincrático como, digamos, William Gaddis, Thomas Pynchon o William Faulkner.
+    HYP  ES: Morrison ha trabajado muy duro para ganarse el derecho de ser idiosincrásico.
+
+    DIFERENCIAS: términos en input: pynchon
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem; 'idiosincrásico' es variante atestiguada, no es typo D.
+
+ 20. [idx 2105 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Morrison se ha ganado el derecho a ser tan idiosincrático como, digamos, William Gaddis, Thomas Pynchon o William Faulkner.
+    HYP  ES: Morrison puede ser tan idiosincrático como William Gaddis.
+
+    DIFERENCIAS: términos en input: pynchon
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 21. [idx 2244 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Cuando llegó a los sesenta años, en 1895, Skeat dio la impresión de que estaba empezando a tomarse menos en serio estos asuntos
+    HYP  ES: Cuando Skeat cumplió los sesenta, no dio señales de que estaba pensando en nada.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Walter William Skeat, filólogo británico real (1835-1912). Texto biográfico/literario formal; sin marcadores peninsulares.
+
+ 22. [idx 2245 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Cuando llegó a los sesenta años, en 1895, Skeat dio la impresión de que estaba empezando a tomarse menos en serio estos asuntos
+    HYP  ES: A medida que Skeat creció, tuvo la sensación de que se tomaba estos asuntos menos.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 23. [idx 2246 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Cuando llegó a los sesenta años, en 1895, Skeat dio la impresión de que estaba empezando a tomarse menos en serio estos asuntos
+    HYP  ES: Skeat comenzó a preocuparse por diferentes cosas a medida que envejecía.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 24. [idx 3129 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Existe una disputa sobre el interés de Ashcroft en las reuniones informativas de Pickard sobre la situación de amenaza terrorista.
+    HYP  ES: Ashcroft dijo que las sesiones de información no valían la pena.
+
+    DIFERENCIAS: términos en input: ashcroft, pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: John Ashcroft (ex-AG EEUU) y Thomas Pickard (ex-FBI); figuras públicas reales. Registro formal biográfico. Sin marcadores peninsulares.
+
+ 25. [idx 3130 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Existe una disputa sobre el interés de Ashcroft en las reuniones informativas de Pickard sobre la situación de amenaza terrorista.
+    HYP  ES: Ashcroft quería escuchar los informes una y otra vez.
+
+    DIFERENCIAS: términos en input: ashcroft, pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 26. [idx 3447 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Nos dijeron que Pickard y Ashcroft no tenían una buena relación.
+    HYP  ES: Pickard y Ashcroft eran conocidos por ser muy buenos amigos.
+
+    DIFERENCIAS: términos en input: ashcroft, pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Figuras públicas reales; texto biográfico neutral.
+
+ 27. [idx 3449 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Nos dijeron que Pickard y Ashcroft no tenían una buena relación.
+    HYP  ES: Nunca podían ponerse de acuerdo sobre qué ingredientes colocar en la pizza en las reuniones del personal.
+
+    DIFERENCIAS: términos en input: ashcroft, pickard
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 28. [idx 4008 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El amor lo vence todo (a menos que trabajes para el Weekly Standard): Brit Hume (Fox News Sunday) especula sobre el porqué Lewinsky podría no... Todavía tiene un enamoramiento sin esperanza con el presidente.
+    HYP  ES: Brit Hume es el reportero principal de Fox.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Mónica Lewinsky, Brit Hume, Fox News — figuras y medios reales. Texto formal/periodístico. 'trabajes' (subjuntivo) se mantiene (subjuntivo voseo no obligatorio).
+
+ 29. [idx 4009 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El amor lo vence todo (a menos que trabajes para el Weekly Standard): Brit Hume (Fox News Sunday) especula sobre el porqué Lewinsky podría no... Todavía tiene un enamoramiento sin esperanza con el presidente.
+    HYP  ES: Brit Hume trabaja para CNN.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 30. [idx 4010 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El amor lo vence todo (a menos que trabajes para el Weekly Standard): Brit Hume (Fox News Sunday) especula sobre el porqué Lewinsky podría no... Todavía tiene un enamoramiento sin esperanza con el presidente.
+    HYP  ES: Brit Hume trabaja para Fox.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 31. [idx 4107 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: No contento con deshonrar moralmente a Clinton, sus adversarios trataron de inflar su encubrimiento del caso Lewinsky en crímenes y delitos imputables.
+    HYP  ES: Clinton le fue completamente fiel a su mujer durante su largo matrimonio.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Figuras políticas reales; registro formal/periodístico. Sin peninsularismos léxicos.
+
+ 32. [idx 4108 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: No contento con deshonrar moralmente a Clinton, sus adversarios trataron de inflar su encubrimiento del caso Lewinsky en crímenes y delitos imputables.
+    HYP  ES: Los adversarios de Clinton intentaron deshonrarlo y también acusarlo.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 33. [idx 4109 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: No contento con deshonrar moralmente a Clinton, sus adversarios trataron de inflar su encubrimiento del caso Lewinsky en crímenes y delitos imputables.
+    HYP  ES: El romance de Clinton con Lewinsky fue una desgracia moral para el Partido Demócrata y causó la derrota de Gore cuando se postuló para presidente.
+
+    DIFERENCIAS: términos en input: lewinsky
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 34. [idx 4647 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La Cambridge University Press ha sido nombrada encargada de honrar el 200 aniversario de La Vida de Johnson de Boswell con una colección de catorce ensayos sobre el biógrafo y su tema.
+    HYP  ES: Boswell pasó unos años en compañía de Johnson.
+
+    DIFERENCIAS: términos en input: boswell
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: 'ha sido nombrada' = PPC con estado resultante vigente (sigue siendo la encargada), MANTENER.
+
+ 35. [idx 4648 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La Cambridge University Press ha sido nombrada encargada de honrar el 200 aniversario de La Vida de Johnson de Boswell con una colección de catorce ensayos sobre el biógrafo y su tema.
+    HYP  ES: Boswell escribió sobre la vida de Johnson hace unos 200 años.
+
+    DIFERENCIAS: términos en input: boswell
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 36. [idx 4815 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: En este caso, Skeat no ignorará esta nota y repetirá la ofensa en algún momento futuro.
+    HYP  ES: Skeat va a prestar atención a la nota.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Texto biográfico formal sobre Skeat (filólogo). Sin peninsularismos relevantes.
+
+ 37. [idx 4816 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: En este caso, Skeat no ignorará esta nota y repetirá la ofensa en algún momento futuro.
+    HYP  ES: Skeat no va a prestarle nada de atención a la nota.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+ 38. [idx 4817 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: En este caso, Skeat no ignorará esta nota y repetirá la ofensa en algún momento futuro.
+    HYP  ES: Skeat estudiará la nota todos los días.
+
+    DIFERENCIAS: términos en input: skeat
+    DECISIÓN PROPUESTA: Opus los mantuvo por ser figuras públicas reales. Si querés forzar adaptación E.1: usar nombres anglos comunes adaptados (Charles, Thomas, John, Monica, Frank, William). Riesgo: pierde identidad histórica real (Bill Clinton/Lewinsky, AG Ashcroft, etc.).
+    CONTEXTO: Idem.
+
+
+CATEGORÍA: Adaptar — pachuco_pachucas
+============================================================================
+
+ 39. [idx 1098 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La pachuca era la contraparte del pachuco de la década de 1940, pero también el arquetipo de la chica de barrio que se reúne en la Chicana y crece en un ambiente urbano tipo gueto.
+    HYP  ES: Pachucas eran bicicletas.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Pachuca/pachuco/Chicana son referentes culturales mexicano-estadounidenses específicos; no tienen equivalente AR y se mantienen.
+
+ 40. [idx 1099 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La pachuca era la contraparte del pachuco de la década de 1940, pero también el arquetipo de la chica de barrio que se reúne en la Chicana y crece en un ambiente urbano tipo gueto.
+    HYP  ES: Pachucas eran jóvenes Chicanas.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem; 'jóvenes Chicanas' refiere a edad menor pero acá funciona como noun phrase del grupo cultural — se mantiene.
+
+ 41. [idx 1100 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La pachuca era la contraparte del pachuco de la década de 1940, pero también el arquetipo de la chica de barrio que se reúne en la Chicana y crece en un ambiente urbano tipo gueto.
+    HYP  ES: Pachucas llevó mucho maquillaje.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+ 42. [idx 1314 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Las pachucas eran las novias de los pachucos, pero también tenían un estilo de vestir propio.
+    HYP  ES: Pachucas no conocía pachucos.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Pachuca/pachuco son referentes culturales chicanos sin equivalente AR.
+
+ 43. [idx 1315 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Las pachucas eran las novias de los pachucos, pero también tenían un estilo de vestir propio.
+    HYP  ES: Pachucas conocía a pachucos.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+ 44. [idx 1316 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Las pachucas eran las novias de los pachucos, pero también tenían un estilo de vestir propio.
+    HYP  ES: Las Pachucas llevaban más ropas que los Pachucos.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+ 45. [idx 1428 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El pachuco fue menospreciado en los EE. UU. por tanto los mexicano-estadounidenses y las comunidades anglosajonas, y de igual manera en México por los medios y los intelectuales.
+    HYP  ES: En los Estados Unidos, los mexicoamericanos y los angloamericanos pensaban que el pachuco era indigno.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Pachuco como referente cultural chicano; 'por tanto los...y las...' es calco anglo de 'by both...and...' pero no es un error léxico aislado (es estructural), no aplica D. Mantener.
+
+ 46. [idx 1429 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El pachuco fue menospreciado en los EE. UU. por tanto los mexicano-estadounidenses y las comunidades anglosajonas, y de igual manera en México por los medios y los intelectuales.
+    HYP  ES: Pachuco fue adoptado en los Estados Unidos por los mexicoamericanos.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+ 47. [idx 1430 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: El pachuco fue menospreciado en los EE. UU. por tanto los mexicano-estadounidenses y las comunidades anglosajonas, y de igual manera en México por los medios y los intelectuales.
+    HYP  ES: El pachuco tuvo muchos efectos negativos.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+ 48. [idx 1476 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: el pachuco, una combinación de inglés y español, también llamado caló, fue una fascinante fusión proveniente de muchas fuentes lingüísticas.
+    HYP  ES: Mucha gente hoy todavía habla una versión u otra versión de pachuco.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Pachuco como variedad lingüística; caló (jerga gitana/chicana) se mantiene. Sin marcadores peninsulares.
+
+ 49. [idx 1477 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: el pachuco, una combinación de inglés y español, también llamado caló, fue una fascinante fusión proveniente de muchas fuentes lingüísticas.
+    HYP  ES: Los bloques de construcción del discurso pachuco son inglés y español.
+
+    DIFERENCIAS: términos en input: pachuco_pachucas
+    DECISIÓN PROPUESTA: Adaptación RP candidata: compadrito/compadrita (arquetipo urbano BA años 20-50). PROBLEMA: la palabra 'Chicana' aparece como identidad étnica adyacente — habrá que reescribir esa parte (eliminar 'Chicana' o cambiar el contexto).
+    CONTEXTO: Idem.
+
+
+CATEGORÍA: Adaptar — yiddish
+============================================================================
+
+ 50. [idx 4521 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Se supone de forma gratuita que el yiddish ...
+    HYP  ES: Se asume con buenos motivos que el yiddish ...
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Yiddish (lengua) sin equivalente RP; mantener. Fragmento elíptico formal.
+
+ 51. [idx 4522 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Se supone de forma gratuita que el yiddish ...
+    HYP  ES: Groseramente nunca se considera que el Yiddish...
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
+ 52. [idx 4523 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Se supone de forma gratuita que el yiddish ...
+    HYP  ES: Hay muchas suposiciones diferentes sobre el Yiddish.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
+ 53. [idx 4635 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Espero vivir para el año 2000 para ayudar con la Guía Yiddish. Estoy seguro de que el yidish seguirá existiendo, sobreviviendo a sus detractores, como lo ha hecho durante mil años.
+    HYP  ES: Estoy seguro de que el yiddish aún existirá en el 2000.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: 'como lo ha hecho durante mil años' = PPC con valor experiencial/habitual, MANTENER PPC.
+
+ 54. [idx 4636 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Espero vivir para el año 2000 para ayudar con la Guía Yiddish. Estoy seguro de que el yidish seguirá existiendo, sobreviviendo a sus detractores, como lo ha hecho durante mil años.
+    HYP  ES: Estoy seguro de que la cultura yiddish desafortunadamente se perderá para el año 2000.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
+ 55. [idx 4637 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: Espero vivir para el año 2000 para ayudar con la Guía Yiddish. Estoy seguro de que el yidish seguirá existiendo, sobreviviendo a sus detractores, como lo ha hecho durante mil años.
+    HYP  ES: La cultura Yiddish ha sobrevivido por más de mil años.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
+ 56. [idx 4887 | contradiction | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La e viene del fonema /e/, que en esta palabra se pronuncia como la e de ebb en todas las variantes del yiddish.
+    HYP  ES: Cada dialecto del yidis pronuncia la e en esta palabra de manera diferente.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Texto lingüístico técnico-formal; sin marcadores peninsulares.
+
+ 57. [idx 4888 | entailment | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La e viene del fonema /e/, que en esta palabra se pronuncia como la e de ebb en todas las variantes del yiddish.
+    HYP  ES: La e en esta palabra se pronuncia igual en todas las variedades de yiddish.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
+ 58. [idx 4889 | neutral | gold=— pred=A (Opus mantuvo, usuario quiere adaptar)]
+    PREM ES: La e viene del fonema /e/, que en esta palabra se pronuncia como la e de ebb en todas las variantes del yiddish.
+    HYP  ES: Hay 20 variedades de yidis.
+
+    DIFERENCIAS: términos en input: yiddish
+    DECISIÓN PROPUESTA: Sin equivalente AR directo. Opciones: (a) mantener yiddish con glosa; (b) sustituir por 'lunfardo' (lengua coloquial AR de origen multicultural, paralelo funcional aunque no idéntico); (c) 'idish' (variante ortográfica RP del mismo término). Opción (c) es lo más conservador y RP-natural.
+    CONTEXTO: Idem.
+
