@@ -147,7 +147,7 @@
     margin-bottom: 4px;
   }
   .welcome-list li {
-    color: var(--muted);
+    color: #374151;
     margin-bottom: 7px;
     line-height: 1.5;
     font-size: 0.93rem;
@@ -360,13 +360,13 @@
         <p class="welcome-section-title">Sobre los textos:</p>
         <ul class="welcome-list">
           <li>Son fragmentos traducidos: diálogos, recortes de diario, conversaciones sueltas</li>
-          <li>Muchos no tienen mucho sentido — está bien, es normal</li>
-          <li>No necesitás entender qué pasa, solo fijate si <strong>suena argentino</strong></li>
+          <li>Muchos <strong>no tienen sentido</strong> — está bien, es normal</li>
+          <li>No necesitás entender qué pasa, solo fijate si suena argentino</li>
         </ul>
 
         <p class="welcome-section-title" style="margin-top: 18px;">Tu ayuda:</p>
         <ul class="welcome-list">
-          <li><strong>Clickeá</strong> las palabras que no te suenen argentinas — probá acá: <span class="word demo-word" data-original="coche">coche</span></li>
+          <li><strong>Clickeá las palabras</strong> que no te suenen argentinas — probá acá: <span class="word demo-word" data-original="coche">coche</span></li>
           <li><strong>Puntuá del 1 al 5</strong> qué tan argentino suena el texto</li>
         </ul>
 
@@ -1021,12 +1021,12 @@
     });
   }
 
-  // Tokeniza los párrafos de welcome para que TODA palabra sea demo-tappable
-  // (saltea los nodos hijos que ya son spans, ej. .demo-tag o .demo-prompt)
+  // Tokeniza los li del welcome para que TODA palabra sea demo-tappable,
+  // incluyendo las que están dentro de <strong>. Saltea spans .demo-word ya existentes.
   function tokenizeWelcomeWords() {
-    document.querySelectorAll('#screen-welcome .welcome-line').forEach(p => {
+    function processNode(parent) {
       const newNodes = [];
-      for (const node of [...p.childNodes]) {
+      for (const node of [...parent.childNodes]) {
         if (node.nodeType === Node.TEXT_NODE) {
           const tokens = node.textContent.split(/(\s+)/);
           for (const tok of tokens) {
@@ -1041,13 +1041,17 @@
               newNodes.push(span);
             }
           }
+        } else if (node.nodeType === Node.ELEMENT_NODE && !node.classList.contains('demo-word')) {
+          processNode(node);
+          newNodes.push(node);
         } else {
           newNodes.push(node);
         }
       }
-      p.innerHTML = '';
-      newNodes.forEach(n => p.appendChild(n));
-    });
+      parent.innerHTML = '';
+      newNodes.forEach(n => parent.appendChild(n));
+    }
+    document.querySelectorAll('#screen-welcome .welcome-list li').forEach(processNode);
   }
 
   tokenizeWelcomeWords();
