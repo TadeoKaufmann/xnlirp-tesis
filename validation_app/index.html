@@ -769,8 +769,10 @@
       }
     }
 
-    const TEST_MODE = new URLSearchParams(location.search).get('test') === 'true';
-    const BATCH_SIZE = TEST_MODE ? 3 : 15;
+    const testParam = new URLSearchParams(location.search).get('test');
+    const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
+    const TEST_MODE = TEST_BATCH !== null;
+    const BATCH_SIZE = TEST_BATCH ?? 15;
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
