@@ -420,32 +420,33 @@
             <button class="option" data-region="uruguay">Uruguay</button>
             <button class="option" data-region="otra">Otra provincia</button>
           </div>
-          <select id="region-detail" class="hidden" style="margin-top: 10px;">
-            <option value="">Seleccioná provincia…</option>
-            <option value="catamarca">Catamarca</option>
-            <option value="chaco">Chaco</option>
-            <option value="chubut">Chubut</option>
-            <option value="corrientes">Corrientes</option>
-            <option value="entre_rios">Entre Ríos</option>
-            <option value="formosa">Formosa</option>
-            <option value="jujuy">Jujuy</option>
-            <option value="la_pampa">La Pampa</option>
-            <option value="la_rioja">La Rioja</option>
-            <option value="mendoza">Mendoza</option>
-            <option value="misiones">Misiones</option>
-            <option value="neuquen">Neuquén</option>
-            <option value="rio_negro">Río Negro</option>
-            <option value="salta">Salta</option>
-            <option value="san_juan">San Juan</option>
-            <option value="san_luis">San Luis</option>
-            <option value="santa_cruz">Santa Cruz</option>
-            <option value="santiago_del_estero">Santiago del Estero</option>
-            <option value="tierra_del_fuego">Tierra del Fuego</option>
-            <option value="tucuman">Tucumán</option>
-          </select>
+          <div id="region-detail" class="options two-col hidden" style="margin-top: 10px; font-size: 0.85rem;">
+            <button class="option" data-prov="cordoba">Córdoba</button>
+            <button class="option" data-prov="santa_fe">Santa Fe</button>
+            <button class="option" data-prov="mendoza">Mendoza</button>
+            <button class="option" data-prov="tucuman">Tucumán</button>
+            <button class="option" data-prov="salta">Salta</button>
+            <button class="option" data-prov="entre_rios">Entre Ríos</button>
+            <button class="option" data-prov="corrientes">Corrientes</button>
+            <button class="option" data-prov="misiones">Misiones</button>
+            <button class="option" data-prov="chaco">Chaco</button>
+            <button class="option" data-prov="santiago_del_estero">Stgo. del Estero</button>
+            <button class="option" data-prov="jujuy">Jujuy</button>
+            <button class="option" data-prov="rio_negro">Río Negro</button>
+            <button class="option" data-prov="neuquen">Neuquén</button>
+            <button class="option" data-prov="chubut">Chubut</button>
+            <button class="option" data-prov="formosa">Formosa</button>
+            <button class="option" data-prov="san_juan">San Juan</button>
+            <button class="option" data-prov="san_luis">San Luis</button>
+            <button class="option" data-prov="la_pampa">La Pampa</button>
+            <button class="option" data-prov="la_rioja">La Rioja</button>
+            <button class="option" data-prov="catamarca">Catamarca</button>
+            <button class="option" data-prov="santa_cruz">Santa Cruz</button>
+            <button class="option" data-prov="tierra_del_fuego">Tierra del Fuego</button>
+          </div>
         </div>
         <div class="field">
-          <label>¿Querés participar en futuras rondas de validación?</label>
+          <label>¿Querés hacer una ronda más?</label>
           <div class="options two-col" id="options-quiere">
             <button class="option" data-quiere="true">Sí</button>
             <button class="option" data-quiere="false">No</button>
@@ -954,17 +955,23 @@
       const detail = document.getElementById('region-detail');
       if (val === 'otra') {
         detail.classList.remove('hidden');
-        selectedRegion = detail.value || '';
+        selectedRegion = '';
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
         detail.classList.add('hidden');
-        detail.value = '';
+        document.querySelectorAll('#region-detail .option')
+          .forEach(b => b.classList.remove('selected'));
         selectedRegion = val;
       }
     });
   });
 
-  document.getElementById('region-detail').addEventListener('change', e => {
-    selectedRegion = e.target.value;
+  document.querySelectorAll('#region-detail .option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#region-detail .option')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+      selectedRegion = btn.dataset.prov;
+    });
   });
 
   document.querySelectorAll('#options-quiere .option').forEach(btn => {
