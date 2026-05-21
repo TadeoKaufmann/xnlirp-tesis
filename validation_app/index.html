@@ -7,10 +7,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --green: #007a33;
-    --green-light: #2d9659;
-    --green-bg: #ebf7ef;
-    --bg: #faf9f5;
+    --green: #16a34a;
+    --green-light: #22c55e;
+    --green-bg: #f0fdf4;
+    --bg: #f7f6f2;
     --card: #ffffff;
     --text: #1a1a1a;
     --muted: #6b7280;
@@ -34,8 +34,14 @@
     padding: 28px 20px 80px;
   }
   header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    margin-bottom: 0;
     text-align: center;
-    margin-bottom: 28px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
   header h1 {
     font-size: 1.35rem;
@@ -166,8 +172,9 @@
     font-style: italic;
   }
   .instructions {
-    font-size: 0.85rem;
-    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
     margin-top: 14px;
     line-height: 1.5;
     max-width: 580px;
@@ -280,6 +287,32 @@
     border-color: var(--green-light);
   }
   .btn-block { width: 100%; padding: 13px; font-size: 0.98rem; }
+  /* Likert — selected sólido */
+  .options.likert .option { border-radius: 12px; }
+  .options.likert .option.selected {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+    font-weight: 700;
+  }
+  /* Welcome card — acento superior */
+  #screen-welcome .card { border-top: 3px solid var(--green); padding-top: 28px; }
+  /* Checkmark circulo */
+  .icon-check-wrap {
+    width: 60px; height: 60px;
+    background: var(--green-bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    border: 2px solid var(--green);
+  }
+  /* Ranking con fondo contenedor */
+  #ranking-box, #ranking-box-final {
+    background: #f9f9f7;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+  }
   .ranking-row { display:flex; align-items:center; padding:7px 8px; border-radius:8px; gap:8px; }
   .ranking-row + .ranking-row { border-top:1px solid #f0f0eb; }
   .ranking-medal { width:26px; text-align:center; font-size:1rem; color:#888; flex-shrink:0; }
@@ -308,9 +341,9 @@
   .center { text-align: center; }
   .hidden { display: none !important; }
   .icon-check {
-    font-size: 2.6rem;
+    font-size: 2rem;
     color: var(--green);
-    margin-bottom: 10px;
+    margin: 0;
     line-height: 1;
   }
   .toast {
@@ -419,7 +452,6 @@
     <div id="screen-final" class="hidden">
       <div class="card card-anim">
         <h2>¡Gracias!</h2>
-        <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
         <div class="field" style="margin-bottom: 16px;">
           <label>¿Tu nombre para el ranking? <span class="muted">(opcional)</span></label>
           <input type="text" id="input-nombre" placeholder="Ej: Lucía, Tadeo…" maxlength="30" autocomplete="off" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:0.97rem;box-sizing:border-box;margin-top:6px;">
@@ -468,7 +500,7 @@
 
     <div id="screen-thanks" class="hidden">
       <div class="card center card-anim">
-        <div class="icon-check">✓</div>
+        <div class="icon-check-wrap"><div class="icon-check">✓</div></div>
         <h2>¡Muchas gracias!</h2>
         <p class="muted">Tus respuestas quedaron registradas y van a ser muy útiles para esta investigación.</p>
         <div id="ranking-box" class="hidden" style="margin-top:20px;text-align:left;width:100%;">
