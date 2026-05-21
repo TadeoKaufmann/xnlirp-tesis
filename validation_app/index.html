@@ -417,8 +417,8 @@
           <div class="options two-col" id="options-region">
             <button class="option" data-region="buenos_aires_amba">AMBA</button>
             <button class="option" data-region="buenos_aires_interior">Bs. As. interior</button>
-            <button class="option" data-region="uruguay">Uruguay</button>
             <button class="option" data-region="otra">Otra provincia</button>
+            <button class="option" data-region="uruguay">Uruguay</button>
           </div>
           <select id="region-detail" class="hidden" style="margin-top: 10px;">
             <option value="">Seleccioná provincia…</option>
@@ -944,7 +944,7 @@
         detail.classList.remove('hidden');
         selectedRegion = detail.value || '';
         detail.focus();
-        detail.click();
+        try { detail.showPicker(); } catch (_) {}
       } else {
         detail.classList.add('hidden');
         detail.value = '';
