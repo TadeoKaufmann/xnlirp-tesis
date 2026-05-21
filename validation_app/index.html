@@ -415,15 +415,19 @@
         <h2>Casi listo</h2>
         <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
         <div class="field">
-          <label for="region">¿De qué región sos?</label>
-          <select id="region">
-            <option value="">Seleccioná una región…</option>
-            <option value="buenos_aires_amba">Buenos Aires AMBA</option>
-            <option value="buenos_aires_interior">Buenos Aires interior</option>
+          <label>¿De qué región sos?</label>
+          <div class="options two-col" id="options-region">
+            <button class="option" data-region="buenos_aires_amba">AMBA</button>
+            <button class="option" data-region="buenos_aires_interior">Bs. As. interior</button>
+            <button class="option" data-region="cordoba_santa_fe">Córdoba / Santa Fe</button>
+            <button class="option" data-region="uruguay">Uruguay</button>
+            <button class="option" data-region="otra" style="grid-column: 1 / -1;">Otra provincia</button>
+          </div>
+          <select id="region-detail" class="hidden" style="margin-top: 10px;">
+            <option value="">Seleccioná provincia…</option>
             <option value="catamarca">Catamarca</option>
             <option value="chaco">Chaco</option>
             <option value="chubut">Chubut</option>
-            <option value="cordoba">Córdoba</option>
             <option value="corrientes">Corrientes</option>
             <option value="entre_rios">Entre Ríos</option>
             <option value="formosa">Formosa</option>
@@ -438,11 +442,9 @@
             <option value="san_juan">San Juan</option>
             <option value="san_luis">San Luis</option>
             <option value="santa_cruz">Santa Cruz</option>
-            <option value="santa_fe">Santa Fe</option>
             <option value="santiago_del_estero">Santiago del Estero</option>
             <option value="tierra_del_fuego">Tierra del Fuego</option>
             <option value="tucuman">Tucumán</option>
-            <option value="uruguay">Uruguay</option>
           </select>
         </div>
         <div class="field">
@@ -947,7 +949,24 @@
     }
   });
 
-  document.getElementById('region').addEventListener('change', e => {
+  document.querySelectorAll('#options-region .option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#options-region .option')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+      const val = btn.dataset.region;
+      const detail = document.getElementById('region-detail');
+      if (val === 'otra') {
+        detail.classList.remove('hidden');
+        selectedRegion = detail.value || '';
+      } else {
+        detail.classList.add('hidden');
+        detail.value = '';
+        selectedRegion = val;
+      }
+    });
+  });
+
+  document.getElementById('region-detail').addEventListener('change', e => {
     selectedRegion = e.target.value;
   });
 
