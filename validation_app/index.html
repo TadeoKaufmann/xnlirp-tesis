@@ -412,6 +412,10 @@
       <div class="card card-anim">
         <h2>¡Gracias!</h2>
         <p class="muted" style="margin-bottom: 22px;">Para finalizar, dos preguntas breves.</p>
+        <div class="field" style="margin-bottom: 16px;">
+          <label>¿Tu nombre para el ranking? <span class="muted">(opcional)</span></label>
+          <input type="text" id="input-nombre" placeholder="Ej: Lucía, Tadeo…" maxlength="30" autocomplete="off" style="width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:0.97rem;box-sizing:border-box;margin-top:6px;">
+        </div>
         <div class="field">
           <label>¿De qué región sos?</label>
           <div class="options two-col" id="options-region">
@@ -455,6 +459,10 @@
         <div class="icon-check">✓</div>
         <h2>¡Muchas gracias!</h2>
         <p class="muted">Tus respuestas quedaron registradas y van a ser muy útiles para esta investigación.</p>
+        <div id="ranking-box" class="hidden" style="margin-top:20px;text-align:left;width:100%;">
+          <p style="margin-bottom:8px;font-weight:600;">🏆 Top anotadores</p>
+          <ol id="ranking-list" style="padding-left:1.4em;margin:0;line-height:1.8;"></ol>
+        </div>
         <button id="btn-seguir" class="btn btn-primary" style="margin-top: 20px;">Seguir anotando</button>
       </div>
     </div>
@@ -530,6 +538,8 @@
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
     // Header (título + instrucciones) solo cuando están anotando
     document.querySelector('header').classList.toggle('hidden', id !== 'screen-instance');
+    if (id === 'screen-final') prefillNombre();
+    if (id === 'screen-thanks') loadRanking();
   }
 
   function showToast(msg, ms = 2400) {
@@ -689,6 +699,10 @@
         }
       }
       await Promise.all(updates);
+      const nombre = document.getElementById('input-nombre').value.trim();
+      if (nombre) {
+        await sb.from('anotadores').upsert({ anotador_id: anotadorId, nombre, updated_at: new Date().toISOString() });
+      }
       showScreen('screen-thanks');
     } catch (err) {
       console.error('submitFinal', err);
@@ -1003,6 +1017,27 @@
       await updateMark(inst.idx, source, pos, () => ({ source, pos, palabra: original }));
     }
   });
+
+  async function prefillNombre() {
+    const { data } = await sb.from('anotadores').select('nombre').eq('anotador_id', anotadorId).maybeSingle();
+    if (data?.nombre) document.getElementById('input-nombre').value = data.nombre;
+  }
+
+  async function loadRanking() {
+    const miNombre = document.getElementById('input-nombre')?.value.trim() || null;
+    const list = document.getElementById('ranking-list');
+    const box = document.getElementById('ranking-box');
+    list.innerHTML = '';
+    const { data, error } = await sb.rpc('ranking_top10');
+    if (error || !data?.length) return;
+    data.forEach(row => {
+      const li = document.createElement('li');
+      li.textContent = `${row.nombre} — ${row.total} instancia${row.total === 1 ? '' : 's'}`;
+      if (miNombre && row.nombre === miNombre) li.style.fontWeight = 'bold';
+      list.appendChild(li);
+    });
+    box.classList.remove('hidden');
+  }
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
     location.reload();
