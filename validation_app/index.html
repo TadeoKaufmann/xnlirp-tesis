@@ -280,6 +280,13 @@
     border-color: var(--green-light);
   }
   .btn-block { width: 100%; padding: 13px; font-size: 0.98rem; }
+  .ranking-row { display:flex; align-items:center; padding:7px 8px; border-radius:8px; gap:8px; }
+  .ranking-row + .ranking-row { border-top:1px solid #f0f0eb; }
+  .ranking-medal { width:26px; text-align:center; font-size:1rem; color:#888; flex-shrink:0; }
+  .ranking-name { flex:1; font-size:0.93rem; }
+  .ranking-badge { font-size:0.8rem; color:#666; background:#f0f0eb; padding:2px 9px; border-radius:12px; white-space:nowrap; }
+  .ranking-row.me { background:#edf7ed; }
+  .ranking-row.me .ranking-name { font-weight:600; }
   select {
     width: 100%;
     padding: 11px 12px;
@@ -451,6 +458,10 @@
           </select>
         </div>
         <button class="btn btn-primary btn-block" id="btn-submit">Enviar respuestas</button>
+        <div id="ranking-box-final" class="hidden" style="margin-top:20px;text-align:left;">
+          <p style="margin-bottom:8px;font-weight:600;">🏆 Top anotadores</p>
+          <div id="ranking-list-final"></div>
+        </div>
       </div>
     </div>
 
@@ -461,7 +472,7 @@
         <p class="muted">Tus respuestas quedaron registradas y van a ser muy útiles para esta investigación.</p>
         <div id="ranking-box" class="hidden" style="margin-top:20px;text-align:left;width:100%;">
           <p style="margin-bottom:8px;font-weight:600;">🏆 Top anotadores</p>
-          <ol id="ranking-list" style="padding-left:1.4em;margin:0;line-height:1.8;"></ol>
+          <div id="ranking-list"></div>
         </div>
         <button id="btn-seguir" class="btn btn-primary" style="margin-top: 20px;">Seguir anotando</button>
       </div>
@@ -538,8 +549,8 @@
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
     // Header (título + instrucciones) solo cuando están anotando
     document.querySelector('header').classList.toggle('hidden', id !== 'screen-instance');
-    if (id === 'screen-final') prefillNombre();
-    if (id === 'screen-thanks') loadRanking();
+    if (id === 'screen-final') { prefillNombre(); loadRanking(null); }
+    if (id === 'screen-thanks') loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
   }
 
   function showToast(msg, ms = 2400) {
@@ -1023,20 +1034,25 @@
     if (data?.nombre) document.getElementById('input-nombre').value = data.nombre;
   }
 
-  async function loadRanking() {
-    const miNombre = document.getElementById('input-nombre')?.value.trim() || null;
-    const list = document.getElementById('ranking-list');
-    const box = document.getElementById('ranking-box');
-    list.innerHTML = '';
+  function renderRanking(listEl, miNombre, data) {
+    const medals = ['🥇', '🥈', '🥉'];
+    listEl.innerHTML = '';
+    data.forEach((row, i) => {
+      const isMe = miNombre && row.nombre === miNombre;
+      const div = document.createElement('div');
+      div.className = 'ranking-row' + (isMe ? ' me' : '');
+      div.innerHTML = `<span class="ranking-medal">${medals[i] ?? (i + 1)}</span><span class="ranking-name">${row.nombre}</span><span class="ranking-badge">${row.total} inst.</span>`;
+      listEl.appendChild(div);
+    });
+  }
+
+  async function loadRanking(miNombre) {
     const { data, error } = await sb.rpc('ranking_top10');
     if (error || !data?.length) return;
-    data.forEach(row => {
-      const li = document.createElement('li');
-      li.textContent = `${row.nombre} — ${row.total} instancia${row.total === 1 ? '' : 's'}`;
-      if (miNombre && row.nombre === miNombre) li.style.fontWeight = 'bold';
-      list.appendChild(li);
-    });
-    box.classList.remove('hidden');
+    const listFinal = document.getElementById('ranking-list-final');
+    const listThanks = document.getElementById('ranking-list');
+    if (listFinal) { renderRanking(listFinal, miNombre, data); document.getElementById('ranking-box-final').classList.remove('hidden'); }
+    if (listThanks) { renderRanking(listThanks, miNombre, data); document.getElementById('ranking-box').classList.remove('hidden'); }
   }
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
