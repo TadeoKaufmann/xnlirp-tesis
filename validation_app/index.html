@@ -205,6 +205,10 @@
     margin-bottom: 8px;
     padding: 0 2px;
   }
+  @media (max-width: 600px) {
+    .instructions { display: none; }
+    header { padding: 4px 16px; }
+  }
   @media (max-width: 480px) {
     .options { grid-template-columns: 1fr; }
     .options.likert { grid-template-columns: repeat(5, 1fr); }
