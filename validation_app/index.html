@@ -647,7 +647,7 @@
 
   function renderInstance(i) {
     if (i < 0 || i >= availableInstances.length) return;
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    setTimeout(() => { window.scrollTo(0, 0); document.body.scrollTop = 0; }, 0);
     currentIndex = i;
     const inst = availableInstances[i];
 
