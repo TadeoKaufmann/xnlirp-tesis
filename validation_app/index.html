@@ -287,6 +287,7 @@
   .ranking-badge { font-size:0.8rem; color:#666; background:#f0f0eb; padding:2px 9px; border-radius:12px; white-space:nowrap; }
   .ranking-row.me { background:#edf7ed; }
   .ranking-row.me .ranking-name { font-weight:600; }
+  .ranking-sep { text-align:center; color:#bbb; font-size:0.8rem; padding:4px 0; letter-spacing:3px; }
   select {
     width: 100%;
     padding: 11px 12px;
@@ -549,7 +550,7 @@
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
     // Header (título + instrucciones) solo cuando están anotando
     document.querySelector('header').classList.toggle('hidden', id !== 'screen-instance');
-    if (id === 'screen-final') { prefillNombre(); loadRanking(null); }
+    if (id === 'screen-final') { prefillFinal(); loadRanking(null); }
     if (id === 'screen-thanks') loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
   }
 
@@ -711,9 +712,12 @@
       }
       await Promise.all(updates);
       const nombre = document.getElementById('input-nombre').value.trim();
-      if (nombre) {
-        await sb.from('anotadores').upsert({ anotador_id: anotadorId, nombre, updated_at: new Date().toISOString() });
-      }
+      await sb.from('anotadores').upsert({
+        anotador_id: anotadorId,
+        ...(nombre ? { nombre } : {}),
+        region: selectedRegion,
+        updated_at: new Date().toISOString()
+      });
       showScreen('screen-thanks');
     } catch (err) {
       console.error('submitFinal', err);
@@ -862,13 +866,14 @@
       availableInstances.some(a => a.idx === i.idx)
     ).length;
 
-    if (answeredInBatch === 0) {
+    if (answeredInBatch === 0 && !sessionStorage.getItem('skip_welcome')) {
       const n = availableInstances.length;
       const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 3));
       document.getElementById('welcome-stats').textContent =
         `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
       showScreen('screen-welcome');
     } else {
+      sessionStorage.removeItem('skip_welcome');
       showScreen('screen-instance');
       renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
     }
@@ -1029,25 +1034,52 @@
     }
   });
 
-  async function prefillNombre() {
-    const { data } = await sb.from('anotadores').select('nombre').eq('anotador_id', anotadorId).maybeSingle();
+  async function prefillFinal() {
+    const { data } = await sb.from('anotadores').select('nombre, region').eq('anotador_id', anotadorId).maybeSingle();
     if (data?.nombre) document.getElementById('input-nombre').value = data.nombre;
+    if (data?.region) {
+      selectedRegion = data.region;
+      const btn = document.querySelector(`#options-region [data-region="${data.region}"]`);
+      if (btn) {
+        document.querySelectorAll('#options-region .option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      } else {
+        const otraBtn = document.querySelector('#options-region [data-region="otra"]');
+        otraBtn?.classList.add('selected');
+        const detail = document.getElementById('region-detail');
+        detail.classList.remove('hidden');
+        detail.value = data.region;
+      }
+    }
   }
 
   function renderRanking(listEl, miNombre, data) {
     const medals = ['🥇', '🥈', '🥉'];
     listEl.innerHTML = '';
-    data.forEach((row, i) => {
+    const top5 = data.filter(r => Number(r.posicion) <= 5);
+    const me = data.find(r => miNombre && r.nombre === miNombre && Number(r.posicion) > 5);
+    top5.forEach(row => {
+      const pos = Number(row.posicion) - 1;
       const isMe = miNombre && row.nombre === miNombre;
       const div = document.createElement('div');
       div.className = 'ranking-row' + (isMe ? ' me' : '');
-      div.innerHTML = `<span class="ranking-medal">${medals[i] ?? (i + 1)}</span><span class="ranking-name">${row.nombre}</span><span class="ranking-badge">${row.total} inst.</span>`;
+      div.innerHTML = `<span class="ranking-medal">${medals[pos] ?? row.posicion}</span><span class="ranking-name">${row.nombre}</span><span class="ranking-badge">${row.total} inst.</span>`;
       listEl.appendChild(div);
     });
+    if (me) {
+      const sep = document.createElement('div');
+      sep.className = 'ranking-sep';
+      sep.textContent = '·  ·  ·';
+      listEl.appendChild(sep);
+      const div = document.createElement('div');
+      div.className = 'ranking-row me';
+      div.innerHTML = `<span class="ranking-medal">${me.posicion}</span><span class="ranking-name">${me.nombre}</span><span class="ranking-badge">${me.total} inst.</span>`;
+      listEl.appendChild(div);
+    }
   }
 
   async function loadRanking(miNombre) {
-    const { data, error } = await sb.rpc('ranking_top10');
+    const { data, error } = await sb.rpc('ranking_top5_with_me', { p_nombre: miNombre ?? null });
     if (error || !data?.length) return;
     const listFinal = document.getElementById('ranking-list-final');
     const listThanks = document.getElementById('ranking-list');
@@ -1056,6 +1088,7 @@
   }
 
   document.getElementById('btn-seguir').addEventListener('click', () => {
+    sessionStorage.setItem('skip_welcome', '1');
     location.reload();
   });
 
