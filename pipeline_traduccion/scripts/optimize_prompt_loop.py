@@ -119,7 +119,7 @@ def append_evolution_log(version: int, parent_variant: str, metric_value: float,
 
 def run_translate(variant: str, temperature: float, model_name: str) -> Path:
     cmd = [
-        sys.executable, str(REPO_ROOT / "scripts" / "translate_xnli_pilot.py"),
+        sys.executable, str(REPO_ROOT / "pipeline_traduccion" / "scripts" / "translate_xnli.py"),
         "--limit-to-gold",
         "--models", model_name,
         "--temperatures", str(temperature),

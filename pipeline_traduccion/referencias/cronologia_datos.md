@@ -153,4 +153,4 @@ Las 300 instancias restantes del pilot 500 (posiciones 200-499) fueron traducida
 
 ## Próximo paso
 
-Continuar la traducción del full 7500 en batches de 300 usando `pipeline_traduccion/scripts/translate_xnli_pilot.py`, validando cada batch con Claude Sonnet/Haiku como juez antes de cargar a la app. Instancias problemáticas van a `@pipeline_evaluacion/error_cases/`.
+Continuar la traducción del full 7500 en batches de 300 usando `pipeline_traduccion/scripts/translate_xnli.py`, validando cada batch con Claude Sonnet/Haiku como juez antes de cargar a la app. Instancias problemáticas van a `@pipeline_evaluacion/error_cases/`.

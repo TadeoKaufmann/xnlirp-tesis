@@ -97,4 +97,21 @@ Leyenda columna ACCIÓN: **mantener** = dejar sin tocar (nombre propio, técnico
 | ☐ | pakistan | — | Variante sin tilde. | igual que arriba — normalizar ortografía |
 | ☐ | newsweek | 24 | Ver cat. 8.1 | (duplicado, ver arriba) |
 
+## 9. Traducción del train set MultiNLI ES → RP (pendiente decisión con tutor)
+
+**Contexto.** HuggingFace tiene `load_dataset("xnli", "es", split="train")` con ~392k instancias del MultiNLI traducidas al español por traductores profesionales (LILT, EN→ES con post-edición humana). Es el único train set disponible para XNLI ES — no hay datos de entrenamiento NLI nativos en RP.
+
+**Por qué importa.** Para las 4 condiciones experimentales (ES→ES, ES→RP, RP→RP, RP→ES) las condiciones RP→RP y RP→ES necesitan instancias de entrenamiento en RP. Eso requiere traducir K instancias del train ES → RP con el pipeline.
+
+**Dos niveles de ambición:**
+
+- **Nivel tesis (mínimo necesario):** 5k instancias bien traducidas con Gemini + Sonnet validation son más que suficientes para K=200/500/1000. Un día de pipeline.
+- **Nivel contribución (discutir con tutor):** Traducir el full 392k crearía el corpus de entrenamiento NLI en RP más grande existente — comparable a AmericasNLI. Costo estimado ~$45 con Gemini Batch API + Haiku para validación automática.
+
+**Consideración metodológica.** El train ES ya tiene translationese EN→ES de la traducción original. Agregar ES→RP crea un doble layer. Para entrenamiento es aceptable (los modelos son robustos al ruido), pero vale mencionarlo como limitación y como argumento adicional de por qué los resultados RP→RP probablemente subestiman el potencial de datos RP nativos.
+
+**Estrategia de validación propuesta.** Gemini Batch traduce todo → Haiku valida todo automáticamente → Sonnet valida muestra estratificada del 5% para reportar calidad en la tesis.
+
+☐ **Decisión pendiente con tutor**: ¿cuántas instancias traducir (5k vs 392k)?
+
 > **Nota de trabajo:** las palabras marcadas como "resuelto" o "mantener" pueden cerrarse rápidamente (cambiar ☐ a ✓). Las que dicen "revisar" necesitan ver 2-3 ejemplos del XNLI antes de decidir. Usar `scripts/_lookup_pendientes.py` para extraer ejemplos de cualquier palabra.
