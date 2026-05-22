@@ -152,11 +152,19 @@
     margin: 10px 0 4px;
     font-style: italic;
   }
+  .header-sticky {
+    background: var(--bg);
+    padding: 10px 20px 8px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
   .instructions {
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     font-weight: 400;
     color: var(--muted);
-    margin: 0 auto 4px;
+    margin: 0 auto;
     line-height: 1.4;
     text-align: center;
     max-width: 580px;
@@ -361,6 +369,9 @@
 </head>
 <body>
 <div class="container">
+  <div class="header-sticky hidden" id="header-sticky">
+    <p class="instructions">Clickeá las palabras que no te suenen en rioplatense.</p>
+  </div>
   <main id="app">
     <div id="screen-loading" class="card center">
       <p class="muted">Cargando…</p>
@@ -391,7 +402,6 @@
     </div>
 
     <div id="screen-instance" class="hidden">
-      <p class="instructions">Clickeá las palabras que no te suenen en rioplatense.</p>
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
@@ -557,6 +567,7 @@
   function showScreen(id) {
     ['screen-loading', 'screen-welcome', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+    document.getElementById('header-sticky').classList.toggle('hidden', id !== 'screen-instance');
     if (id === 'screen-final') { prefillFinal(); loadRanking(null); }
     if (id === 'screen-thanks') loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
   }
