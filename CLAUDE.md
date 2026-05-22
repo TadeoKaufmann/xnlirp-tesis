@@ -132,10 +132,8 @@ Si una instancia tiene múltiples tipos, la letra es la del cambio dominante (ma
 Activar venv: `.venv\Scripts\activate` (Windows). Todos los comandos asumen ejecución desde la raíz del proyecto.
 
 ```bash
-# Correr el dev combinado de 200 con T=0.1 y v2 (prompt activo)
-python pipeline_traduccion/scripts/translate_xnli.py \
-    --input data/dev/xnli_combined_dev_200.jsonl \
-    --temperatures 0.1 --prompt-variants v2
+# Correr el dev_200 con T=0.1 y v2 (prompt activo)
+python pipeline_traduccion/scripts/translate_xnli.py --dev_200
 
 # Evaluar contra el dev combinado
 python pipeline_evaluacion/scripts/evaluate_against_gold.py \
@@ -156,24 +154,25 @@ python pipeline_traduccion/scripts/visualize_comparison.py --input <jsonl> --out
 ```
 
 **Args principales de `translate_xnli.py`:**
+- `--dev_200` — shortcut para correr contra el dev canónico 200
+- `--input <path>` — JSONL de entrada arbitrario (ej. full 7500)
 - `--models` (default `gemini-2.5-flash`)
-- `--temperatures` (default `0.1 0.3 0.5`)
-- `--prompt-variants` (default `v2`) — busca `pipeline_traduccion/prompts/prompt_<variant>*.txt`
-- `--input <path>` | `--held-out` | `--limit-to-gold`
-- `--limit N` — primeras N del subset
+- `--temperatures` (default `0.1` — siempre 0.1; 0.3 solo para ablaciones puntuales)
+- `--prompt-variants` (default `v2`)
+- `--offset N`, `--limit N` — para batches parciales
 - `--batch-size`, `--batch-pause` — control de throughput vs rate limit
 
 **Args de `evaluate_against_gold.py`:**
 - `--run <jsonl>` | `--summary <json>`
-- `--gold <jsonl>` (default dev canónico 200)
+- `--gold <jsonl>` (default: `data/dev/xnli_combined_dev_200.jsonl` — el dev_200)
 - `--lev-threshold N` (default 10)
 
 ## 7. Próximos pasos
 
 1. **Pipeline de evaluación automática**: model evaluation con Sonnet/Haiku como jueces sobre outputs de Gemini (en diseño).
-2. Re-evaluar con prompt v2 actualizado contra dev 200 (stale — ver sección 4).
+2. Re-evaluar con prompt v2 actualizado contra dev_200 (stale — ver sección 4).
 3. Validar con cuentos: que el pipeline no traduzca los textos del corpus ET.
-4. Continuar traducción del full 7500 en batches de 300 (ver cronología en `pipeline_traduccion/referencias/cronologia_datos.md`).
-5. Lanzar revisión nativa multi-anotador sobre el output de la mejor config.
+4. Continuar traducción del full 7500 en batches + revisión nativa multi-anotador (ver `pipeline_traduccion/referencias/cronologia_datos.md`).
+5. Traducción del train set ~392k ES→RP con Gemini Batch + validación Haiku (pendiente decisión con tutor — ver `pipeline_traduccion/referencias/_pendientes.md` §9).
 6. Fine-tuning BETO/XLM-R en las 4 condiciones (ES→ES, ES→RP, RP→RP, RP→ES).
 7. Experimentos ET-augmentado (Deng et al. 2024 + ablación MLM aleatorio).

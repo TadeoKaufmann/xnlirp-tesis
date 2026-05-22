@@ -18,13 +18,19 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-PROMPTS_DIR = REPO_ROOT / "scripts" / "prompts"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+PROMPTS_DIR = REPO_ROOT / "pipeline_traduccion" / "prompts"
 EXPERIMENTS_DIR = REPO_ROOT / "results" / "experiments"
 EVOLUTION_LOG = EXPERIMENTS_DIR / "prompt_evolution.md"
+DEV_200 = REPO_ROOT / "data" / "dev" / "xnli_combined_dev_200.jsonl"
+
+# Importar evaluate_against_gold desde su nueva ubicación
+sys.path.insert(0, str(REPO_ROOT / "pipeline_evaluacion" / "scripts"))
+from evaluate_against_gold import evaluate_run, load_jsonl as _eval_load, render_report, DEV_200 as _EVAL_DEV_200  # noqa: E402
 
 
 META_PROMPT_TEMPLATE = """Sos un ingeniero de prompts experto. Te paso un prompt de adaptación dialectal ES→rioplatense que está siendo usado por gemini-2.5-flash, junto con el reporte de errores actual contra un gold anotado manualmente. Tu tarea es generar una VERSIÓN MEJORADA del prompt que reduzca los errores observados, manteniendo:
@@ -120,23 +126,14 @@ def append_evolution_log(version: int, parent_variant: str, metric_value: float,
 def run_translate(variant: str, temperature: float, model_name: str) -> Path:
     cmd = [
         sys.executable, str(REPO_ROOT / "pipeline_traduccion" / "scripts" / "translate_xnli.py"),
-        "--limit-to-gold",
+        "--dev_200",
         "--models", model_name,
         "--temperatures", str(temperature),
         "--prompt-variants", variant,
     ]
     print(">>", " ".join(cmd))
     subprocess.check_call(cmd)
-    return EXPERIMENTS_DIR / f"{model_name}__T{temperature}__{variant}.jsonl"
-
-
-def run_eval(run_path: Path) -> dict:
-    from scripts.evaluate_against_gold import evaluate_run, GOLD_30, load_jsonl as _ljsonl  # type: ignore
-    # Import-by-path workaround:
-    sys.path.insert(0, str(REPO_ROOT))
-    from scripts.evaluate_against_gold import evaluate_run as _eval, GOLD_30 as _GOLD  # type: ignore
-    gold = _ljsonl(_GOLD)
-    return _eval(run_path, gold)
+    return EXPERIMENTS_DIR / f"xnli_combined_dev_200__{model_name}__T{temperature}__{variant}.jsonl"
 
 
 def metric_value(eval_result: dict, metric: str) -> float:
@@ -148,13 +145,17 @@ def metric_value(eval_result: dict, metric: str) -> float:
     raise ValueError(f"Métrica desconocida: {metric}")
 
 
-def call_meta_prompt(model: genai.GenerativeModel, current_prompt: str, eval_md: str, patterns: str) -> tuple[str, str]:
+def call_meta_prompt(client: genai.Client, model_name: str, current_prompt: str, eval_md: str, patterns: str) -> tuple[str, str]:
     payload = META_PROMPT_TEMPLATE.format(
         CURRENT_PROMPT=current_prompt,
         EVAL_REPORT=eval_md,
         PATTERNS=patterns,
     )
-    resp = model.generate_content(payload)
+    resp = client.models.generate_content(
+        model=model_name,
+        contents=payload,
+        config=genai_types.GenerateContentConfig(temperature=0.4),
+    )
     return parse_meta_response(resp.text)
 
 
@@ -172,19 +173,16 @@ def main() -> int:
     if not api_key:
         print("ERROR: GOOGLE_API_KEY no definida.", file=sys.stderr)
         return 1
-    genai.configure(api_key=api_key)
-    meta_model = genai.GenerativeModel(args.model, generation_config={"temperature": 0.4})
+    client = genai.Client(api_key=api_key)
 
     EVOLUTION_LOG.parent.mkdir(parents=True, exist_ok=True)
     current_variant = args.prompt_variant
-    history = []  # list of metric values
+    history = []
     no_improve_streak = 0
     best_metric = -float("inf")
     best_variant = current_variant
 
-    sys.path.insert(0, str(REPO_ROOT))
-    from scripts.evaluate_against_gold import evaluate_run, GOLD_30, load_jsonl as _ljsonl, render_report  # type: ignore
-    gold = _ljsonl(GOLD_30)
+    gold = _eval_load(DEV_200)
 
     for iteration in range(args.max_iterations):
         print(f"\n========== Iteración {iteration + 1}/{args.max_iterations} (variante: {current_variant}) ==========")
@@ -221,7 +219,7 @@ def main() -> int:
         patterns = detect_patterns(ev)
 
         print("Llamando a meta-prompt para generar nueva versión del prompt...")
-        changelog, new_prompt = call_meta_prompt(meta_model, current_prompt, eval_md, patterns)
+        changelog, new_prompt = call_meta_prompt(client, args.model, current_prompt, eval_md, patterns)
         if not new_prompt:
             print("Meta-prompt no devolvió un prompt válido. Abortando.")
             break
