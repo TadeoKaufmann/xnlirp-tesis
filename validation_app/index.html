@@ -36,7 +36,7 @@
   header {
     background: white;
     border-bottom: 1px solid var(--border);
-    padding: 6px 20px;
+    padding: 5px 20px 6px;
     margin-bottom: 0;
     text-align: center;
     position: sticky;
@@ -55,11 +55,12 @@
     margin-top: 4px;
   }
   .meta {
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 700;
     color: var(--text);
     text-align: center;
-    margin-bottom: 6px;
+    margin-top: 18px;
+    margin-bottom: 8px;
     letter-spacing: 0;
   }
   .progress-bar {
@@ -67,7 +68,7 @@
     background: var(--border);
     border-radius: 999px;
     overflow: hidden;
-    margin-bottom: 0;
+    margin-bottom: 18px;
   }
   .progress-bar-fill {
     height: 100%;
@@ -176,9 +177,8 @@
     font-size: 0.78rem;
     font-weight: 400;
     color: var(--muted);
-    margin-top: 0;
-    margin-bottom: 6px;
-    line-height: 1.5;
+    margin: 0;
+    line-height: 1.4;
     max-width: 580px;
     margin-left: auto;
     margin-right: auto;
@@ -385,8 +385,6 @@
 <div class="container">
   <header>
     <p class="instructions">Clickeá las palabras que no te suenen en rioplatense.</p>
-    <div class="meta" id="counter"></div>
-    <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
   </header>
 
   <main id="app">
@@ -419,6 +417,8 @@
     </div>
 
     <div id="screen-instance" class="hidden">
+      <div class="meta" id="counter"></div>
+      <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
         <div class="text-cols">
           <div class="text-col">
