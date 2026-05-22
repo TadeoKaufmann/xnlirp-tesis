@@ -2,7 +2,7 @@
 
 ## 1. Descripción del proyecto
 
-Tesis de Maestría sobre benchmarking NLU en español rioplatense (RP) con augmentación guiada por eye-tracking. Componente actual: construir **XNLIrp** adaptando dialectalmente XNLI ES → RP usando Gemini 2.5 Flash como borrador + revisión nativa. Hipótesis: la distancia dialectal entre el corpus ET rioplatense y el benchmark afecta el rendimiento NLU; la augmentación ET ayuda especialmente en low-resource (K=200/500/1000).
+Tesis de Grado (carrera de 5 años y medio, equivalente internacional a maestría) sobre benchmarking NLU en español rioplatense (RP) con augmentación guiada por eye-tracking. Tres tareas: (1) **XNLIrp** — adaptación dialectal XNLI ES→RP; (2) **Hate speech RP** — Pérez et al. NAACL 2025, baseline BETO F1=63.5; (3) **QA Cuentos** — NLI binario sobre los cuentos del corpus ET. Pipeline XNLIrp: Gemini 2.5 Flash como traductor automático + revisión nativa. Hipótesis: la distancia dialectal entre el corpus ET rioplatense y el benchmark afecta el rendimiento NLU; la augmentación ET ayuda especialmente en low-resource (K=200/500/1000).
 
 ## 2. Estructura de carpetas
 
@@ -14,11 +14,10 @@ Datasets-Codigo/
 │
 ├── data/
 │   ├── raw/xnli/
-│   │   └── xnli_full_7500.jsonl               # 7500 instancias (5010 test + 2490 val) — INMUTABLE
+│   │   └── xnli_full_7500.jsonl               # 7500 inst (5010 test + 2490 val/dev de XNLI — no hay train ES) — INMUTABLE
 │   ├── dev/                                    # datasets activos del proyecto
 │   │   ├── xnli_combined_dev_200.jsonl         # DEV CANÓNICO: gold30+held70+held100, revisado manualmente
 │   │   ├── xnli_sample_300_v2_test.jsonl       # nueva muestra 300 (Gemini v2 + validación Sonnet)
-│   │   ├── xnli_native_validated_60.jsonl      # 60 instancias con validación nativa
 │   │   ├── cultural_adaptations.jsonl          # ~394 instancias culturalmente complejas (Opus)
 │   │   └── processed_idxs.json                 # tracker de índices ya procesados del full 7500
 │   └── qa/                                     # QA dataset (tarea 3 de la tesis)
@@ -32,11 +31,10 @@ Datasets-Codigo/
 │
 ├── pipeline_traduccion/
 │   ├── scripts/
-│   │   ├── translate_xnli_pilot.py             # harness principal: modelo × T × variante prompt
+│   │   ├── translate_xnli.py                   # harness principal: modelo × T × variante prompt
 │   │   ├── validate_translations.py            # validador regex independiente
 │   │   ├── visualize_comparison.py             # genera HTML lado a lado
-│   │   ├── optimize_prompt_loop.py             # loop de optimización de prompt
-│   │   └── sample_xnli_1000.py                # muestreo del full 7500
+│   │   └── optimize_prompt_loop.py             # loop de optimización de prompt
 │   ├── prompts/
 │   │   ├── prompt_v2_cultural_inline.txt       # PROMPT ACTIVO: A/B/C/D + E cultural inline
 │   │   └── _archive/
@@ -68,9 +66,6 @@ Datasets-Codigo/
 │   ├── ranking_vocab_xnli.tsv
 │   └── review_queue.jsonl
 │
-├── scripts/
-│   └── check_env.py                           # verifica .env y credenciales (utility compartida)
-│
 ├── validation_app/                            # encuesta web (Supabase + vanilla JS)
 │   └── index.html                             # deploy a Vercel — push a main = redeploy automático
 ├── Referencias/                               # todos los documentos de referencia
@@ -97,7 +92,7 @@ Si una instancia tiene múltiples tipos, la letra es la del cambio dominante (ma
 
 - **Cambio mínimo:** solo cambiar lo necesario. La adaptación es dialectal, no estilística.
 - **Label NLI invariante:** la etiqueta `entailment | neutral | contradiction` nunca puede cambiar. Si una adaptación posible podría alterar la relación lógica, no se aplica.
-- **Levenshtein siempre por Python:** `lev_prem`, `lev_hyp`, `lev_total` se calculan con `python-Levenshtein` en `normalize_response()` de `pipeline_traduccion/scripts/translate_xnli_pilot.py`. El modelo no estima distancias.
+- **Levenshtein siempre por Python:** `lev_prem`, `lev_hyp`, `lev_total` se calculan con `python-Levenshtein` en `normalize_response()` de `pipeline_traduccion/scripts/translate_xnli.py`. El modelo no estima distancias.
 
 ### 3.3 Archivos de referencia
 
@@ -111,7 +106,7 @@ Si una instancia tiene múltiples tipos, la letra es la del cambio dominante (ma
 ## 4. Estado actual
 
 - **Dev canónico** (`data/dev/xnli_combined_dev_200.jsonl`): 200 inst, revisadas manualmente. Distribución: **A 139 / B 19 / C 23 / D 19**. Los few-shots idx 1638, 910, 2821 tienen leakage conocido — usar solo como sanity check para esas instancias.
-- **Sample 300** (`data/dev/xnli_sample_300_v2_test.jsonl`): 300 inst del full 7500, Gemini v2 + validación Sonnet. **Son las que están actualmente en la validation app (Vercel).**
+- **Sample 300** (`data/dev/xnli_sample_300_v2_test.jsonl`): 300 inst del full 7500, Gemini v2 + validación Sonnet. **Son las que están actualmente en la validation app (Vercel).** ⚠️ Pendiente: analizar revisiones de la app — algunas fueron hechas durante tests de UI (tutor probando comportamiento, Claude Code desde el browser); los ratings solos no son confiables, revisar manualmente qué cambios son lingüísticamente válidos.
 - **Cultural adaptations** (`data/dev/cultural_adaptations.jsonl`): ~394 inst del full 7500 con adaptaciones culturales tipo E, procesadas por Opus.
 - **Total procesado:** ~600-900 instancias del full 7500 (ver `pipeline_traduccion/referencias/cronologia_datos.md`).
 - **Billing Gemini**: activo, Tier 1, 1000 RPM.
@@ -137,11 +132,8 @@ Si una instancia tiene múltiples tipos, la letra es la del cambio dominante (ma
 Activar venv: `.venv\Scripts\activate` (Windows). Todos los comandos asumen ejecución desde la raíz del proyecto.
 
 ```bash
-# Sanity check del entorno
-python scripts/check_env.py
-
 # Correr el dev combinado de 200 con T=0.1 y v2 (prompt activo)
-python pipeline_traduccion/scripts/translate_xnli_pilot.py \
+python pipeline_traduccion/scripts/translate_xnli.py \
     --input data/dev/xnli_combined_dev_200.jsonl \
     --temperatures 0.1 --prompt-variants v2
 
@@ -150,10 +142,10 @@ python pipeline_evaluacion/scripts/evaluate_against_gold.py \
     --gold data/dev/xnli_combined_dev_200.jsonl \
     --run results/experiments/xnli_combined_dev_200__gemini-2.5-flash__T0.1__v2.jsonl
 
-# Traducir nuevo batch del full 7500
-python pipeline_traduccion/scripts/translate_xnli_pilot.py \
+# Traducir nuevo batch del full 7500 (usa processed_idxs.json para evitar repetir)
+python pipeline_traduccion/scripts/translate_xnli.py \
     --input data/raw/xnli/xnli_full_7500.jsonl \
-    --temperatures 0.1 --prompt-variants v2 --limit 300
+    --temperatures 0.1 --prompt-variants v2
 
 # Evaluar TODAS las configs (ranking global)
 python pipeline_evaluacion/scripts/evaluate_against_gold.py \
@@ -163,7 +155,7 @@ python pipeline_evaluacion/scripts/evaluate_against_gold.py \
 python pipeline_traduccion/scripts/visualize_comparison.py --input <jsonl> --output <html>
 ```
 
-**Args principales de `translate_xnli_pilot.py`:**
+**Args principales de `translate_xnli.py`:**
 - `--models` (default `gemini-2.5-flash`)
 - `--temperatures` (default `0.1 0.3 0.5`)
 - `--prompt-variants` (default `v2`) — busca `pipeline_traduccion/prompts/prompt_<variant>*.txt`
