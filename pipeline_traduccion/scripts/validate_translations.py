@@ -15,7 +15,7 @@ if hasattr(sys.stdout, "reconfigure"):
 import Levenshtein
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 RESULTS_DIR = REPO_ROOT / "results"
 
 TUTEO_MARKERS = [

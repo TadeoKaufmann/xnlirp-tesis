@@ -13,8 +13,8 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-GOLD_30 = REPO_ROOT / "data" / "processed" / "xnli_pilot_30_annotated.jsonl"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+DEV_200 = REPO_ROOT / "data" / "dev" / "xnli_combined_dev_200.jsonl"
 EXPERIMENTS_DIR = REPO_ROOT / "results" / "experiments"
 
 
@@ -196,13 +196,13 @@ def render_global_ranking(summary_path: Path, gold: list[dict], lev_threshold: i
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Evaluar corrida(s) contra gold de 30 o held-out 70.")
+    parser = argparse.ArgumentParser(description="Evaluar corrida(s) contra el dev_200.")
     parser.add_argument("--run", type=Path, default=None,
                         help="Path al .jsonl de una corrida específica.")
     parser.add_argument("--summary", type=Path, default=None,
                         help="Path a experiments_summary.json para evaluar TODAS las configs.")
-    parser.add_argument("--gold", type=Path, default=GOLD_30,
-                        help="Path al gold JSONL (default: xnli_pilot_30_annotated.jsonl).")
+    parser.add_argument("--gold", type=Path, default=DEV_200,
+                        help="Path al gold JSONL (default: xnli_combined_dev_200.jsonl).")
     parser.add_argument("--lev-threshold", type=int, default=10,
                         help="Umbral de tolerancia en delta de Levenshtein (default 10).")
     parser.add_argument("--out-md", type=Path, default=None,

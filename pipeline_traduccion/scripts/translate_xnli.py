@@ -24,12 +24,10 @@ from google import genai
 from google.genai import types as genai_types
 
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-INPUT_500 = REPO_ROOT / "data" / "raw" / "xnli" / "xnli_pilot_500.jsonl"
-GOLD_30 = REPO_ROOT / "data" / "processed" / "xnli_pilot_30_annotated.jsonl"
-HELD_OUT_70 = REPO_ROOT / "data" / "processed" / "xnli_held_out_70_raw.jsonl"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+DEV_200 = REPO_ROOT / "data" / "dev" / "xnli_combined_dev_200.jsonl"
 EXPERIMENTS_DIR = REPO_ROOT / "results" / "experiments"
-PROMPTS_DIR = REPO_ROOT / "scripts" / "prompts"
+PROMPTS_DIR = REPO_ROOT / "pipeline_traduccion" / "prompts"
 
 REQUIRED_OUTPUT_FIELDS = [
     "idx", "label", "prem_rp", "hyp_rp", "type",
@@ -170,18 +168,12 @@ def normalize_response(parsed: dict, original: dict) -> dict:
     return out
 
 
-def select_instances(args, all_500: list[dict], gold_idxs: set[int]) -> list[dict]:
-    if args.limit_to_gold:
-        rows = [r for r in all_500 if r["idx"] in gold_idxs]
-    elif args.skip_gold_idxs:
-        rows = [r for r in all_500 if r["idx"] not in gold_idxs]
-    else:
-        rows = list(all_500)
-    if args.offset:
-        rows = rows[args.offset:]
-    if args.limit is not None:
-        rows = rows[:args.limit]
-    return rows
+def apply_slice(instances: list[dict], offset: int, limit: int | None) -> list[dict]:
+    if offset:
+        instances = instances[offset:]
+    if limit is not None:
+        instances = instances[:limit]
+    return instances
 
 
 def write_report(out_path: Path, rows: list[dict], failed: list[dict], config_label: str) -> None:
@@ -310,27 +302,21 @@ def run_one_config(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Harness de traducción XNLI ES → RP con Gemini.")
     parser.add_argument("--models", nargs="+", default=["gemini-2.5-flash"])
-    parser.add_argument("--temperatures", nargs="+", type=float, default=[0.1, 0.3, 0.5])
-    parser.add_argument("--prompt-variants", nargs="+", default=["v1", "v2"])
+    parser.add_argument("--temperatures", nargs="+", type=float, default=[0.1],
+                        help="Temperatura(s). Default 0.1; usar 0.3 solo para ablaciones puntuales.")
+    parser.add_argument("--prompt-variants", nargs="+", default=["v2"])
+    parser.add_argument("--dev_200", action="store_true",
+                        help=f"Usa el dev canónico 200 como input ({DEV_200}).")
     parser.add_argument("--input", type=Path, default=None,
-                        help="JSONL de input arbitrario (sobreescribe --held-out y los defaults).")
-    parser.add_argument("--held-out", action="store_true",
-                        help="Usa las 70 instancias held-out como input (ignora --limit-to-gold/--skip-gold-idxs).")
-    parser.add_argument("--limit-to-gold", action="store_true",
-                        help="Procesa solo los 30 idx del gold.")
-    parser.add_argument("--skip-gold-idxs", action="store_true",
-                        help="Procesa las 470 instancias que NO están en el gold.")
+                        help="JSONL de input arbitrario (ej. xnli_full_7500.jsonl).")
     parser.add_argument("--offset", type=int, default=0,
-                        help="Saltea las primeras N instancias del subset (útil para batches parciales).")
+                        help="Saltea las primeras N instancias.")
     parser.add_argument("--limit", type=int, default=None,
-                        help="Procesa solo las primeras N instancias del subset elegido.")
+                        help="Procesa solo las primeras N instancias.")
     parser.add_argument("--include-english", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--batch-size", type=int, default=10)
     parser.add_argument("--batch-pause", type=float, default=0.0)
     args = parser.parse_args()
-
-    if args.limit_to_gold and args.skip_gold_idxs:
-        parser.error("--limit-to-gold y --skip-gold-idxs son mutuamente excluyentes.")
 
     load_dotenv(REPO_ROOT / ".env")
     api_key = os.getenv("GOOGLE_API_KEY")
@@ -339,29 +325,16 @@ def main() -> int:
         return 1
     client = genai.Client(api_key=api_key)
 
-    if args.input:
-        instances = load_jsonl(args.input)
-        if args.offset:
-            instances = instances[args.offset:]
-        if args.limit is not None:
-            instances = instances[:args.limit]
+    if args.dev_200:
+        instances = apply_slice(load_jsonl(DEV_200), args.offset, args.limit)
+        prefix = "xnli_combined_dev_200__"
+        print(f"Modo dev_200: {len(instances)} instancias desde {DEV_200.name}.")
+    elif args.input:
+        instances = apply_slice(load_jsonl(args.input), args.offset, args.limit)
         prefix = f"{args.input.stem}__"
-        print(f"Input custom: {len(instances)} instancias desde {args.input.name}.")
-    elif args.held_out:
-        instances = load_jsonl(HELD_OUT_70)
-        if args.offset:
-            instances = instances[args.offset:]
-        if args.limit is not None:
-            instances = instances[:args.limit]
-        prefix = "held70__"
-        print(f"Modo held-out: {len(instances)} instancias desde {HELD_OUT_70.name}.")
+        print(f"Input: {len(instances)} instancias desde {args.input.name}.")
     else:
-        all_500 = load_jsonl(INPUT_500)
-        gold = load_jsonl(GOLD_30)
-        gold_idxs = {r["idx"] for r in gold}
-        instances = select_instances(args, all_500, gold_idxs)
-        prefix = ""
-        print(f"Subset seleccionado: {len(instances)} instancias.")
+        parser.error("Especificá --dev_200 o --input <path>.")
 
     for model_name, temp, variant in product(args.models, args.temperatures, args.prompt_variants):
         run_one_config(args, client, model_name, temp, variant, instances, prefix=prefix)
