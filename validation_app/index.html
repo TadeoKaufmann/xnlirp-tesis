@@ -33,26 +33,6 @@
     margin: 0 auto;
     padding: 28px 20px 80px;
   }
-  header {
-    background: var(--bg);
-    padding: 5px 20px 0;
-    margin-bottom: 0;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  header h1 {
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: var(--green);
-    letter-spacing: -0.01em;
-  }
-  header p {
-    color: var(--muted);
-    font-size: 0.88rem;
-    margin-top: 4px;
-  }
   .meta {
     font-size: 1.05rem;
     font-weight: 700;
@@ -176,11 +156,10 @@
     font-size: 0.78rem;
     font-weight: 400;
     color: var(--muted);
-    margin: 0;
+    margin: 0 auto 4px;
     line-height: 1.4;
+    text-align: center;
     max-width: 580px;
-    margin-left: auto;
-    margin-right: auto;
   }
   .question {
     margin-top: 22px;
@@ -382,10 +361,6 @@
 </head>
 <body>
 <div class="container">
-  <header>
-    <p class="instructions">Clickeá las palabras que no te suenen en rioplatense.</p>
-  </header>
-
   <main id="app">
     <div id="screen-loading" class="card center">
       <p class="muted">Cargando…</p>
@@ -416,6 +391,7 @@
     </div>
 
     <div id="screen-instance" class="hidden">
+      <p class="instructions">Clickeá las palabras que no te suenen en rioplatense.</p>
       <div class="meta" id="counter"></div>
       <div class="progress-bar"><div id="progress-fill" class="progress-bar-fill"></div></div>
       <div class="card card-anim" id="instance-card">
@@ -581,8 +557,6 @@
   function showScreen(id) {
     ['screen-loading', 'screen-welcome', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
-    // Header (título + instrucciones) solo cuando están anotando
-    document.querySelector('header').classList.toggle('hidden', id !== 'screen-instance');
     if (id === 'screen-final') { prefillFinal(); loadRanking(null); }
     if (id === 'screen-thanks') loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
   }
