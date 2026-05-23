@@ -844,6 +844,12 @@
       }
     }
 
+    // Shuffle para evitar que pares con misma premisa aparezcan consecutivos
+    for (let i = availableInstances.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [availableInstances[i], availableInstances[j]] = [availableInstances[j], availableInstances[i]];
+    }
+
     if (availableInstances.length === 0) {
       document.getElementById('done-message').textContent =
         'Otras personas están anotando en este momento. Volvé en unos minutos.';
