@@ -2,9 +2,9 @@
 
 ## UI / UX
 
-- [ ] **Mejorar visibilidad de "Instancia X de Y"** — el contador en el header sticky en mobile todavía no se ve bien en Chrome iOS. Revisar tamaño/contraste o explorar alternativa de layout.
+- [x] **Mejorar visibilidad de "Instancia X de Y"** — resuelto: sticky sin wrapper, fondo hex explícito para iOS Chrome.
 
-- [ ] **Randomizar orden de instancias** — actualmente se entregan en orden ascendente por idx, lo que hace que pares con misma premisa y distinta hipótesis aparezcan juntos. Confunde a los anotadores (creen que vieron esa instancia). Fix: shuffle client-side después de cargar `availableInstances` (1 línea JS, sin cambios en Supabase ni recarga de datos).
+- [x] **Randomizar orden de instancias** — resuelto: Fisher-Yates shuffle client-side después de confirmar reservas.
 
 ## Datos / pipeline post-validación
 
