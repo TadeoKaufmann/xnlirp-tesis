@@ -566,15 +566,7 @@
         });
         node.parentNode.replaceChild(frag, node);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
-        if (node.classList.contains('demo-word')) {
-          const wrapper = document.createElement('span');
-          wrapper.className = 'wbw-char';
-          node.parentNode.insertBefore(wrapper, node);
-          wrapper.appendChild(node);
-          spans.push(wrapper);
-        } else {
-          Array.from(node.childNodes).forEach(walk);
-        }
+        Array.from(node.childNodes).forEach(walk);
       }
     }
     walk(el);
@@ -583,17 +575,12 @@
 
   function runWelcomeAnimation() {
     const items = Array.from(document.querySelectorAll('#screen-welcome [data-delay]'));
-    const typeItems = items.filter(el =>
+    const typeItems = new Set(items.filter(el =>
       el.tagName === 'LI' || el.classList.contains('welcome-section-title')
-    );
-    const charMap = new Map();
-    typeItems.forEach(el => charMap.set(el, wrapCharsInEl(el)));
+    ));
 
     if (localStorage.getItem('welcomed')) {
-      items.forEach(el => {
-        el.classList.remove('reveal-pending');
-        el.querySelectorAll('.wbw-char').forEach(s => s.classList.add('wbw-visible'));
-      });
+      items.forEach(el => el.classList.remove('reveal-pending'));
       return;
     }
 
@@ -601,12 +588,14 @@
     items.forEach(el => {
       const delay = parseInt(el.dataset.delay, 10);
       setTimeout(() => {
-        el.classList.remove('reveal-pending');
-        if (charMap.has(el)) {
-          charMap.get(el).forEach((sp, i) => {
-            setTimeout(() => sp.classList.add('wbw-visible'), i * 30);
-          });
+        if (typeItems.has(el)) {
+          const chars = wrapCharsInEl(el);
+          el.classList.remove('reveal-pending');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            chars.forEach((sp, i) => setTimeout(() => sp.classList.add('wbw-visible'), i * 30));
+          }));
         } else {
+          el.classList.remove('reveal-pending');
           el.classList.add('reveal-enter');
         }
       }, delay);
