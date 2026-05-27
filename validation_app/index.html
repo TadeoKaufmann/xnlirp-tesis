@@ -408,7 +408,7 @@
         </ul>
 
         <div data-delay="23000">
-          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
+          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 10 instancias, lleva menos de 5 minutos.</p>
           <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
         </div>
       </div>
@@ -794,6 +794,18 @@
       }
       await Promise.all(updates);
       const nombre = document.getElementById('input-nombre').value.trim();
+      if (nombre) {
+        const { data: existing } = await sb.from('anotadores')
+          .select('anotador_id')
+          .eq('nombre', nombre)
+          .maybeSingle();
+        if (existing && existing.anotador_id !== anotadorId) {
+          showToast('Ese nombre ya lo usa alguien, elegí otro');
+          btn.disabled = false;
+          btn.textContent = 'Enviar respuestas';
+          return;
+        }
+      }
       await sb.from('anotadores').upsert({
         anotador_id: anotadorId,
         ...(nombre ? { nombre } : {}),
@@ -870,7 +882,7 @@
     const testParam = new URLSearchParams(location.search).get('test');
     const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
     const TEST_MODE = TEST_BATCH !== null;
-    const BATCH_SIZE = TEST_BATCH ?? 15;
+    const BATCH_SIZE = TEST_BATCH ?? 10;
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
