@@ -887,14 +887,23 @@
     const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
     const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
 
+    function randomSample(arr, n) {
+      const pool = [...arr];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, n);
+    }
+
     if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
-      // Retomar batch en curso: lo ya respondido + completar hasta 30
+      // Retomar batch en curso: lo ya respondido + completar hasta BATCH_SIZE con aleatorios
       const doneIdxs = new Set(inProgress.map(i => i.idx));
-      const fill = unanswered.filter(i => !doneIdxs.has(i.idx)).slice(0, BATCH_SIZE - inProgress.length);
-      availableInstances = [...inProgress, ...fill].sort((a, b) => a.idx - b.idx);
+      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length);
+      availableInstances = [...inProgress, ...fill];
     } else {
-      // Batch fresco o siguiente: primeras 30 sin responder
-      availableInstances = unanswered.slice(0, BATCH_SIZE);
+      // Batch fresco: muestra aleatoria de BATCH_SIZE sin responder
+      availableInstances = randomSample(unanswered, BATCH_SIZE);
     }
 
     // Reservar mi batch en `reservas` para evitar que otro usuario tome los mismos idxs.
