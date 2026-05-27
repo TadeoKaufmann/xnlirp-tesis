@@ -146,6 +146,20 @@
     margin-bottom: 8px;
     color: var(--text);
   }
+  /* Reveal animation para welcome screen */
+  .reveal-pending { display: none !important; }
+  .reveal-enter { animation: revealItem 0.4s ease both; }
+  @keyframes revealItem {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Hint bajo la escala Likert */
+  .question-hint {
+    font-size: 0.8rem;
+    color: #aaa;
+    text-align: center;
+    margin: -4px 0 8px;
+  }
   .word-hint {
     font-size: 0.78rem;
     color: var(--muted);
@@ -372,25 +386,29 @@
 
     <div id="screen-welcome" class="hidden">
       <div class="card card-anim" style="padding: 32px 24px;">
-        <div style="font-size: 2.4rem; margin-bottom: 6px; text-align: center;">👋</div>
-        <h2 style="margin-bottom: 10px; text-align: center;">¡Hola!</h2>
-        <p class="muted" style="margin-bottom: 22px; text-align: center;">Traduje textos del inglés a argentino para mejorar a una IA.</p>
+        <div data-delay="0" style="text-align: center;">
+          <div style="font-size: 2.4rem; margin-bottom: 6px;">👋</div>
+          <h2 style="margin-bottom: 10px;">¡Hola!</h2>
+          <p class="muted" style="margin-bottom: 22px;">Traduje textos del inglés a argentino para mejorar a una IA.</p>
+        </div>
 
-        <p class="welcome-section-title">Sobre los textos:</p>
+        <p class="welcome-section-title" data-delay="5000">Sobre los textos:</p>
         <ul class="welcome-list">
-          <li>Son fragmentos traducidos: diálogos, recortes de diario, conversaciones sueltas</li>
-          <li>Muchos <strong>no tienen sentido</strong> — está bien, es normal</li>
-          <li>No necesitás entender qué pasa, solo fijate si suena argentino</li>
+          <li data-delay="6500">Son fragmentos traducidos: diálogos, recortes de diario, conversaciones sueltas</li>
+          <li data-delay="8000">Muchos <strong>no tienen sentido</strong> — está bien, es normal</li>
+          <li data-delay="9500">No necesitás entender qué pasa, solo fijate si suena argentino</li>
         </ul>
 
-        <p class="welcome-section-title" style="margin-top: 18px;">Tu ayuda:</p>
+        <p class="welcome-section-title" data-delay="15000" style="margin-top: 18px;">Tu ayuda:</p>
         <ul class="welcome-list">
-          <li><strong>Clickeá las palabras</strong> que no te suenen argentinas — probá acá: <span class="word demo-word" data-original="coche">coche</span></li>
-          <li><strong>Puntuá del 1 al 5</strong> qué tan argentino suena el texto</li>
+          <li data-delay="17000"><strong>Clickeá las palabras</strong> que no te suenen argentinas — probá acá: <span class="word demo-word" data-original="coche">coche</span></li>
+          <li data-delay="19000"><strong>Puntuá del 1 al 5</strong> qué tan argentino suena el texto</li>
         </ul>
 
-        <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
-        <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
+        <div data-delay="22000">
+          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
+          <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
+        </div>
       </div>
     </div>
 
@@ -411,6 +429,7 @@
           </div>
         </div>
         <div class="question">¿Qué tan argentino suena?</div>
+        <p class="question-hint">recordá que no importa si tiene sentido, solo la argentinidad del texto</p>
         <div class="scale-hint">
           <span>1 — Nada RP</span>
           <span>5 — Muy RP</span>
@@ -529,10 +548,35 @@
   }
 
 
+  // ── Welcome animation ───────────────────────────────────────────────────
+  function revealWelcomeAll() {
+    document.querySelectorAll('#screen-welcome [data-delay]').forEach(el => {
+      el.classList.remove('reveal-pending');
+      el.classList.add('reveal-enter');
+    });
+  }
+
+  function runWelcomeAnimation() {
+    const items = Array.from(document.querySelectorAll('#screen-welcome [data-delay]'));
+    if (localStorage.getItem('welcomed')) {
+      // Returning user: show everything immediately, no animation
+      items.forEach(el => el.classList.remove('reveal-pending'));
+      return;
+    }
+    // New user: hide all, reveal sequentially
+    items.forEach(el => el.classList.add('reveal-pending'));
+    items.forEach(el => {
+      const delay = parseInt(el.dataset.delay, 10);
+      setTimeout(() => {
+        el.classList.remove('reveal-pending');
+        el.classList.add('reveal-enter');
+      }, delay);
+    });
+  }
+
   // ── Mensajes de aliento ─────────────────────────────────────────────────
   const MESSAGES = [
     "Cebate un mate y mandale tranqui 🧉",
-    "Un 'mango' acá no es fruta 🥭",
     "Esto va directo a la tesis",
     "¿'Che' o 'oye'? Claramente che 😤",
     "Estás hablando con una base de datos sin saberlo. Hola base de datos",
@@ -889,6 +933,7 @@
       document.getElementById('welcome-stats').textContent =
         `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
       showScreen('screen-welcome');
+      runWelcomeAnimation();
     } else {
       sessionStorage.removeItem('skip_welcome');
       showScreen('screen-instance');
@@ -1006,6 +1051,7 @@
 
 
   document.getElementById('btn-empezar').addEventListener('click', () => {
+    localStorage.setItem('welcomed', '1');
     showScreen('screen-instance');
     renderInstance(0);
   });
