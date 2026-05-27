@@ -431,7 +431,6 @@
           </div>
         </div>
         <div class="question">¿Qué tan argentino suena?</div>
-        <p class="question-hint">recordá que no importa si tiene sentido, solo la argentinidad del texto</p>
         <div class="scale-hint">
           <span>1 — Nada RP</span>
           <span>5 — Muy RP</span>
@@ -726,7 +725,7 @@
     const btnNext = document.getElementById('btn-next');
     btnNext.textContent = i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
     btnNext.disabled = !r.respuesta;
-    document.getElementById('encouragement').textContent = MESSAGES[i % MESSAGES.length];
+    document.getElementById('encouragement').textContent = 'recordá: la argentinidad, no importa si tiene sentido';
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
