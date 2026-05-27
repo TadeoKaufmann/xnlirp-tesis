@@ -10,7 +10,7 @@
     --green: #16a34a;
     --green-light: #22c55e;
     --green-bg: #f0fdf4;
-    --bg: #f7f6f2;
+    --bg: #eef0f3;
     --card: #ffffff;
     --text: #1a1a1a;
     --muted: #6b7280;
@@ -32,7 +32,7 @@
     max-width: 720px;
     margin: 0 auto;
     padding: 28px 20px 80px;
-    background-color: #f7f6f2;
+    background-color: #eef0f3;
   }
   .meta {
     font-size: 1.05rem;
@@ -179,7 +179,7 @@
     position: sticky;
     top: 0;
     padding: 10px 20px 0;
-    background-color: #f7f6f2;
+    background-color: #eef0f3;
   }
   .question {
     margin-top: 22px;
@@ -391,8 +391,8 @@
         <div data-delay="0" style="text-align: center;">
           <div style="font-size: 2.4rem; margin-bottom: 6px;">👋</div>
           <h2 style="margin-bottom: 10px;">¡Hola!</h2>
-          <p class="muted" style="margin-bottom: 22px;">Traduje textos del inglés a argentino para mejorar a una IA.</p>
         </div>
+        <p class="muted" data-delay="800" style="margin-bottom: 22px; text-align: center;">Traduje textos del inglés a argentino para mejorar a una IA.</p>
 
         <p class="welcome-section-title" data-delay="2500">Sobre los textos:</p>
         <ul class="welcome-list">
@@ -404,10 +404,10 @@
         <p class="welcome-section-title" data-delay="13000" style="margin-top: 18px;">Tu ayuda:</p>
         <ul class="welcome-list">
           <li data-delay="15500"><strong>Clickeá las palabras</strong> que no te suenen argentinas — probá acá: <span class="word demo-word" data-original="coche">coche</span></li>
-          <li data-delay="18000"><strong>Puntuá del 1 al 5</strong> qué tan argentino suena el texto</li>
+          <li data-delay="20000"><strong>Puntuá del 1 al 5</strong> qué tan argentino suena el texto</li>
         </ul>
 
-        <div data-delay="21000">
+        <div data-delay="23000">
           <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
           <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
         </div>
@@ -576,7 +576,7 @@
   function runWelcomeAnimation() {
     const items = Array.from(document.querySelectorAll('#screen-welcome [data-delay]'));
     const typeItems = new Set(items.filter(el =>
-      el.tagName === 'LI' || el.classList.contains('welcome-section-title')
+      el.tagName === 'LI' || el.tagName === 'P'
     ));
 
     if (localStorage.getItem('welcomed')) {
