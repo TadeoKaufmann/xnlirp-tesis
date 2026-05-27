@@ -153,6 +153,8 @@
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  .wbw-word { opacity: 0; transition: opacity 0.18s ease; }
+  .wbw-word.wbw-visible { opacity: 1; }
   /* Hint bajo la escala Likert */
   .question-hint {
     font-size: 0.8rem;
@@ -549,27 +551,66 @@
 
 
   // ── Welcome animation ───────────────────────────────────────────────────
-  function revealWelcomeAll() {
-    document.querySelectorAll('#screen-welcome [data-delay]').forEach(el => {
-      el.classList.remove('reveal-pending');
-      el.classList.add('reveal-enter');
-    });
+  function wrapWordsInEl(el) {
+    const spans = [];
+    function walk(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const parts = node.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach(part => {
+          if (/^\s+$/.test(part) || part === '') {
+            frag.appendChild(document.createTextNode(part));
+          } else {
+            const sp = document.createElement('span');
+            sp.className = 'wbw-word';
+            sp.textContent = part;
+            spans.push(sp);
+            frag.appendChild(sp);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node.classList.contains('demo-word')) {
+          const wrapper = document.createElement('span');
+          wrapper.className = 'wbw-word';
+          node.parentNode.insertBefore(wrapper, node);
+          wrapper.appendChild(node);
+          spans.push(wrapper);
+        } else {
+          Array.from(node.childNodes).forEach(walk);
+        }
+      }
+    }
+    walk(el);
+    return spans;
   }
 
   function runWelcomeAnimation() {
     const items = Array.from(document.querySelectorAll('#screen-welcome [data-delay]'));
+    const liItems = items.filter(el => el.tagName === 'LI');
+    const liWordMap = new Map();
+    liItems.forEach(li => liWordMap.set(li, wrapWordsInEl(li)));
+
     if (localStorage.getItem('welcomed')) {
-      // Returning user: show everything immediately, no animation
-      items.forEach(el => el.classList.remove('reveal-pending'));
+      items.forEach(el => {
+        el.classList.remove('reveal-pending');
+        el.querySelectorAll('.wbw-word').forEach(s => s.classList.add('wbw-visible'));
+      });
       return;
     }
-    // New user: hide all, reveal sequentially
+
     items.forEach(el => el.classList.add('reveal-pending'));
     items.forEach(el => {
       const delay = parseInt(el.dataset.delay, 10);
       setTimeout(() => {
         el.classList.remove('reveal-pending');
-        el.classList.add('reveal-enter');
+        if (liWordMap.has(el)) {
+          liWordMap.get(el).forEach((sp, i) => {
+            setTimeout(() => sp.classList.add('wbw-visible'), i * 150);
+          });
+        } else {
+          el.classList.add('reveal-enter');
+        }
       }, delay);
     });
   }
