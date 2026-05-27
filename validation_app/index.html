@@ -408,7 +408,7 @@
         </ul>
 
         <div data-delay="23000">
-          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 10 instancias, lleva menos de 5 minutos.</p>
+          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
           <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
         </div>
       </div>
@@ -800,10 +800,12 @@
           .eq('nombre', nombre)
           .maybeSingle();
         if (existing && existing.anotador_id !== anotadorId) {
-          showToast('Ese nombre ya lo usa alguien, elegí otro');
-          btn.disabled = false;
-          btn.textContent = 'Enviar respuestas';
-          return;
+          const sumar = confirm('Ese nombre ya lo usa alguien.\n\nOK → sumarle los puntos a ese nombre\nCancelar → elegir otro nombre');
+          if (!sumar) {
+            btn.disabled = false;
+            btn.textContent = 'Enviar respuestas';
+            return;
+          }
         }
       }
       await sb.from('anotadores').upsert({
@@ -882,7 +884,7 @@
     const testParam = new URLSearchParams(location.search).get('test');
     const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
     const TEST_MODE = TEST_BATCH !== null;
-    const BATCH_SIZE = TEST_BATCH ?? 10;
+    const BATCH_SIZE = TEST_BATCH ?? 15;
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
@@ -1167,8 +1169,8 @@
   function renderRanking(listEl, miNombre, data) {
     const medals = ['🥇', '🥈', '🥉'];
     listEl.innerHTML = '';
-    const top5 = data.filter(r => Number(r.posicion) <= 5);
-    const me = data.find(r => miNombre && r.nombre === miNombre && Number(r.posicion) > 5);
+    const top5 = data.filter(r => Number(r.posicion) <= 10);
+    const me = data.find(r => miNombre && r.nombre === miNombre && Number(r.posicion) > 10);
     top5.forEach(row => {
       const pos = Number(row.posicion) - 1;
       const isMe = miNombre && row.nombre === miNombre;
