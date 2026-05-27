@@ -431,9 +431,10 @@
           </div>
         </div>
         <div class="question">¿Qué tan argentino suena?</div>
+        <p class="question-hint">recordá: la argentinidad, no importa si tiene sentido</p>
         <div class="scale-hint">
-          <span>1 — Nada RP</span>
-          <span>5 — Muy RP</span>
+          <span>1 — Nada</span>
+          <span>5 — Muy</span>
         </div>
         <div class="options likert" id="options-respuesta">
           <button class="option" data-value="1">1</button>
@@ -725,7 +726,7 @@
     const btnNext = document.getElementById('btn-next');
     btnNext.textContent = i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
     btnNext.disabled = !r.respuesta;
-    document.getElementById('encouragement').textContent = 'recordá: la argentinidad, no importa si tiene sentido';
+    document.getElementById('encouragement').textContent = '';
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
@@ -972,8 +973,8 @@
   function updatePlaceholders(value) {
     const ph = {
       '5': 'Podés agregar un comentario si querés',
-      '4': '¿Qué le falta para que suene completamente rioplatense?',
-      '3': '¿Qué le falta para que suene más rioplatense?',
+      '4': '¿Qué le falta para que suene completamente argentino?',
+      '3': '¿Qué le falta para que suene más argentino?',
       '2': '¿Qué suena raro?',
       '1': '¿Qué suena raro?',
     }[value] || '¿Algo suena raro? (opcional)';
