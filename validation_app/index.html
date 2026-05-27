@@ -1192,7 +1192,7 @@
   }
 
   async function loadRanking(miNombre) {
-    const { data, error } = await sb.rpc('ranking_top5_with_me', { p_nombre: miNombre ?? null });
+    const { data, error } = await sb.rpc('ranking_top10_with_me', { p_nombre: miNombre ?? null });
     if (error || !data?.length) return;
     const listFinal = document.getElementById('ranking-list-final');
     const listThanks = document.getElementById('ranking-list');
