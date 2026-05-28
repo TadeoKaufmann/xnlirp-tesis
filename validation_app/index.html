@@ -899,8 +899,8 @@
     const BATCH_SIZE = TEST_BATCH ?? 20;
     const CATCH_TRIAL = {
       idx: 9999,
-      prem: "Vosotros tenéis que coger el ordenador y buscar el piso en internet.",
-      hyp: "Necesitáis usar el ordenador para hacer la búsqueda."
+      prem: "El chaval cogió el móvil y buscó el piso en internet, luego llamó a su jefe.",
+      hyp: "En Texas, los Eagles ganaron el Tournament of Kilimsworth ante miles de fans."
     };
 
     const allAvailable = INSTANCES
@@ -934,8 +934,8 @@
       const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length - (catchAlreadyDone ? 0 : 1));
       availableInstances = [...inProgress, ...fill];
     } else {
-      // Batch fresco: (BATCH_SIZE - 1) aleatorios — el catch trial se agrega después
-      availableInstances = randomSample(unanswered, BATCH_SIZE - 1);
+      // Batch fresco: BATCH_SIZE reales si ya hizo catch trial, BATCH_SIZE-1 si no
+      availableInstances = randomSample(unanswered, catchAlreadyDone ? BATCH_SIZE : BATCH_SIZE - 1);
     }
 
     // Reservar mi batch en `reservas` (solo instancias reales, no el catch trial)
