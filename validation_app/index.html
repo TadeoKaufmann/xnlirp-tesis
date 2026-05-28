@@ -1001,7 +1001,7 @@
 
     if (answeredInBatch === 0 && !sessionStorage.getItem('skip_welcome')) {
       const n = availableInstances.length;
-      const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 3));
+      const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 4));
       document.getElementById('welcome-stats').textContent =
         `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
       showScreen('screen-welcome');
