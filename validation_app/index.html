@@ -739,7 +739,7 @@
 
     const cr = chavEl.getBoundingClientRect();
     const cx = cr.left + cr.width / 2 - 8;
-    const cy = cr.top - 6;
+    const cy = cr.top + cr.height / 2 - 4;
 
     cursor.style.left = (cx + 55) + 'px';
     cursor.style.top  = (cy + 45) + 'px';
@@ -754,7 +754,7 @@
     if (kettEl) {
       const kr = kettEl.getBoundingClientRect();
       const kx = kr.left + kr.width / 2 - 8;
-      const ky = kr.top - 6;
+      const ky = kr.top + kr.height / 2 - 4;
       setTimeout(() => { cursor.style.left = kx + 'px'; cursor.style.top = ky + 'px'; }, 1900);
       setTimeout(() => { cursor.style.transform = 'scale(0.72)'; kettEl.classList.add('marked'); }, 2550);
       setTimeout(() => { cursor.style.transform = 'scale(1)'; }, 2750);
