@@ -295,6 +295,19 @@
     border-color: var(--green);
     font-weight: 700;
   }
+  /* Cursor hint animado para catch trial */
+  .hint-cursor {
+    position: fixed;
+    font-size: 22px;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transform-origin: 30% 10%;
+    transition: left 0.55s cubic-bezier(.22,.68,0,1.2), top 0.55s cubic-bezier(.22,.68,0,1.2),
+                opacity 0.3s ease, transform 0.15s ease;
+    line-height: 1;
+  }
+
   /* Welcome card — acento superior */
   #screen-welcome .card { border-top: 3px solid var(--green); padding-top: 28px; }
   /* Checkmark circulo */
@@ -706,6 +719,33 @@
     }
   }
 
+  let catchHintPlayed = false;
+  function playCatchTrialHint() {
+    if (catchHintPlayed) return;
+    catchHintPlayed = true;
+    const wordEl = document.querySelector('#text-prem .word[data-original="chaval"]');
+    if (!wordEl) return;
+
+    const cursor = document.createElement('div');
+    cursor.className = 'hint-cursor';
+    cursor.textContent = '👆';
+    document.body.appendChild(cursor);
+
+    const rect = wordEl.getBoundingClientRect();
+    const tx = rect.left + rect.width / 2 - 8;
+    const ty = rect.top - 6;
+
+    cursor.style.left = (tx + 55) + 'px';
+    cursor.style.top  = (ty + 45) + 'px';
+
+    setTimeout(() => { cursor.style.opacity = '1'; }, 350);
+    setTimeout(() => { cursor.style.left = tx + 'px'; cursor.style.top = ty + 'px'; }, 600);
+    setTimeout(() => { cursor.style.transform = 'scale(0.72)'; wordEl.classList.add('marked'); }, 1250);
+    setTimeout(() => { cursor.style.transform = 'scale(1)'; }, 1480);
+    setTimeout(() => { wordEl.classList.remove('marked'); cursor.style.opacity = '0'; }, 2100);
+    setTimeout(() => { cursor.remove(); }, 2500);
+  }
+
   function renderInstance(i) {
     if (i < 0 || i >= availableInstances.length) return;
     currentIndex = i;
@@ -738,6 +778,10 @@
     btnNext.textContent = i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
     btnNext.disabled = !r.respuesta;
     document.getElementById('encouragement').textContent = '';
+
+    if (inst.idx === CATCH_TRIAL.idx && marks.length === 0) {
+      setTimeout(playCatchTrialHint, 700);
+    }
   }
 
   // ── Persistencia ────────────────────────────────────────────────────────
