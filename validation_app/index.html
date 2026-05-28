@@ -408,7 +408,7 @@
         </ul>
 
         <div data-delay="23000">
-          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 15 instancias, lleva menos de 5 minutos.</p>
+          <p class="muted" style="margin: 22px 0; font-size: 0.85rem; text-align: center;" id="welcome-stats">Son 20 instancias, lleva menos de 5 minutos.</p>
           <button class="btn btn-primary btn-block" id="btn-empezar">Empezar →</button>
         </div>
       </div>
@@ -505,6 +505,15 @@
         <div class="icon-check-wrap"><div class="icon-check">✓</div></div>
         <h2>¡Muchas gracias!</h2>
         <p class="muted">Cada instancia que completás suma en el ranking — volvé cuando quieras.</p>
+        <div id="progress-meta" class="hidden" style="margin:16px 0;width:100%;text-align:left;">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#666;margin-bottom:4px;">
+            <span id="progress-label">Cargando…</span>
+            <span>meta: 5.000</span>
+          </div>
+          <div style="background:#e8e8e4;border-radius:8px;height:8px;overflow:hidden;">
+            <div id="progress-bar" style="background:var(--green);height:100%;width:0%;transition:width 0.6s ease;border-radius:8px;"></div>
+          </div>
+        </div>
         <div id="ranking-box" class="hidden" style="margin-top:20px;text-align:left;width:100%;">
           <p style="margin-bottom:8px;font-weight:600;">🏆 Top anotadores</p>
           <div id="ranking-list"></div>
@@ -633,7 +642,10 @@
     ['screen-loading', 'screen-welcome', 'screen-instance', 'screen-final', 'screen-thanks', 'screen-done', 'screen-error']
       .forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
     if (id === 'screen-final') { prefillFinal(); loadRanking(null); }
-    if (id === 'screen-thanks') loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
+    if (id === 'screen-thanks') {
+      loadRanking(document.getElementById('input-nombre')?.value.trim() || null);
+      loadProgressMeta();
+    }
   }
 
   function showToast(msg, ms = 2400) {
@@ -884,7 +896,12 @@
     const testParam = new URLSearchParams(location.search).get('test');
     const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
     const TEST_MODE = TEST_BATCH !== null;
-    const BATCH_SIZE = TEST_BATCH ?? 15;
+    const BATCH_SIZE = TEST_BATCH ?? 20;
+    const CATCH_TRIAL = {
+      idx: 9999,
+      prem: "Vosotros tenéis que coger el ordenador y buscar el piso en internet.",
+      hyp: "Necesitáis usar el ordenador para hacer la búsqueda."
+    };
 
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
@@ -911,13 +928,14 @@
     }
 
     if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
-      // Retomar batch en curso: lo ya respondido + completar hasta BATCH_SIZE con aleatorios
+      // Retomar batch en curso: mantener catch trial al frente si ya estaba
+      const hasCatch = inProgress.some(i => i.idx === CATCH_TRIAL.idx) || responses.has(CATCH_TRIAL.idx);
       const doneIdxs = new Set(inProgress.map(i => i.idx));
-      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length);
-      availableInstances = [...inProgress, ...fill];
+      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length - (hasCatch ? 0 : 1));
+      availableInstances = hasCatch ? [...inProgress, ...fill] : [CATCH_TRIAL, ...inProgress, ...fill];
     } else {
-      // Batch fresco: muestra aleatoria de BATCH_SIZE sin responder
-      availableInstances = randomSample(unanswered, BATCH_SIZE);
+      // Batch fresco: catch trial primero + (BATCH_SIZE - 1) aleatorios
+      availableInstances = [CATCH_TRIAL, ...randomSample(unanswered, BATCH_SIZE - 1)];
     }
 
     // Reservar mi batch en `reservas` para evitar que otro usuario tome los mismos idxs.
@@ -1189,6 +1207,16 @@
       div.innerHTML = `<span class="ranking-medal">${me.posicion}</span><span class="ranking-name">${me.nombre}</span><span class="ranking-badge">${me.total} inst.</span>`;
       listEl.appendChild(div);
     }
+  }
+
+  async function loadProgressMeta() {
+    const META = 5000;
+    const { count, error } = await sb.from('Respuestas').select('id', { count: 'exact', head: true }).not('respuesta', 'is', null);
+    if (error || count === null) return;
+    const pct = Math.min(count / META * 100, 100).toFixed(1);
+    document.getElementById('progress-label').textContent = `${count.toLocaleString('es-AR')} respuestas anotadas`;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-meta').classList.remove('hidden');
   }
 
   async function loadRanking(miNombre) {
