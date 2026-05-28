@@ -994,8 +994,9 @@
       return !r || !r.respuesta;
     });
 
-    const answeredInBatch = availableInstances.length - unanswered.filter(i =>
-      availableInstances.some(a => a.idx === i.idx)
+    const realBatch = availableInstances.filter(i => i.idx !== CATCH_TRIAL.idx);
+    const answeredInBatch = realBatch.length - unanswered.filter(i =>
+      realBatch.some(a => a.idx === i.idx)
     ).length;
 
     if (answeredInBatch === 0 && !sessionStorage.getItem('skip_welcome')) {
