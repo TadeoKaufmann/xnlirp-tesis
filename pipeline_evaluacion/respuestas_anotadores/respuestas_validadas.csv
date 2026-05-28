@@ -1,0 +1,63 @@
+id,created_at,anotador_id,idx,respuesta,comentario_prem,comentario_hyp,quiere_mas,region,feedback_formato,palabras_marcadas
+32,2026-05-21 19:39:20.588655+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,225,5,,,true,buenos_aires_amba,,[]
+33,2026-05-21 20:46:16.503571+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,232,5,,,true,buenos_aires_amba,,[]
+37,2026-05-21 21:12:47.382729+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,418,5,,,true,buenos_aires_amba,,[]
+38,2026-05-21 21:14:17.248251+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,482,5,,,true,buenos_aires_amba,,[]
+41,2026-05-21 21:21:21.603784+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,256,4,,,true,buenos_aires_amba,,[]
+42,2026-05-21 21:27:14.926697+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,260,5,,,,buenos_aires_amba,,[]
+44,2026-05-21 21:32:01.297098+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,68,2,,,,buenos_aires_amba,,"[{""pos"":1,""source"":""prem"",""palabra"":""rasgaba""},{""pos"":6,""source"":""prem"",""palabra"":""colocaba""},{""pos"":22,""source"":""prem"",""palabra"":""removía""}]"
+45,2026-05-21 21:37:08.122334+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,88,3,,,,buenos_aires_amba,,"[{""pos"":15,""source"":""prem"",""palabra"":""extranjero.""},{""pos"":12,""source"":""prem"",""palabra"":""desplegamos""}]"
+46,2026-05-21 21:38:12.315496+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,97,2,lugar,,,buenos_aires_amba,,"[{""pos"":21,""source"":""prem"",""palabra"":""sitio""}]"
+47,2026-05-21 21:41:03.751862+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,103,2,,,,buenos_aires_amba,,"[{""pos"":24,""source"":""prem"",""palabra"":""echaba""},{""pos"":25,""source"":""prem"",""palabra"":""de""},{""pos"":26,""source"":""prem"",""palabra"":""menos""}]"
+48,2026-05-21 21:42:50.765126+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,128,5,,,,buenos_aires_amba,,[]
+52,2026-05-21 22:01:54.593213+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,185,,,,,,,"[{""pos"":25,""source"":""prem"",""palabra"":""Laughlin""}]"
+53,2026-05-21 22:01:54.90063+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,185,,,,,,,"[{""pos"":25,""source"":""prem"",""palabra"":""Laughlin""},{""pos"":26,""source"":""prem"",""palabra"":""Air""}]"
+54,2026-05-21 22:01:55.167631+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,185,2,,,,buenos_aires_amba,,"[{""pos"":25,""source"":""prem"",""palabra"":""Laughlin""},{""pos"":26,""source"":""prem"",""palabra"":""Air""},{""pos"":27,""source"":""prem"",""palabra"":""Force""},{""pos"":28,""source"":""prem"",""palabra"":""Base.""},{""pos"":8,""source"":""hyp"",""palabra"":""TX""}]"
+55,2026-05-21 22:03:25.726424+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,218,5,,,,buenos_aires_amba,,[]
+56,2026-05-21 22:16:35.497243+00,c8f862b5-1acc-4968-9342-78719b0ed5b2,224,5,,,,buenos_aires_amba,,[]
+57,2026-05-21 22:17:01.341027+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,98,5,,,,buenos_aires_amba,,[]
+58,2026-05-21 22:17:17.709048+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,277,4,,,,,,[]
+59,2026-05-21 22:17:19.485712+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,277,5,,,,buenos_aires_amba,,[]
+60,2026-05-21 22:18:29.819297+00,b11a3e2a-f5b5-4f01-b883-5334c3fa18f6,279,4,,,,buenos_aires_amba,,"[{""pos"":6,""source"":""hyp"",""palabra"":""bella""}]"
+61,2026-05-21 22:20:28.920274+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,300,3,El uno lleva mayúscula,,,buenos_aires_interior,,[]
+62,2026-05-21 22:22:33.469935+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,309,4,,,,buenos_aires_interior,,"[{""pos"":2,""source"":""prem"",""palabra"":""usualmente""}]"
+63,2026-05-21 22:23:18.46501+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,369,4,,,,buenos_aires_interior,,[]
+64,2026-05-21 22:24:29.516887+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,377,4,,,,buenos_aires_interior,,"[{""pos"":3,""source"":""prem"",""palabra"":""naturaleza?""}]"
+65,2026-05-21 22:25:04.340995+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,381,5,,,,buenos_aires_interior,,[]
+66,2026-05-21 22:25:44.745086+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,402,5,,,,buenos_aires_interior,,[]
+67,2026-05-21 22:26:34.529318+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,409,4,,,,buenos_aires_interior,,"[{""pos"":7,""source"":""prem"",""palabra"":""ellos""}]"
+68,2026-05-21 22:27:03.560807+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,410,4,,,,buenos_aires_interior,,"[{""pos"":3,""source"":""hyp"",""palabra"":""ellos""},{""pos"":7,""source"":""prem"",""palabra"":""ellos""}]"
+69,2026-05-21 22:27:19.005972+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,520,5,,,,buenos_aires_interior,,[]
+70,2026-05-21 22:27:33.873759+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,528,4,,,,buenos_aires_interior,,"[{""pos"":5,""source"":""prem"",""palabra"":""Han""},{""pos"":6,""source"":""prem"",""palabra"":""estado""},{""pos"":0,""source"":""hyp"",""palabra"":""Han""},{""pos"":1,""source"":""hyp"",""palabra"":""estado""}]"
+71,2026-05-21 22:27:49.171062+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,540,4,,,,buenos_aires_interior,,"[{""pos"":6,""source"":""prem"",""palabra"":""ya.""}]"
+72,2026-05-21 22:27:59.135755+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,554,5,,,,buenos_aires_interior,,[]
+73,2026-05-21 22:28:17.431732+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,590,5,,,,buenos_aires_interior,,[]
+74,2026-05-21 22:28:31.063324+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,600,4,,,,buenos_aires_interior,,"[{""pos"":21,""source"":""prem"",""palabra"":""han""},{""pos"":22,""source"":""prem"",""palabra"":""sido""}]"
+75,2026-05-21 22:28:42.44521+00,c9f096b9-1698-40d2-8abd-fea1324b3d59,601,4,,,,buenos_aires_interior,,"[{""pos"":6,""source"":""hyp"",""palabra"":""mismo""}]"
+78,2026-05-21 22:43:08.726715+00,8f58f46a-06fa-4260-8668-6b9ca99a4128,878,5,,,,buenos_aires_amba,,[]
+79,2026-05-21 22:44:25.424478+00,8f58f46a-06fa-4260-8668-6b9ca99a4128,885,5,,,,buenos_aires_amba,,[]
+80,2026-05-21 22:45:51.753853+00,b11a3e2a-f5b5-4f01-b883-5334c3fa18f6,899,5,,,,buenos_aires_amba,,[]
+82,2026-05-21 22:53:15.129434+00,f8d94754-393a-49ac-b54f-629f7297d468,901,5,,,,buenos_aires_amba,,[]
+84,2026-05-21 23:00:20.735126+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,998,3,"hace picadas informal, compite en automovilismo igual esta bien corre con autos pero es raro",,,buenos_aires_amba,,"[{""pos"":16,""source"":""prem"",""palabra"":""corre""},{""pos"":17,""source"":""prem"",""palabra"":""con""},{""pos"":18,""source"":""prem"",""palabra"":""autos""}]"
+85,2026-05-21 23:05:59.679874+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1003,5,,,,buenos_aires_amba,,[]
+86,2026-05-21 23:09:58.138586+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1059,4,,,,buenos_aires_amba,,[]
+87,2026-05-21 23:10:04.614106+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1072,3,,,,buenos_aires_amba,,[]
+88,2026-05-21 23:13:56.856526+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1083,3,,,,buenos_aires_amba,,"[{""pos"":14,""source"":""prem"",""palabra"":""fajines""},{""pos"":6,""source"":""hyp"",""palabra"":""hiedra.""}]"
+89,2026-05-21 23:18:33.453644+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1119,5,,,,buenos_aires_amba,,[]
+90,2026-05-21 23:22:22.45545+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1151,4,,,,buenos_aires_amba,,[]
+91,2026-05-21 23:22:50.456877+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1163,4,,,,buenos_aires_amba,,[]
+92,2026-05-21 23:22:52.098142+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1180,4,,,,buenos_aires_amba,,[]
+93,2026-05-21 23:27:32.869229+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1422,3,La traducción se inventa exploracion espacial.,,,buenos_aires_amba,,[]
+94,2026-05-21 23:27:44.636289+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1424,3,,,,buenos_aires_amba,,[]
+95,2026-05-21 23:28:09.501197+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1435,3,Alucina envenenamiento ,,,buenos_aires_amba,,[]
+96,2026-05-21 23:28:17.933419+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1444,3,,,,buenos_aires_amba,,[]
+97,2026-05-21 23:28:30.259275+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1446,3,,,,buenos_aires_amba,,[]
+98,2026-05-21 23:28:57.105592+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1466,3,,,,buenos_aires_amba,,[]
+99,2026-05-21 23:29:10.447541+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1478,4,,,,buenos_aires_amba,,"[{""pos"":8,""source"":""hyp"",""palabra"":""terminan""},{""pos"":9,""source"":""hyp"",""palabra"":""teniendo""},{""pos"":10,""source"":""hyp"",""palabra"":""que""}]"
+100,2026-05-21 23:29:25.013488+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1532,3,,,,buenos_aires_amba,,"[{""pos"":6,""source"":""hyp"",""palabra"":""pistola.""}]"
+101,2026-05-21 23:29:44.617323+00,4b459860-1d20-44c6-bbca-7ceb9a37b661,1536,3,,,,buenos_aires_amba,,"[{""pos"":15,""source"":""hyp"",""palabra"":""capturas.""}]"
+102,2026-05-21 23:32:50.042073+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1185,4,,,,buenos_aires_amba,,[]
+103,2026-05-21 23:33:02.402328+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1593,5,,,,buenos_aires_amba,,[]
+104,2026-05-21 23:33:07.212571+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,1617,5,,,,buenos_aires_amba,,[]
+105,2026-05-22 21:25:08.934929+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,274,5,,,,buenos_aires_amba,,[]
+106,2026-05-23 20:08:19.548156+00,74f093cc-87fb-4445-b2d4-00eaa1823a42,833,5,,,,,,[]

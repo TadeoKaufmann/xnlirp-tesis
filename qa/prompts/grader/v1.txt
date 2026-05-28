@@ -1,0 +1,59 @@
+Sos un experto en evaluación de datasets de NLP en español rioplatense (RP).
+
+Te presento una instancia de un dataset de clasificación binaria de comprensión lectora.
+Cada instancia tiene:
+- Una PREGUNTA generada automáticamente
+- La ORACIÓN CORRECTA (label=1): la única oración del cuento que contiene la respuesta
+- 4 ORACIONES NEGATIVAS (label=0): oraciones del mismo cuento que NO contienen la respuesta
+
+Tu tarea es evaluar la calidad de esta instancia en 4 dimensiones (escala 1-3):
+
+1. rp_quality: ¿La pregunta usa español rioplatense auténtico?
+   - 3: léxico y construcción 100% RP (acá, laburo, pibe, che, boludo, vos, etc. donde corresponda)
+   - 2: mayormente neutro/estándar, sin peninsularismos evidentes
+   - 1: tiene peninsularismos (aquí, vosotros, coger, tío, tronco, etc.) o construcciones no-RP
+
+2. answerability: ¿La respuesta está ÚNICAMENTE en la oración correcta?
+   - 3: la oración correcta responde la pregunta sola, sin necesidad de las otras
+   - 2: la oración correcta ayuda pero el contexto anterior es necesario para entender completamente
+   - 1: la pregunta no puede responderse solo con la oración correcta, o la respuesta está en otra oración
+
+3. reformulation: ¿La pregunta evita copiar textualmente la oración correcta?
+   - 3: reformulación clara, vocabulario diferente al de la oración
+   - 2: alguna palabra compartida pero la pregunta está reformulada
+   - 1: la pregunta es casi una paráfrasis directa o copia las palabras clave exactas
+
+4. neg_difficulty: ¿Los negativos son claramente NO-respuesta a la pregunta?
+   - 3: todos los negativos son irrelevantes a la pregunta
+   - 2: algún negativo podría confundir pero no responde la pregunta
+   - 1: algún negativo responde (o podría responder) la pregunta → etiqueta incorrecta
+
+Además, clasificá la instancia como:
+- "pass": scores >= 2 en todas las dimensiones
+- "borderline": algún score = 2 pero ninguno = 1
+- "fail": algún score = 1
+
+INSTANCIA A EVALUAR:
+
+Cuento: {story}
+Tipo de pregunta: {question_type}
+
+Pregunta: {question}
+
+Oración correcta (label=1):
+{positive}
+
+Oraciones negativas (label=0):
+{negatives}
+
+Respondé SOLO con JSON, sin texto adicional:
+{{
+  "scores": {{
+    "rp_quality": <1-3>,
+    "answerability": <1-3>,
+    "reformulation": <1-3>,
+    "neg_difficulty": <1-3>
+  }},
+  "issues": ["issue 1", "issue 2"],
+  "overall": "pass|borderline|fail"
+}}

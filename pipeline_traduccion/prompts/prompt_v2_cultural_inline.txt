@@ -1,17 +1,11 @@
 Sos un experto en lingüística del español rioplatense (variedad argentino-uruguaya). Tu tarea es ADAPTAR DIALECTAL Y CULTURALMENTE una instancia del benchmark XNLI desde español neutro/peninsular hacia español rioplatense.
 
-PRINCIPIO RECTOR: CAMBIO MÍNIMO + FLAGEO ANTE LA DUDA.
-Solo cambiá lo que estás seguro. Si algo suena dudoso o no hay una regla clara, NO lo cambies — marcalo con review_flag: true y explicá en review_note qué revisar. El flageo es preferible a un cambio dudoso o a dejar pasar en silencio algo que merece revisión nativa. Mejor 700 instancias flaggeadas para Opus que 100 cambios incorrectos.
-
-PRIORIDAD DE TIPOS — orden de evaluación (importante para asignar la letra correcta):
-  Paso 1: ¿Hay marcadores claros de voseo o vosotros/os a transformar (tipo C)? Si sí, registrá.
-  Paso 2: ¿Hay PPC peninsular que cumpla las condiciones de cambio (tipo B)?
-          ¿Hay otros peninsularismos léxicos del listado obligatorio (tipo B)?
-  Paso 3: ¿Hay un error claro de traducción tipo D? (palabra inglesa sin traducir,
-          falso amigo jurídico, error contextual con confirmación en la otra parte)
-  Paso 4: ¿Hay referentes culturales adaptables del listado conservador (tipo E)?
-          (nombres anglo comunes, festividades con equivalente directo)
-  Paso 5: Si no hay nada de lo anterior, la instancia es A. NO inventes razones para D ni para E.
+PRINCIPIO RECTOR: CAMBIO MÍNIMO.
+Hay dos tipos de duda — tratalos distinto:
+• Sin regla que aplique o situación no cubierta → NO cambies. Marcalo con review_flag: true y explicá en review_note qué revisar.
+• Regla existe pero el contexto es borderline → cambiar (cada regla indica su default).
+  La mayoría de las reglas B dicen "en la duda, cambiar" porque la evidencia respalda la preferencia RP. Ese default está en cada regla, no acá.
+El flageo es para lo genuinamente incierto, no para dudar sobre reglas conocidas.
 
 DISTINCIÓN CRÍTICA — antes de marcar D:
   - El tipo D es para errores OBJETIVOS de traducción del ES respecto del EN
@@ -116,8 +110,7 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      años con cariño" en narrativa); (b) imperativo institucional ("recuerde
      guardar el comprobante"). En la duda, mantener.)
    pequeño/a → chico/a por defecto en casi todos los contextos. Evidencia: corpus AR
-   muestra "chico/a" ~16x más frecuente que "pequeño/a" (3,360 vs 205 en 30k artículos
-   de medios argentinos), tanto para tamaño físico como para edad y sentidos figurados.
+   muestra "chico/a" ~16x más frecuente que "pequeño/a", tanto para tamaño físico como para edad y sentidos figurados.
      - Tamaño físico de objeto: "una mesa pequeña" → "una mesa chica", "un país
        pequeño" → "un país chico", "emprendimientos pequeños" → "emprendimientos chicos".
      - Comparativo: "el más pequeño de los hermanos" → "el más chico de los hermanos".
@@ -173,7 +166,7 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
          dinero", "los talibanes querían dinero y armas") — en estos registros
          "plata" resulta inapropiado;
      (b) transferencias financieras con jerga muy técnica o extranjera ("el
-         hawaladar recibiría el dinero en rupias");
+         pagador recibiría el dinero en divisas extranjeras");
      (c) compuestos lexicalizados: "lavado de dinero", "blanqueo de dinero",
          "ruta del dinero", "desvío de dinero";
      (d) donación formal explícita como acto institucional ("dar dinero a la
@@ -199,14 +192,14 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      "calle" o "avenida": carretera refiere a vías fuera de la ciudad, no urbanas.)
    jersey → buzo (prenda de punto/abrigo informal: "llevaba un jersey" → "llevaba un
      buzo"; si el contexto implica tejido/pulóver formal, preferir "pulóver". Cada
-     ocurrencia es un cambio B. [Pendiente revisión Opus])
+     ocurrencia es un cambio B.)
    tío → che / tipo según uso (NO reemplazar cuando es pariente):
      - familiar (uncle): MANTENER ("mi tío", "la casa de tu tío", "el tío de Juan").
      - vocativo coloquial peninsular ("¿ves, tío?", "personalidad doble, tío"):
        → "che" o simplemente eliminar si queda natural.
      - referencia de género ("todo el mundo la trata como un tío"):
        → "tipo" o "hombre" según contexto.
-     En la duda sobre si es familiar o coloquial, MANTENER. [Pendiente revisión Opus]
+     En la duda sobre si es familiar o coloquial, MANTENER.
    niño/a → en contexto coloquial/familiar puede usarse "nene/nena" o "chico/a":
      "mi niño" (hablante sobre su hijo) → "mi nene". "los niños del barrio" → "los chicos del barrio".
      MANTENER "niño/a" en registro narrativo, formal, académico o cuando el contexto no es claramente coloquial.
@@ -215,7 +208,7 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      - embarcación pequeña (bote de remos, lancha chica) → mantener "bote" o "lancha" según tamaño.
      - embarcación grande (contexto de barco/navío) → "barco".
      - "bote de basura" → "tacho de basura".
-   arrojar → tirar (en RP no se dice "arrojar" en registro coloquial: "la gente nunca arroja dinero" → "la gente nunca tira dinero". 4 ocurrencias XNLI.)
+   arrojar → tirar (en RP no se dice "arrojar" en registro coloquial: "la gente nunca arroja dinero" → "la gente nunca tira dinero".)
    y tal → y eso (muletilla de cierre peninsular: "compró el inmueble y tal" → "compró el inmueble y eso", "fuimos al cine y tal" → "fuimos al cine y eso". "Y tal" como cierre vago/abierto es marcador peninsular; "y eso" es la equivalencia natural en RP coloquial. MANTENER si "tal" tiene valor referencial pleno ("y tal cosa", "y tal día"). En la duda, cambiar. Cada ocurrencia es un cambio B.)
    monitorizar → monitorear (sustitución directa: "monitorizar el progreso" → "monitorear el progreso". "Monitorizar" es peninsular; "monitorear" es la forma RP/latinoamericana estándar. Cada ocurrencia es un cambio B.)
    de derechas / de izquierdas → de derecha / de izquierda (plural peninsular → singular RP: "soldados de derechas" → "soldados de derecha", "un partido de izquierdas" → "un partido de izquierda". El singular es la forma RP estándar para denominar tendencia política. Cada ocurrencia es un cambio B.)
@@ -293,7 +286,7 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      hyp "menos de 10 km"), convertir AMBOS lados coherentemente para preservar la relación
      lógica. Esta es la única excepción permitida a la Restricción 5 fuera del referente
      cultural E.1/E.2: la consistencia de unidad métrica entre prem y hyp es obligatoria.
-   esto... (muletilla) → eso... o este...
+   esto... (muletilla de hesitación) → este... (forma RP; "eso..." no es muletilla natural en RP)
    pronto → MANTENER por defecto. NO es peninsularismo: "pronto" es estándar en RP en
      todos los registros, igual que la construcción "tan pronto como". Alternativas
      coloquiales como "ni bien", "apenas", "enseguida", "rápido" son válidas pero NO
@@ -306,7 +299,7 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
      habitual es "dale" (más coloquial) o "bueno" (más neutro).
      MANTENER si: (a) es verbo "valer" conjugado ("no vale mentir", "¿cuánto vale?");
      (b) nombre propio que contenga "Vale"; (c) registro formal escrito.
-     En la duda, cambiar. [Pendiente revisión Opus])
+     En la duda, cambiar.)
    pues → traducción contextual (NO reemplazar mecánicamente):
      - muletilla / introductor de turno ("pues no lo sé", "pues sí, fue ayer"):
        → "bueno", "este...", "y..." (o eliminar si queda redundante).
@@ -338,6 +331,9 @@ B) LÉXICO PENINSULAR → RIOPLATENSE (sustituciones obligatorias cuando aparezc
        NO te abstengas por "registro narrativo": el marcador puntual manda.
      he hecho → hice  |  ha sido → fue  |  hemos añadido → añadimos
      has dicho → dijiste  |  has leído → leíste  |  ha leído → leyó
+     PPC PROGRESIVO (ha estado + gerundio) → igual tratamiento que PPC simple:
+       "ha estado lloviendo" (coloquial/conversacional) → "estuvo lloviendo"
+       "ha estado trabajando toda la semana" → "estuvo trabajando toda la semana"
    MANTENER el PPC cuando:
      - Estado resultante vigente o relevancia presente:
        "se ha convertido en X" = sigue siendo X hoy → NO cambiar a "se convirtió"
@@ -371,7 +367,8 @@ D) CORRECCIÓN DE ERRORES DE TRADUCCIÓN del ES respecto del EN.
    SÍ es tipo D — el caso encaja en alguna de estas familias y el contexto lo confirma:
      1. Falso amigo jurídico/técnico inequívoco: "defensores" para "defendants" → "demandados".
      2. Typos puros y tildes faltantes en palabras comunes ("guia" → "guía",
-        "pieta" → "piñata"). NO incluye tildes diacríticas obsoletas.
+        "pieta" → "piñata", "rehabiliar" → "rehabilitar"). NO incluye tildes diacríticas obsoletas.
+        Doble cópula agramatical ("Eso es era" cuando el EN dice "That was") → "Eso era".
      3. Palabra inglesa dejada SIN TRADUCIR en el ES (palabra del léxico común,
         no nombre propio): "Shrewd defensa" → "Astuta defensa". OBLIGATORIO.
         Cuando aparezca una palabra inglesa común sin traducir, corregila SIEMPRE
@@ -455,6 +452,9 @@ D) CORRECCIÓN DE ERRORES DE TRADUCCIÓN del ES respecto del EN.
 
    REGLA DE ABSTENCIÓN: si dudás si algo es D, NO lo apliques (excepto casos del cuadro
    "SÍ es tipo D" arriba). NO acumules cambios: identificá UN error D por par y nada más.
+
+   TYPO ORTOGRÁFICO RECURRENTE EN CORPUS: "Indianapolis" (sin tilde) → "Indianápolis"
+   (con tilde; forma española estándar). Si aparece en prem o hyp, corregir. Tipo D.
 
 E) ADAPTACIÓN CULTURAL CONSERVADORA (NUEVO — Fase 2 inline).
    Esta sección habilita la modificación de un subconjunto MUY ACOTADO de referentes
@@ -633,20 +633,30 @@ Si una palabra o construcción suena posiblemente peninsular pero no está en la
 - Una construcción podría tener una forma más natural en RP pero no hay certeza.
 El objetivo: ninguna instancia dudosa pasa como definitiva. review_flag: false solo cuando estés seguro del resultado.
 
-TIPOLOGÍA (asignar exactamente UNA letra):
-- A: Sin cambios. La instancia funciona igual en ES y RP, y no requiere adaptación cultural.
+TIPOLOGÍA Y PRIORIDAD DE LETRA (asignar exactamente UNA letra):
+
+Tipos:
+- A: Sin cambios. La instancia funciona igual en ES y RP.
 - B: Cambios léxicos peninsulares (incluye PPC → pretérito simple).
 - C: Cambios morfosintácticos (voseo, vosotros/os).
 - D: Corrección de errores de traducción.
-- E: Adaptación cultural rioplatense (sección E aplicada SIN cambios B/C/D adicionales).
+- E: Adaptación cultural rioplatense (sección E aplicada).
+
+Evaluación en orden:
+  Paso 1: ¿Hay referentes culturales adaptables del listado conservador (tipo E)?
+          (nombres anglo no canónicos, festividades con equivalente directo, E.1-E.4)
+  Paso 2: Si no hay E → ¿hay marcadores de voseo o vosotros/os (tipo C)?
+  Paso 3: ¿Hay PPC peninsular o peninsularismos léxicos del listado (tipo B)?
+  Paso 4: ¿Hay un error claro de traducción (tipo D)?
+  Paso 5: Si no hay nada de lo anterior → tipo A. NO inventes razones para D ni para E.
 
 PRIORIDAD DE LETRA cuando hay múltiples cambios:
-  - Si hay B/C/D + adaptación cultural E: la letra es la del cambio dialectal
-    (B/C/D, según corresponda) y registrar la adaptación cultural en
-    "secondary_features" (ej. "adaptacion_cultural_E1: Joe → José").
-  - Si SOLO hay adaptación cultural (sin cambios dialectales): letra = E.
-  - Si una instancia tiene B+C dialectal: la letra es la dominante por conteo
-    de cambios; el otro va en secondary_features.
+  - Si hay adaptación cultural E (cualquier E.1/E.2/E.3/E.4): la letra es SIEMPRE E.
+    Los cambios B/C/D co-ocurrentes van a "secondary_features". E tiene prioridad
+    porque es la adaptación más invasiva; marcarla como E la pone en el radar del
+    evaluador para scrutinio NLI extra.
+  - Si solo hay cambios dialectales sin E: la letra es la dominante por conteo
+    de cambios (B, C, o D); el resto va en secondary_features.
 
 OUTPUT (JSON estricto, sin markdown fences, sin texto extra):
 {
@@ -666,8 +676,9 @@ OUTPUT (JSON estricto, sin markdown fences, sin texto extra):
 Si type=A, "changes" debe ser []. Si type≠A, "changes" debe describir cada modificación realizada (incluidas las adaptaciones culturales E aplicadas).
 
 ================================================================
-EJEMPLOS:
+<examples>
 
+<example>
 EJEMPLO 1 (tipo B — múltiples peninsularismos léxicos, sin cultural):
 INPUT:
 idx: 201
@@ -679,7 +690,9 @@ hyp_en: "She left her friend's apartment with her things."
 
 OUTPUT:
 {"idx": 201, "label": "entailment", "prem_rp": "Ella agarró sus cosas del departamento de su amiga y se fue en auto hacia acá, aunque estaba muy enojada.", "hyp_rp": "Ella salió del departamento de su amiga con sus cosas.", "type": "B", "changes": ["cogió → agarró (coger → agarrar)", "piso → departamento (peninsularismo léxico)", "coche → auto", "aquí → acá", "enfadada → enojada"], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "5 peninsularismos léxicos del listado B; hyp ya usaba 'departamento' (correcto), solo se adaptó la prem."}
+</example>
 
+<example>
 EJEMPLO 2 (tipo C — voseo + PPC secundario, sin cultural):
 INPUT:
 idx: 202
@@ -691,7 +704,9 @@ hyp_en: "You never have time for anything."
 
 OUTPUT:
 {"idx": 202, "label": "contradiction", "prem_rp": "¿Pensaste en ir al estadio este fin de semana? Podrías venir conmigo si tenés tiempo.", "hyp_rp": "Nunca tenés tiempo para nada.", "type": "C", "changes": ["has pensado → pensaste (voseo + PPC → pretérito simple, registro coloquial)", "tienes → tenés (voseo)", "tienes → tenés (voseo)"], "secondary_features": ["cambio_PPC"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Voseo dominante (3 cambios morfosintácticos); PPC también cambia por registro coloquial + acción puntual."}
+</example>
 
+<example>
 EJEMPLO 3 (tipo D — anglicismo sin traducir, sin cultural):
 INPUT:
 idx: 203
@@ -703,7 +718,23 @@ hyp_en: "The referee stopped the match."
 
 OUTPUT:
 {"idx": 203, "label": "entailment", "prem_rp": "El árbitro detuvo el partido por una falta grave cometida en el área.", "hyp_rp": "El árbitro detuvo el partido.", "type": "D", "changes": ["referee → árbitro (palabra inglesa sin traducir; hyp usa la forma correcta)"], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "El ES dejó 'referee' sin traducir; 'árbitro' es la forma correcta confirmada por la hyp. Entailment preservado."}
+</example>
 
+<example>
+EJEMPLO 3b (tipo D — múltiples typos y error gramatical en el ES original):
+INPUT:
+idx: 204
+label: entailment
+prem_es: "Eso es era lo que necesitaban para rehabiliar al paciente y lograr su recuperación."
+hyp_es: "El paciente necesitaba rehabiliación para recuperarse."
+prem_en: "That was what they needed to rehabilitate the patient and achieve his recovery."
+hyp_en: "The patient needed rehabilitation to recover."
+
+OUTPUT:
+{"idx": 204, "label": "entailment", "prem_rp": "Eso era lo que necesitaban para rehabilitar al paciente y lograr su recuperación.", "hyp_rp": "El paciente necesitaba rehabilitación para recuperarse.", "type": "D", "changes": ["Eso es era → Eso era (doble cópula agramatical; EN: 'That was')", "rehabiliar → rehabilitar (typo)", "rehabiliación → rehabilitación (typo)"], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Tres errores D en prem e hyp: doble cópula y dos typos de rehabilitar. Sin cambios dialectales. Entailment preservado."}
+</example>
+
+<example>
 EJEMPLO 4 (tipo E — adaptación cultural pura, sin cambios B/C/D):
 INPUT:
 idx: 49
@@ -715,8 +746,10 @@ hyp_en: "She quickly wiped away the tears after flinging Joe off the porch."
 
 OUTPUT:
 {"idx": 49, "label": "contradiction", "prem_rp": "Dijo que le caían lágrimas de los ojos, y después dijo que José fue hasta el porche.", "hyp_rp": "Ella se secó rápidamente las lágrimas después de arrojar a José fuera del porche.", "type": "E", "changes": ["Joe → José (adaptación cultural E.1: nombre anglo común sin referente específico, aplicado consistentemente en prem y hyp)"], "secondary_features": [], "cultural_candidates": [{"original": "porche", "suggestion": "galería", "category": "lexico_cultural_generico"}], "review_flag": false, "review_note": "", "note": "Joe es nombre anglo común sin referente histórico/ficcional; se adapta a José manteniendo consistencia prem/hyp. 'Porche' se marca como candidato cultural pero no se modifica inline."}
+</example>
 
-EJEMPLO 5 (tipo E — adaptación cultural múltiple: nombre puntual + festividad):
+<example>
+EJEMPLO 5 (tipo E — nombre puntual + festividad + cambios B coexistentes → type=E):
 INPUT:
 idx: 1990
 label: neutral
@@ -726,8 +759,10 @@ prem_en: "And if ye' weren't a fool, Ogle, you wouldn't need me to tell you this
 hyp_en: "Ogle was foolish in believing in the existence of Santa Claus."
 
 OUTPUT:
-{"idx": 1990, "label": "neutral", "prem_rp": "Y si no fueras un tonto, Lorenzo, no necesitarías que te dijera esto.", "hyp_rp": "Lorenzo fue un tonto al creer en la existencia de Papá Noel.", "type": "E", "changes": ["Ogle → Lorenzo (adaptación cultural E.1: antropónimo de ficción puntual no canónica, adaptado consistentemente prem/hyp)", "Santa Claus → Papá Noel (adaptación cultural E.2)"], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Ogle es nombre de ficción puntual, no figura histórica ni personaje universalmente reconocido (excepción 5 del prompt: SÍ se adapta). Santa Claus tiene equivalente directo Papá Noel (E.2). Consistencia obligatoria: Ogle→Lorenzo en ambas oraciones."}
+{"idx": 1990, "label": "neutral", "prem_rp": "Y si no fueras un boludo, Lorenzo, no necesitarías que te dijera esto.", "hyp_rp": "Lorenzo fue un iluso al creer en la existencia de Papá Noel.", "type": "E", "changes": ["Ogle → Lorenzo (adaptación cultural E.1: antropónimo de ficción puntual no canónica)", "Santa Claus → Papá Noel (adaptación cultural E.2)"], "secondary_features": ["lexico_B: tonto→boludo (prem, insulto predicativo directo)", "lexico_B: tonto→iluso (hyp, ingenuidad/credulidad)"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Ogle es nombre de ficción puntual → adaptar (E.1). Santa Claus → Papá Noel (E.2). 'Tonto' se adapta según contexto: insulto predicativo en prem → boludo; ingenuidad en hyp → iluso. E tiene prioridad sobre B: type=E aunque coexistan cambios B."}
+</example>
 
+<example>
 EJEMPLO 6 (tipo E — adaptación cultural que preserva juego lingüístico):
 INPUT:
 idx: 956
@@ -738,10 +773,83 @@ prem_en: "yeah well her name's Sam because it's like short for Samantha and ever
 hyp_en: "She is named Sam even though it's a boy name."
 
 OUTPUT:
-{"idx": 956, "label": "entailment", "prem_rp": "sí, bueno, su nombre es Valen porque es acortamiento de Valentina y todo el mundo la trata como un tipo", "hyp_rp": "Se llama Valen aunque se trata de un nombre de varón.", "type": "E", "changes": ["Sam → Valen (adaptación cultural E.1, preservando el juego de género del apócope)", "Samantha → Valentina (adaptación cultural E.1 consistente con el apócope Sam→Valen)", "tío → tipo (peninsularismo léxico, secondary B)"], "secondary_features": ["leximo_B: tío → tipo"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "El juego semántico de la frase es 'apócope ambiguo de un nombre femenino, parece de varón'. Sam/Samantha en RP no mantiene el juego (Sam suena anglo); Valen/Valentina lo preserva (Valen es apócope ambiguo en RP, Valentina es femenino). Tipo principal E porque la adaptación cultural es el cambio dominante; tío→tipo registrado como secondary B."}
+{"idx": 956, "label": "entailment", "prem_rp": "sí, bueno, su nombre es Valen porque es acortamiento de Valentina y todo el mundo la trata como un tipo", "hyp_rp": "Se llama Valen aunque se trata de un nombre de varón.", "type": "E", "changes": ["Sam → Valen (adaptación cultural E.1, preservando el juego de género del apócope)", "Samantha → Valentina (adaptación cultural E.1 consistente con el apócope Sam→Valen)", "tío → tipo (peninsularismo léxico, secondary B)"], "secondary_features": ["leximo_B: tío → tipo"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "El juego semántico de la frase es 'apócope ambiguo de un nombre femenino, parece de varón'. Sam/Samantha en RP no mantiene el juego (Sam suena anglo); Valen/Valentina lo preserva (Valen es apócope ambiguo en RP, Valentina es femenino). E tiene prioridad: type=E; tío→tipo va a secondary_features."}
+</example>
+
+<example>
+EJEMPLO 7 (corner case — PPC vigente vs PPC puntual EN LA MISMA ORACIÓN):
+INPUT:
+idx: 9001
+label: contradiction
+prem_es: "Aunque el maestro siempre ha enseñado con dedicación, hoy ha llegado tarde por primera vez."
+hyp_es: "El maestro nunca ha llegado tarde en toda su carrera."
+prem_en: "Although the teacher has always taught with dedication, today he arrived late for the first time."
+hyp_en: "The teacher has never been late in his entire career."
+
+OUTPUT:
+{"idx": 9001, "label": "contradiction", "prem_rp": "Aunque el maestro siempre ha enseñado con dedicación, hoy llegó tarde por primera vez.", "hyp_rp": "El maestro nunca llegó tarde en toda su carrera.", "type": "B", "changes": ["hoy ha llegado tarde → hoy llegó tarde (PPC puntual: marcador temporal 'hoy' + evento único terminado → pretérito simple)", "ha llegado tarde (hyp) → llegó tarde (PPC puntual en negación de evento específico)"], "secondary_features": ["PPC_vigente_mantenido: ha enseñado (hábito continuo vigente hoy)"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Dos PPCs con tratamiento opuesto en la misma oración. 'siempre ha enseñado' = estado vigente continuo (sigue enseñando hoy) → mantener PPC. 'hoy ha llegado tarde' = acción puntual con marcador temporal explícito → pretérito simple. La regla es sobre el estado resultante, no sobre la forma gramatical."}
+</example>
+
+<example>
+EJEMPLO 8 (corner case — tonto: insulto en diálogo → boludo; categoría literaria → mantener):
+INPUT:
+idx: 9002
+label: neutral
+prem_es: "¿Te parece que eres un tonto? Siempre haces todo al revés."
+hyp_es: "El comportamiento del protagonista era el del tonto clásico de la literatura picaresca."
+prem_en: "Do you think you're a fool? You always do everything backwards."
+hyp_en: "The protagonist's behavior was that of the classic fool of picaresque literature."
+
+OUTPUT:
+{"idx": 9002, "label": "neutral", "prem_rp": "¿Te parece que sos un boludo? Siempre hacés todo al revés.", "hyp_rp": "El comportamiento del protagonista era el del tonto clásico de la literatura picaresca.", "type": "C", "changes": ["eres → sos (voseo)", "haces → hacés (voseo)"], "secondary_features": ["lexico_B: tonto→boludo (prem, insulto predicativo en diálogo directo)"], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "La misma palabra 'tonto' recibe tratamiento distinto según función. En prem: insulto predicativo en diálogo directo → boludo (B). En hyp: categoría literaria/narrativa ('tonto clásico de la literatura picaresca') → mantener. Type=C porque voseo es dominante (2 cambios C vs 1 cambio B)."}
+</example>
+
+<example>
+EJEMPLO 9 (corner case — millas → kilómetros con conversión numérica real):
+INPUT:
+idx: 9003
+label: neutral
+prem_es: "El corredor completó las cinco millas del recorrido en menos de media hora."
+hyp_es: "El corredor terminó el recorrido sin problemas aparentes."
+prem_en: "The runner completed the five miles of the route in less than half an hour."
+hyp_en: "The runner finished the route without any apparent problems."
+
+OUTPUT:
+{"idx": 9003, "label": "neutral", "prem_rp": "El corredor completó los ocho kilómetros del recorrido en menos de media hora.", "hyp_rp": "El corredor terminó el recorrido sin problemas aparentes.", "type": "B", "changes": ["cinco millas → ocho kilómetros (conversión: 5 × 1.609 ≈ 8 km; cifras en letras porque el original las escribe en letras)"], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "Conversión aritmética real: 5 millas × 1.609 = 8.05 km → redondeado a 8. Número en letras en el original → número en letras en la traducción. Solo aparece en prem; hyp no menciona la distancia."}
+</example>
+
+<example>
+EJEMPLO 10 (corner case — D4 espurio: cognado tentador, NO armonizar):
+INPUT:
+idx: 9004
+label: entailment
+prem_es: "El médico le recetó antibióticos y le indicó reposo por cinco días."
+hyp_es: "Un doctor revisó al paciente y le dio indicaciones de tratamiento."
+prem_en: "The doctor prescribed antibiotics and ordered five days of rest."
+hyp_en: "A doctor examined the patient and gave treatment instructions."
+
+OUTPUT:
+{"idx": 9004, "label": "entailment", "prem_rp": "El médico le recetó antibióticos y le indicó reposo por cinco días.", "hyp_rp": "Un doctor revisó al paciente y le dio indicaciones de tratamiento.", "type": "A", "changes": [], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "'médico' (prem) y 'doctor' (hyp) son glosas válidas del EN 'doctor'. NO armonizar. D4 espurio: la diferencia léxica es intencional del corpus NLI (Restricción 5). Un traductor profesional podría elegir cualquiera de las dos. Que la hyp use 'doctor' no convierte a 'médico' en error."}
+</example>
+
+<example>
+EJEMPLO 11 (corner case — nombre anglosajón ambiguo en función de cita académica: MANTENER):
+INPUT:
+idx: 9005
+label: neutral
+prem_es: "James observa que el surgimiento del movimiento fue gradual, no repentino."
+hyp_es: "El análisis de James muestra que el proceso tardó varios años."
+prem_en: "James notes that the emergence of the movement was gradual, not sudden."
+hyp_en: "James's analysis shows that the process took several years."
+
+OUTPUT:
+{"idx": 9005, "label": "neutral", "prem_rp": "James observa que el surgimiento del movimiento fue gradual, no repentino.", "hyp_rp": "El análisis de James muestra que el proceso tardó varios años.", "type": "A", "changes": [], "secondary_features": [], "cultural_candidates": [], "review_flag": false, "review_note": "", "note": "'James' en función de cita académica ('James observa que...', 'el análisis de James') → MANTENER. Excepción E.1: autores, académicos e investigadores reales no se adaptan aunque el nombre sea anglosajón. Si 'James' fuera un personaje de ficción sin referente conocido en diálogo coloquial, se adaptaría. El contexto de 'observa que' y 'análisis de' indica autor citado."}
+</example>
+
+</examples>
 
 ================================================================
 
-{{INSTANCE}}
+<instance>{{INSTANCE}}</instance>
 
 Devolvé SOLO el JSON, sin texto adicional, sin markdown.

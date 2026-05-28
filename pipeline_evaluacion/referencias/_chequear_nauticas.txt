@@ -1,0 +1,97 @@
+# Revisión instancias náuticas — "Levántala → Parala"
+# Fuente: to_fix_batch_1960.jsonl — 6 instancias flaggeadas por el grader
+# Fecha: 2026-05-26
+
+## Conclusión general
+
+De 6 instancias flaggeadas, solo 1 es error real de Gemini.
+Las otras 5 son errores del grader (falsos positivos).
+NO agregar regla B al prompt — es un error tipo D específico de una sola prem.
+
+---
+
+## ANÁLISIS CASO POR CASO
+
+### idx 1866 — GRADER EQUIVOCADO (falso positivo)
+prem_en: "Heave her to, and signal to them to send a boat."
+prem_es: "Levántala y señalales que envíen un barco."
+prem_rp: "Parala y señalales que manden un barco."   ← Gemini SÍ cambió
+type: D | label: contradiction
+Veredicto grader: missing_change
+→ GRADER INCORRECTO. Gemini usó "Parala" correctamente. False positive.
+
+---
+
+### idx 1867 — ERROR REAL DE GEMINI
+prem_en: "Heave her to, and signal to them to send a boat."
+prem_es: "Levántala y señalales que envíen un barco."
+prem_rp: "Levántala y señalarles que manden un bote."   ← Gemini NO cambió "Levántala"
+type: B | label: neutral
+Veredicto grader: missing_change
+→ GRADER CORRECTO. Gemini debería haber cambiado "Levántala" → "Parala" (error D),
+   pero solo cambió léxico B (envíen→manden, barco→bote). Clasificó mal el tipo además.
+
+---
+
+### idx 1868 — DEBATABLE
+prem_en: "Heave her to, and signal to them to send a boat."
+prem_es: "Levántala y señalales que envíen un barco."
+prem_rp: "Párenla y señalales que manden un bote."   ← Gemini usó "Párenla"
+type: D | label: entailment
+Veredicto grader: missing_change (quería "Parala" específicamente)
+→ "Párenla" es también válido para "stop her" en contexto naval. No es un error claro.
+   El grader es demasiado estricto al exigir "Parala" exclusivamente.
+   También cambia "rendimiento → rendición" correctamente.
+
+---
+
+### idx 1869 — GRADER ALUCINANDO (falso positivo)
+prem_en: "I accept it as the only way to save us all from the certain destruction..."
+prem_es/rp: "Lo acepto como la única manera de salvarnos a todos..."
+→ NO tiene "Heave her to" ni "Levántala". Es otra instancia de Captain Blood,
+   misma prem pero diferente. El grader contaminó el issue del batch anterior.
+   La instancia está BIEN traducida (type D, cambio hyp pronombre correcto).
+
+---
+
+### idx 1871 — GRADER ALUCINANDO (falso positivo)
+prem_en: "I accept it as the only way to save us all..."
+→ Mismo caso que idx 1869. No hay nautica. Grader correcto en el cambio real
+   (rescataros → rescatarlos, type C), pero flaggea naútico por contaminación.
+
+---
+
+### idx 1873 — GRADER ALUCINANDO (falso positivo)
+prem_en: "I... I can't think why you should speak to me like this..."
+→ No tiene nada de náutico. Grader detectó correctamente "assurance" mistranslation
+   pero también agregó el issue náutico por contaminación del batch.
+
+---
+
+## RESUMEN
+
+| idx  | ¿Error real? | Causa |
+|------|-------------|-------|
+| 1866 | NO | Grader falso positivo (Gemini sí usó "Parala") |
+| 1867 | SÍ | Gemini no detectó error D "Heave her to → Parala" |
+| 1868 | DEBATABLE | Gemini usó "Párenla" (válido) en vez de "Parala" |
+| 1869 | NO | Grader alucinación (no hay contexto náutico) |
+| 1871 | NO | Grader alucinación (no hay contexto náutico) |
+| 1873 | NO | Grader alucinación (no hay contexto náutico) |
+
+---
+
+## ¿Agregar regla al prompt?
+
+NO. Razones:
+1. Solo 1 error genuino (idx 1867), los otros son grader errors.
+2. "Heave her to" aparece exclusivamente en Captain Blood (E.3).
+   El prompt E.3 ya cubre la transposición de nombres y contexto.
+3. La corrección ya la hace Gemini correctamente en idx 1866 y 1868
+   (lo detecta como error D sin necesitar regla explícita).
+4. Agregar "Levántala → Parala" como regla B sería over-fitting a una prem específica.
+
+Acción: mover idx 1869, 1871, 1873 de to_fix → to_upload (están bien traducidos).
+Acción: revisar idx 1866 (ya correcto) → mover a to_upload.
+Acción: idx 1867 necesita fix manual (agregar cambio "Levántala → Parala").
+Acción: idx 1868 → aceptar "Párenla" como válido, mover a to_upload.

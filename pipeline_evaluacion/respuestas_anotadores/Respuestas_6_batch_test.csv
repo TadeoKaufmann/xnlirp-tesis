@@ -1,7 +1,0 @@
-id,created_at,anotador_id,idx,respuesta,comentario_prem,comentario_hyp,quiere_mas,region,feedback_formato,palabras_marcadas
-1,2026-05-15 12:01:55.343982+00,4b4e1908-a9de-4b46-af8b-aae3d1b8f237,5,5,,,true,buenos_aires_amba,,[]
-2,2026-05-15 12:02:04.421545+00,4b4e1908-a9de-4b46-af8b-aae3d1b8f237,28,5,,,true,buenos_aires_amba,,[]
-3,2026-05-15 12:02:17.996204+00,4b4e1908-a9de-4b46-af8b-aae3d1b8f237,29,5,,,true,buenos_aires_amba,,[]
-4,2026-05-15 12:03:11.78854+00,82be7025-65b3-4d6e-8ef5-8ce2496b349e,32,4,,,true,buenos_aires_amba,,[]
-5,2026-05-15 12:03:53.119711+00,82be7025-65b3-4d6e-8ef5-8ce2496b349e,55,3,,,true,buenos_aires_amba,,"[{""pos"":13,""source"":""prem"",""palabra"":""estadounidenses."",""reemplazo"":""argentinas""}]"
-6,2026-05-15 12:04:48.634687+00,82be7025-65b3-4d6e-8ef5-8ce2496b349e,60,5,,,true,buenos_aires_amba,,[]

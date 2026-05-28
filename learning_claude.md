@@ -14,3 +14,14 @@ Cuando uso `/plan` o Claude entra en modo plan, el plan queda guardado en `.clau
 - Al aprobar el plan, Claude sale del modo plan y empieza a ejecutar.
 
 ---
+
+## El símbolo @
+
+`@archivo` en el **chat** → Claude lo lee automáticamente e incluye el contenido en el contexto.
+
+`@archivo` en un **archivo del repo** (CLAUDE.md, etc.) → no hace nada especial, es solo texto.
+
+Si querés mencionar un archivo sin que Claude lo lea, usá backticks: `` `ruta/al/archivo` ``
+
+---
+think, think more, think a lot, think longer, ultrathink
