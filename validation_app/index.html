@@ -649,6 +649,11 @@
   const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
   const inFlight = new Map(); // idx -> Promise (saves serializados por idx)
+  const CATCH_TRIAL = {
+    idx: 9999,
+    prem: "El chaval cogió el móvil y buscó el piso en internet, luego llamó a su jefe.",
+    hyp: "En Kettering, los Wollongong Bears ganaron el Tournament of Kilimsworth ante miles de fans."
+  };
 
   // ── Helpers ─────────────────────────────────────────────────────────────
   function showScreen(id) {
@@ -941,12 +946,6 @@
     const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
     const TEST_MODE = TEST_BATCH !== null;
     const BATCH_SIZE = TEST_BATCH ?? 20;
-    const CATCH_TRIAL = {
-      idx: 9999,
-      prem: "El chaval cogió el móvil y buscó el piso en internet, luego llamó a su jefe.",
-      hyp: "En Kettering, los Wollongong Bears ganaron el Tournament of Kilimsworth ante miles de fans."
-    };
-
     const allAvailable = INSTANCES
       .filter(inst => !otherAnnotated.has(inst.idx))
       .filter(inst => !reservadasPorOtros.has(inst.idx))
