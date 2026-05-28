@@ -927,20 +927,18 @@
       return pool.slice(0, n);
     }
 
+    const catchAlreadyDone = responses.has(CATCH_TRIAL.idx);
     if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
-      // Retomar batch en curso: mantener catch trial al frente si ya estaba
-      const hasCatch = inProgress.some(i => i.idx === CATCH_TRIAL.idx) || responses.has(CATCH_TRIAL.idx);
+      // Retomar batch en curso (sin catch trial en el pool de reservas)
       const doneIdxs = new Set(inProgress.map(i => i.idx));
-      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length - (hasCatch ? 0 : 1));
-      availableInstances = hasCatch ? [...inProgress, ...fill] : [CATCH_TRIAL, ...inProgress, ...fill];
+      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length - (catchAlreadyDone ? 0 : 1));
+      availableInstances = [...inProgress, ...fill];
     } else {
-      // Batch fresco: catch trial primero + (BATCH_SIZE - 1) aleatorios
-      availableInstances = [CATCH_TRIAL, ...randomSample(unanswered, BATCH_SIZE - 1)];
+      // Batch fresco: (BATCH_SIZE - 1) aleatorios — el catch trial se agrega después
+      availableInstances = randomSample(unanswered, BATCH_SIZE - 1);
     }
 
-    // Reservar mi batch en `reservas` para evitar que otro usuario tome los mismos idxs.
-    // upsert con ignoreDuplicates: si otro ya lo reservó (PK conflict), no falla — los
-    // perdemos en el re-fetch siguiente y mostramos solo los que realmente ganamos.
+    // Reservar mi batch en `reservas` (solo instancias reales, no el catch trial)
     if (availableInstances.length > 0) {
       try {
         const rows = availableInstances.map(i => ({ idx: i.idx, anotador_id: anotadorId }));
@@ -956,11 +954,16 @@
       }
     }
 
-    // Shuffle para evitar que pares con misma premisa aparezcan consecutivos
-    for (let i = availableInstances.length - 1; i > 0; i--) {
+    // Prepend catch trial (siempre primero, nunca entra al sistema de reservas)
+    if (!catchAlreadyDone) availableInstances = [CATCH_TRIAL, ...availableInstances];
+
+    // Shuffle las instancias reales (no el catch trial)
+    const realPart = availableInstances.slice(catchAlreadyDone ? 0 : 1);
+    for (let i = realPart.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [availableInstances[i], availableInstances[j]] = [availableInstances[j], availableInstances[i]];
+      [realPart[i], realPart[j]] = [realPart[j], realPart[i]];
     }
+    availableInstances = catchAlreadyDone ? realPart : [CATCH_TRIAL, ...realPart];
 
     if (availableInstances.length === 0) {
       document.getElementById('done-message').textContent =
