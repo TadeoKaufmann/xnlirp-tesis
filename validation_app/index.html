@@ -857,7 +857,7 @@
     updatePlaceholders(r1.respuesta || null);
 
     document.getElementById('counter').textContent =
-      `Instancia ${gi + 1} de ${displayGroups.length}`;
+      `Instancia ${gi + 1} de ${availableInstances.length}`;
     updateProgress();
 
     document.getElementById('btn-prev').disabled = gi === 0;
@@ -1099,7 +1099,7 @@
     );
 
     if (!sessionStorage.getItem('skip_welcome')) {
-      const n = displayGroups.length;
+      const n = availableInstances.length;
       const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 4));
       document.getElementById('welcome-stats').textContent =
         `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
