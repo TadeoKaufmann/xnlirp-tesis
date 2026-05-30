@@ -571,14 +571,21 @@
   let INSTANCES = [];
   async function loadInstances() {
     const PAGE = 1000;
-    let from = 0;
-    INSTANCES = [];
-    while (true) {
-      const { data, error } = await sb.from('instancias').select('idx, prem, hyp').range(from, from + PAGE - 1);
-      if (error) throw error;
-      INSTANCES.push(...(data || []));
-      if (!data || data.length < PAGE) break;
-      from += PAGE;
+    const first = await sb.from('instancias').select('idx, prem, hyp', { count: 'exact' }).range(0, PAGE - 1);
+    if (first.error) throw first.error;
+    INSTANCES = [...(first.data || [])];
+    const total = first.count || 0;
+    const extraPages = Math.ceil(Math.max(0, total - PAGE) / PAGE);
+    if (extraPages > 0) {
+      const rest = await Promise.all(
+        Array.from({ length: extraPages }, (_, i) =>
+          sb.from('instancias').select('idx, prem, hyp').range((i + 1) * PAGE, (i + 2) * PAGE - 1)
+        )
+      );
+      for (const { data, error } of rest) {
+        if (error) throw error;
+        INSTANCES.push(...(data || []));
+      }
     }
     console.log(`Cargadas ${INSTANCES.length} instancias desde Supabase`);
   }
