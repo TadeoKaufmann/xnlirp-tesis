@@ -308,6 +308,8 @@
     line-height: 1;
   }
 
+  #hyp2-text-section { margin-top: 10px; }
+
   /* Welcome card — acento superior */
   #screen-welcome .card { border-top: 3px solid var(--green); padding-top: 28px; }
   /* Checkmark circulo */
@@ -778,12 +780,19 @@
       }
     }
 
-    // Shuffle grupos
-    for (let i = groups.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [groups[i], groups[j]] = [groups[j], groups[i]];
+    // Shuffle balanceado: ordenar por longitud e intercalar cortos y largos
+    const totalChars = g => g.instances.reduce((s, i) => s + i.prem.length + i.hyp.length, 0);
+    groups.sort((a, b) => totalChars(a) - totalChars(b));
+    const shorts = groups.filter((_, i) => i % 2 === 0);
+    const longs  = groups.filter((_, i) => i % 2 === 1);
+    const shuffle = arr => { for (let i = arr.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } };
+    shuffle(shorts); shuffle(longs);
+    const balanced = [];
+    for (let i = 0; i < Math.max(shorts.length, longs.length); i++) {
+      if (i < shorts.length) balanced.push(shorts[i]);
+      if (i < longs.length)  balanced.push(longs[i]);
     }
-    return groups;
+    return balanced;
   }
 
   let catchHintPlayed = false;
