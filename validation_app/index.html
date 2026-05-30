@@ -1084,10 +1084,8 @@
       return;
     }
 
-    const realBatch = availableInstances.filter(i => i.idx !== CATCH_TRIAL.idx);
-    const answeredInBatch = realBatch.length - unanswered.filter(i =>
-      realBatch.some(a => a.idx === i.idx)
-    ).length;
+    // RPC devuelve solo instancias sin responder → batch siempre fresco
+    const answeredInBatch = 0;
 
     // Construir displayGroups
     const ungrouped = availableInstances.slice(catchAlreadyDone ? 0 : 1);
