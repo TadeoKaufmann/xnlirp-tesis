@@ -1190,18 +1190,25 @@
 
       const { instances } = displayGroups[currentIndex];
       const inst1 = instances[0];
+      const comentarioPrem = document.getElementById('correccion-prem').value;
       const existing = responses.get(inst1.idx) || {};
       responses.set(inst1.idx, {
         ...existing,
         respuesta: value,
-        comentario_prem: document.getElementById('correccion-prem').value,
+        comentario_prem: comentarioPrem,
         comentario_hyp:  document.getElementById('correccion-hyp').value
       });
+      // Propagar comentario_prem a inst2 si hay par
+      if (instances[1]) {
+        const ex2 = responses.get(instances[1].idx) || {};
+        responses.set(instances[1].idx, { ...ex2, comentario_prem: comentarioPrem });
+      }
       updatePlaceholders(value);
       const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
       document.getElementById('btn-next').disabled = !allDone;
       updateProgress();
       await saveResponse(inst1.idx);
+      if (instances[1]) await saveResponse(instances[1].idx);
     });
   });
 
@@ -1225,7 +1232,8 @@
 
   function bindCorrectionBlur(elemId, field) {
     document.getElementById(elemId).addEventListener('blur', async () => {
-      const inst1 = displayGroups[currentIndex]?.instances[0];
+      const group = displayGroups[currentIndex];
+      const inst1 = group?.instances[0];
       if (!inst1) return;
       const existing = responses.get(inst1.idx);
       if (existing && existing.respuesta) {
@@ -1233,6 +1241,14 @@
         if (newVal !== (existing[field] || '')) {
           existing[field] = newVal;
           await saveResponse(inst1.idx);
+          // Propagar comentario_prem a inst2 si es un par
+          if (field === 'comentario_prem' && group.instances[1]) {
+            const inst2 = group.instances[1];
+            const ex2 = responses.get(inst2.idx) || {};
+            ex2.comentario_prem = newVal;
+            responses.set(inst2.idx, ex2);
+            await saveResponse(inst2.idx);
+          }
         }
       }
     });
