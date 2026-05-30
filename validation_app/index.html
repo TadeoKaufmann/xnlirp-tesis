@@ -1098,7 +1098,7 @@
       instances.some(inst => !responses.get(inst.idx)?.respuesta)
     );
 
-    if (answeredInBatch === 0 && !sessionStorage.getItem('skip_welcome')) {
+    if (!localStorage.getItem('welcomed') && !sessionStorage.getItem('skip_welcome')) {
       const n = displayGroups.length;
       const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 4));
       document.getElementById('welcome-stats').textContent =
@@ -1148,9 +1148,8 @@
         const ex2 = responses.get(instances[1].idx) || {};
         responses.set(instances[1].idx, {
           ...ex2,
-          respuesta:      value,
-          comentario_prem: comentarioPrem,
-          comentario_hyp:  comentarioHyp
+          respuesta:       value,
+          comentario_prem: comentarioPrem
         });
       }
       updatePlaceholders(value);
