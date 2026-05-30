@@ -568,27 +568,6 @@
   const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_cYbYP4tE7OF9-i2KgCpeIA_gRnhkUmc';
 
-  let INSTANCES = [];
-  async function loadInstances() {
-    const PAGE = 1000;
-    const first = await sb.from('instancias').select('idx, prem, hyp', { count: 'exact' }).range(0, PAGE - 1);
-    if (first.error) throw first.error;
-    INSTANCES = [...(first.data || [])];
-    const total = first.count || 0;
-    const extraPages = Math.ceil(Math.max(0, total - PAGE) / PAGE);
-    if (extraPages > 0) {
-      const rest = await Promise.all(
-        Array.from({ length: extraPages }, (_, i) =>
-          sb.from('instancias').select('idx, prem, hyp').range((i + 1) * PAGE, (i + 2) * PAGE - 1)
-        )
-      );
-      for (const { data, error } of rest) {
-        if (error) throw error;
-        INSTANCES.push(...(data || []));
-      }
-    }
-    console.log(`Cargadas ${INSTANCES.length} instancias desde Supabase`);
-  }
 
 
   // ── Welcome animation ───────────────────────────────────────────────────
@@ -994,31 +973,33 @@
 
     const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
 
-    let allRows;
-    let reservadasPorOtros = new Set();
+    let availableBatch = [];
+    let myHasRegion = false;
     try {
-      await loadInstances();
-
-      // 1. Limpiar reservas expiradas (RLS permite DELETE solo si created_at < now() - 2h).
+      // 1. Limpiar reservas expiradas
       const cutoff = new Date(Date.now() - TWO_HOURS_MS).toISOString();
       await sb.from('reservas').delete().lt('created_at', cutoff);
 
-      // 2. Fetch Respuestas + reservas activas en paralelo.
-      const [respRes, resRes] = await Promise.all([
+      // 2. RPC instancias disponibles + mis respuestas en paralelo
+      const [batchRes, respRes] = await Promise.all([
+        sb.rpc('get_available_batch', { p_anotador_id: anotadorId, p_batch_size: 80 }),
         sb.from('Respuestas')
-          .select('id, idx, anotador_id, respuesta, comentario_prem, comentario_hyp, palabras_marcadas, region, quiere_mas'),
-        sb.from('reservas').select('idx, anotador_id, created_at')
+          .select('id, idx, respuesta, comentario_prem, comentario_hyp, palabras_marcadas, region, quiere_mas')
+          .eq('anotador_id', anotadorId)
       ]);
+      if (batchRes.error) throw batchRes.error;
       if (respRes.error) throw respRes.error;
-      if (resRes.error) throw resRes.error;
-      allRows = respRes.data || [];
+      availableBatch = batchRes.data || [];
 
-      // 3. Construir set de idxs reservados por OTROS dentro de la ventana de 2h.
-      const now = Date.now();
-      for (const r of (resRes.data || [])) {
-        if (r.anotador_id !== anotadorId && (now - new Date(r.created_at).getTime()) < TWO_HOURS_MS) {
-          reservadasPorOtros.add(r.idx);
-        }
+      for (const row of (respRes.data || [])) {
+        responses.set(row.idx, {
+          respuesta: row.respuesta,
+          comentario_prem: row.comentario_prem || '',
+          comentario_hyp: row.comentario_hyp || '',
+          palabras_marcadas: row.palabras_marcadas || [],
+          dbId: row.id
+        });
+        if (row.region) myHasRegion = true;
       }
     } catch (err) {
       console.error('init', err);
@@ -1028,42 +1009,19 @@
       return;
     }
 
-    const otherAnnotated = new Set();
-    let myHasRegion = false;
-
-    for (const row of allRows) {
-      if (row.anotador_id === anotadorId) {
-        responses.set(row.idx, {
-          respuesta: row.respuesta,
-          comentario_prem: row.comentario_prem || '',
-          comentario_hyp: row.comentario_hyp || '',
-          palabras_marcadas: row.palabras_marcadas || [],
-          dbId: row.id
-        });
-        if (row.region) myHasRegion = true;
-      } else if (row.respuesta) {
-        otherAnnotated.add(row.idx);
-      }
-    }
-
     const testParam = new URLSearchParams(location.search).get('test');
     const TEST_BATCH = testParam === 'true' ? 3 : (parseInt(testParam) > 0 ? parseInt(testParam) : null);
     const TEST_MODE = TEST_BATCH !== null;
     const BATCH_SIZE = TEST_BATCH ?? 20;
-    const allAvailable = INSTANCES
-      .filter(inst => !otherAnnotated.has(inst.idx))
-      .filter(inst => !reservadasPorOtros.has(inst.idx))
-      .sort((a, b) => a.idx - b.idx);
-
-    if (allAvailable.length === 0) {
+    if (availableBatch.length === 0) {
       document.getElementById('done-message').textContent =
         'Todas las instancias ya fueron anotadas por la comunidad. ¡Gracias por venir!';
       showScreen('screen-done');
       return;
     }
 
-    const inProgress = allAvailable.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
-    const unanswered  = allAvailable.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
+    const inProgress = availableBatch.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
+    const unanswered  = availableBatch.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
 
     function randomSample(arr, n) {
       const pool = [...arr];
