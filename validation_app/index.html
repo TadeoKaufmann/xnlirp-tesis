@@ -1020,9 +1020,7 @@
       return;
     }
 
-    const inProgress = availableBatch.filter(inst => { const r = responses.get(inst.idx); return r && r.respuesta; });
-    const unanswered  = availableBatch.filter(inst => { const r = responses.get(inst.idx); return !r || !r.respuesta; });
-
+    // RPC ya excluye respondidas por el usuario — todo es unanswered
     function randomSample(arr, n) {
       const pool = [...arr];
       for (let i = pool.length - 1; i > 0; i--) {
@@ -1033,15 +1031,7 @@
     }
 
     const catchAlreadyDone = responses.has(CATCH_TRIAL.idx);
-    if (inProgress.length > 0 && inProgress.length < BATCH_SIZE) {
-      // Retomar batch en curso (sin catch trial en el pool de reservas)
-      const doneIdxs = new Set(inProgress.map(i => i.idx));
-      const fill = randomSample(unanswered.filter(i => !doneIdxs.has(i.idx)), BATCH_SIZE - inProgress.length - (catchAlreadyDone ? 0 : 1));
-      availableInstances = [...inProgress, ...fill];
-    } else {
-      // Batch fresco: BATCH_SIZE reales si ya hizo catch trial, BATCH_SIZE-1 si no
-      availableInstances = randomSample(unanswered, catchAlreadyDone ? BATCH_SIZE : BATCH_SIZE - 1);
-    }
+    availableInstances = randomSample(availableBatch, catchAlreadyDone ? BATCH_SIZE : BATCH_SIZE - 1);
 
     // Reservar mi batch en `reservas` (solo instancias reales, no el catch trial)
     if (availableInstances.length > 0) {
