@@ -461,19 +461,6 @@
           <button class="option" data-value="4">4</button>
           <button class="option" data-value="5">5</button>
         </div>
-        <div id="hyp2-score-section" style="display:none;">
-          <div class="scale-hint" style="margin-top:14px;">
-            <span>1 — Nada</span>
-            <span>5 — Muy</span>
-          </div>
-          <div class="options likert" id="options-respuesta-2">
-            <button class="option" data-value="1">1</button>
-            <button class="option" data-value="2">2</button>
-            <button class="option" data-value="3">3</button>
-            <button class="option" data-value="4">4</button>
-            <button class="option" data-value="5">5</button>
-          </div>
-        </div>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
           <p id="encouragement" class="encouragement"></p>
@@ -858,13 +845,10 @@
 
     // Hyp2
     const show2 = !!inst2;
-    document.getElementById('hyp2-text-section').style.display  = show2 ? '' : 'none';
-    document.getElementById('hyp2-score-section').style.display = show2 ? '' : 'none';
+    document.getElementById('hyp2-text-section').style.display = show2 ? '' : 'none';
     if (inst2) {
       const r2 = responses.get(inst2.idx) || {};
       renderClickableText('text-hyp2', inst2.hyp, 'hyp2', r2.palabras_marcadas || []);
-      document.querySelectorAll('#options-respuesta-2 .option')
-        .forEach(b => b.classList.toggle('selected', b.dataset.value === r2.respuesta));
     }
 
     const card = document.getElementById('instance-card');
@@ -1191,17 +1175,23 @@
       const { instances } = displayGroups[currentIndex];
       const inst1 = instances[0];
       const comentarioPrem = document.getElementById('correccion-prem').value;
+      const comentarioHyp  = document.getElementById('correccion-hyp').value;
       const existing = responses.get(inst1.idx) || {};
       responses.set(inst1.idx, {
         ...existing,
         respuesta: value,
         comentario_prem: comentarioPrem,
-        comentario_hyp:  document.getElementById('correccion-hyp').value
+        comentario_hyp:  comentarioHyp
       });
-      // Propagar comentario_prem a inst2 si hay par
+      // Propagar score + comentarios a inst2 si hay par
       if (instances[1]) {
         const ex2 = responses.get(instances[1].idx) || {};
-        responses.set(instances[1].idx, { ...ex2, comentario_prem: comentarioPrem });
+        responses.set(instances[1].idx, {
+          ...ex2,
+          respuesta:      value,
+          comentario_prem: comentarioPrem,
+          comentario_hyp:  comentarioHyp
+        });
       }
       updatePlaceholders(value);
       const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
@@ -1212,23 +1202,6 @@
     });
   });
 
-  document.querySelectorAll('#options-respuesta-2 .option').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const value = btn.dataset.value;
-      document.querySelectorAll('#options-respuesta-2 .option')
-        .forEach(b => b.classList.toggle('selected', b === btn));
-
-      const { instances } = displayGroups[currentIndex];
-      const inst2 = instances[1];
-      if (!inst2) return;
-      const existing = responses.get(inst2.idx) || {};
-      responses.set(inst2.idx, { ...existing, respuesta: value });
-      const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
-      document.getElementById('btn-next').disabled = !allDone;
-      updateProgress();
-      await saveResponse(inst2.idx);
-    });
-  });
 
   function bindCorrectionBlur(elemId, field) {
     document.getElementById(elemId).addEventListener('blur', async () => {
@@ -1241,11 +1214,11 @@
         if (newVal !== (existing[field] || '')) {
           existing[field] = newVal;
           await saveResponse(inst1.idx);
-          // Propagar comentario_prem a inst2 si es un par
-          if (field === 'comentario_prem' && group.instances[1]) {
+          // Propagar comentarios a inst2 si es un par
+          if (group.instances[1] && (field === 'comentario_prem' || field === 'comentario_hyp')) {
             const inst2 = group.instances[1];
             const ex2 = responses.get(inst2.idx) || {};
-            ex2.comentario_prem = newVal;
+            ex2[field] = newVal;
             responses.set(inst2.idx, ex2);
             await saveResponse(inst2.idx);
           }
