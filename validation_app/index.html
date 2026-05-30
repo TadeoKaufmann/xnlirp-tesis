@@ -1098,7 +1098,7 @@
       instances.some(inst => !responses.get(inst.idx)?.respuesta)
     );
 
-    if (!localStorage.getItem('welcomed') && !sessionStorage.getItem('skip_welcome')) {
+    if (!sessionStorage.getItem('skip_welcome')) {
       const n = displayGroups.length;
       const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 4));
       document.getElementById('welcome-stats').textContent =
