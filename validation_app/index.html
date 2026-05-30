@@ -539,7 +539,7 @@
         <div id="progress-meta" class="hidden" style="margin:16px 0;width:100%;text-align:left;">
           <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#666;margin-bottom:4px;">
             <span id="progress-label">Cargando…</span>
-            <span>meta: 5.000</span>
+            <span>meta: 4.577</span>
           </div>
           <div style="background:#e8e8e4;border-radius:8px;height:8px;overflow:hidden;">
             <div id="progress-bar" style="background:var(--green);height:100%;width:0%;transition:width 0.6s ease;border-radius:8px;"></div>
@@ -1404,7 +1404,7 @@
   }
 
   async function loadProgressMeta() {
-    const META = 5000;
+    const META = 4577;
     const { count, error } = await sb.from('Respuestas').select('id', { count: 'exact', head: true }).not('respuesta', 'is', null);
     if (error || count === null) return;
     const pct = Math.min(count / META * 100, 100).toFixed(1);
