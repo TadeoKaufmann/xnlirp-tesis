@@ -570,9 +570,16 @@
 
   let INSTANCES = [];
   async function loadInstances() {
-    const { data, error } = await sb.from('instancias').select('idx, prem, hyp');
-    if (error) throw error;
-    INSTANCES = data || [];
+    const PAGE = 1000;
+    let from = 0;
+    INSTANCES = [];
+    while (true) {
+      const { data, error } = await sb.from('instancias').select('idx, prem, hyp').range(from, from + PAGE - 1);
+      if (error) throw error;
+      INSTANCES.push(...(data || []));
+      if (!data || data.length < PAGE) break;
+      from += PAGE;
+    }
     console.log(`Cargadas ${INSTANCES.length} instancias desde Supabase`);
   }
 
