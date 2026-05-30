@@ -437,6 +437,9 @@
             <div class="text-content combined-text">
               <p id="text-prem"></p>
               <p id="text-hyp"></p>
+              <div id="hyp2-text-section" style="display:none;">
+                <p id="text-hyp2"></p>
+              </div>
             </div>
             <div class="word-hint">Tap: marcar / desmarcar</div>
             <textarea id="correccion-prem" placeholder="¿Algo raro? ¿Qué cambiarías?"></textarea>
@@ -455,6 +458,19 @@
           <button class="option" data-value="3">3</button>
           <button class="option" data-value="4">4</button>
           <button class="option" data-value="5">5</button>
+        </div>
+        <div id="hyp2-score-section" style="display:none;">
+          <div class="scale-hint" style="margin-top:14px;">
+            <span>1 — Nada</span>
+            <span>5 — Muy</span>
+          </div>
+          <div class="options likert" id="options-respuesta-2">
+            <button class="option" data-value="1">1</button>
+            <button class="option" data-value="2">2</button>
+            <button class="option" data-value="3">3</button>
+            <button class="option" data-value="4">4</button>
+            <button class="option" data-value="5">5</button>
+          </div>
         </div>
         <div class="nav">
           <button class="btn" id="btn-prev">← Anterior</button>
@@ -557,6 +573,7 @@
 
 <div id="toast" class="toast"></div>
 
+<script src="_label_by_idx.js"></script>
 <script>
   // ── Config ──────────────────────────────────────────────────────────────
   const SUPABASE_URL = 'https://gtfuywoegczehmpbmaky.supabase.co';
@@ -645,6 +662,7 @@
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   let anotadorId = null;
   let availableInstances = [];
+  let displayGroups = [];
   let currentIndex = 0;
   const responses = new Map(); // idx -> { respuesta, comentario_prem, comentario_hyp, dbId }
   let selectedRegion = '';
@@ -724,6 +742,50 @@
     }
   }
 
+  const CHAR_LIMIT = 400;
+
+  function buildDisplayGroups(instances) {
+    const byPrem = new Map();
+    for (const inst of instances) {
+      if (!byPrem.has(inst.prem)) byPrem.set(inst.prem, []);
+      byPrem.get(inst.prem).push(inst);
+    }
+
+    const groups = [];
+    for (const insts of byPrem.values()) {
+      if (insts.length === 3) {
+        // x3: Card 1 = entailment con premisa, Card 2 = neutral+contradiction sin premisa
+        const entailment    = insts.find(i => (LABEL_BY_IDX[i.idx] ?? -1) === 0);
+        const notEntailment = insts.filter(i => (LABEL_BY_IDX[i.idx] ?? -1) !== 0);
+        if (entailment && notEntailment.length === 2) {
+          groups.push({ instances: [entailment],     showPrem: true  });
+          groups.push({ instances: notEntailment,    showPrem: false });
+        } else {
+          // fallback: tres cards normales
+          for (const inst of insts) groups.push({ instances: [inst], showPrem: true });
+        }
+      } else if (insts.length === 2) {
+        // x2: agrupar si entra en el tope de caracteres
+        const totalChars = insts[0].prem.length + insts[0].hyp.length + insts[1].hyp.length;
+        if (totalChars <= CHAR_LIMIT) {
+          groups.push({ instances: insts, showPrem: true });
+        } else {
+          for (const inst of insts) groups.push({ instances: [inst], showPrem: true });
+        }
+      } else {
+        // x1
+        for (const inst of insts) groups.push({ instances: [inst], showPrem: true });
+      }
+    }
+
+    // Shuffle grupos
+    for (let i = groups.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [groups[i], groups[j]] = [groups[j], groups[i]];
+    }
+    return groups;
+  }
+
   let catchHintPlayed = false;
   function playCatchTrialHint() {
     if (catchHintPlayed) return;
@@ -766,40 +828,60 @@
     }
   }
 
-  function renderInstance(i) {
-    if (i < 0 || i >= availableInstances.length) return;
-    currentIndex = i;
-    const inst = availableInstances[i];
+  function renderGroup(gi) {
+    if (gi < 0 || gi >= displayGroups.length) return;
+    currentIndex = gi;
+    const { instances, showPrem } = displayGroups[gi];
+    const inst1 = instances[0];
+    const inst2 = instances[1] ?? null;
 
-    const r0 = responses.get(inst.idx) || {};
-    const marks = r0.palabras_marcadas || [];
-    renderClickableText('text-prem', inst.prem, 'prem', marks);
-    renderClickableText('text-hyp', inst.hyp, 'hyp', marks);
+    const r1 = responses.get(inst1.idx) || {};
+
+    // Premisa: mostrar u ocultar según tipo de grupo
+    const premEl = document.getElementById('text-prem');
+    premEl.style.display = showPrem ? '' : 'none';
+    if (showPrem) {
+      renderClickableText('text-prem', inst1.prem, 'prem', r1.palabras_marcadas || []);
+    }
+
+    // Hyp1 — en no-prem usa el label 'hyp' igual (para el source de palabras_marcadas)
+    renderClickableText('text-hyp', inst1.hyp, 'hyp', r1.palabras_marcadas || []);
+
+    // Hyp2
+    const show2 = !!inst2;
+    document.getElementById('hyp2-text-section').style.display  = show2 ? '' : 'none';
+    document.getElementById('hyp2-score-section').style.display = show2 ? '' : 'none';
+    if (inst2) {
+      const r2 = responses.get(inst2.idx) || {};
+      renderClickableText('text-hyp2', inst2.hyp, 'hyp2', r2.palabras_marcadas || []);
+      document.querySelectorAll('#options-respuesta-2 .option')
+        .forEach(b => b.classList.toggle('selected', b.dataset.value === r2.respuesta));
+    }
 
     const card = document.getElementById('instance-card');
     card.classList.remove('card-anim');
     void card.offsetWidth;
     card.classList.add('card-anim');
 
-    const r = responses.get(inst.idx) || {};
     document.querySelectorAll('#options-respuesta .option').forEach(b => {
-      b.classList.toggle('selected', b.dataset.value === r.respuesta);
+      b.classList.toggle('selected', b.dataset.value === r1.respuesta);
     });
-    document.getElementById('correccion-prem').value = r.comentario_prem || '';
-    document.getElementById('correccion-hyp').value = r.comentario_hyp || '';
-    updatePlaceholders(r.respuesta || null);
+    document.getElementById('correccion-prem').value = r1.comentario_prem || '';
+    document.getElementById('correccion-hyp').value  = r1.comentario_hyp  || '';
+    updatePlaceholders(r1.respuesta || null);
 
     document.getElementById('counter').textContent =
-      `Instancia ${i + 1} de ${availableInstances.length}`;
+      `Instancia ${gi + 1} de ${displayGroups.length}`;
     updateProgress();
 
-    document.getElementById('btn-prev').disabled = i === 0;
+    document.getElementById('btn-prev').disabled = gi === 0;
     const btnNext = document.getElementById('btn-next');
-    btnNext.textContent = i === availableInstances.length - 1 ? 'Finalizar →' : 'Siguiente →';
-    btnNext.disabled = !r.respuesta;
+    btnNext.textContent = gi === displayGroups.length - 1 ? 'Finalizar →' : 'Siguiente →';
+    const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
+    btnNext.disabled = !allDone;
     document.getElementById('encouragement').textContent = '';
 
-    if (inst.idx === CATCH_TRIAL.idx && marks.length === 0) {
+    if (inst1.idx === CATCH_TRIAL.idx && (r1.palabras_marcadas || []).length === 0) {
       setTimeout(playCatchTrialHint, 700);
     }
   }
@@ -1047,18 +1129,24 @@
       return;
     }
 
-    const firstUnanswered = availableInstances.findIndex(inst => {
-      const r = responses.get(inst.idx);
-      return !r || !r.respuesta;
-    });
-
     const realBatch = availableInstances.filter(i => i.idx !== CATCH_TRIAL.idx);
     const answeredInBatch = realBatch.length - unanswered.filter(i =>
       realBatch.some(a => a.idx === i.idx)
     ).length;
 
+    // Construir displayGroups
+    const ungrouped = availableInstances.slice(catchAlreadyDone ? 0 : 1);
+    const realGroups = buildDisplayGroups(ungrouped);
+    displayGroups = catchAlreadyDone
+      ? realGroups
+      : [{ instances: [CATCH_TRIAL], showPrem: true }, ...realGroups];
+
+    const firstUnansweredGroup = displayGroups.findIndex(({ instances }) =>
+      instances.some(inst => !responses.get(inst.idx)?.respuesta)
+    );
+
     if (answeredInBatch === 0 && !sessionStorage.getItem('skip_welcome')) {
-      const n = availableInstances.length;
+      const n = displayGroups.length;
       const mins = TEST_MODE ? 1 : Math.max(2, Math.round(n / 4));
       document.getElementById('welcome-stats').textContent =
         `Son ${n} instancia${n === 1 ? '' : 's'}, lleva ${TEST_MODE ? 'un' : 'menos de ' + mins} minuto${mins === 1 || TEST_MODE ? '' : 's'}.`;
@@ -1067,7 +1155,7 @@
     } else {
       sessionStorage.removeItem('skip_welcome');
       showScreen('screen-instance');
-      renderInstance(firstUnanswered >= 0 ? firstUnanswered : 0);
+      renderGroup(firstUnansweredGroup >= 0 ? firstUnansweredGroup : 0);
     }
   }
 
@@ -1091,31 +1179,51 @@
       document.querySelectorAll('#options-respuesta .option')
         .forEach(b => b.classList.toggle('selected', b === btn));
 
-      const inst = availableInstances[currentIndex];
-      const existing = responses.get(inst.idx) || {};
-      responses.set(inst.idx, {
+      const { instances } = displayGroups[currentIndex];
+      const inst1 = instances[0];
+      const existing = responses.get(inst1.idx) || {};
+      responses.set(inst1.idx, {
         ...existing,
         respuesta: value,
         comentario_prem: document.getElementById('correccion-prem').value,
-        comentario_hyp: document.getElementById('correccion-hyp').value
+        comentario_hyp:  document.getElementById('correccion-hyp').value
       });
       updatePlaceholders(value);
-      document.getElementById('btn-next').disabled = false;
+      const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
+      document.getElementById('btn-next').disabled = !allDone;
       updateProgress();
-      await saveResponse(inst.idx);
+      await saveResponse(inst1.idx);
+    });
+  });
+
+  document.querySelectorAll('#options-respuesta-2 .option').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const value = btn.dataset.value;
+      document.querySelectorAll('#options-respuesta-2 .option')
+        .forEach(b => b.classList.toggle('selected', b === btn));
+
+      const { instances } = displayGroups[currentIndex];
+      const inst2 = instances[1];
+      if (!inst2) return;
+      const existing = responses.get(inst2.idx) || {};
+      responses.set(inst2.idx, { ...existing, respuesta: value });
+      const allDone = instances.every(inst => responses.get(inst.idx)?.respuesta);
+      document.getElementById('btn-next').disabled = !allDone;
+      updateProgress();
+      await saveResponse(inst2.idx);
     });
   });
 
   function bindCorrectionBlur(elemId, field) {
     document.getElementById(elemId).addEventListener('blur', async () => {
-      const inst = availableInstances[currentIndex];
-      if (!inst) return;
-      const existing = responses.get(inst.idx);
+      const inst1 = displayGroups[currentIndex]?.instances[0];
+      if (!inst1) return;
+      const existing = responses.get(inst1.idx);
       if (existing && existing.respuesta) {
         const newVal = document.getElementById(elemId).value;
         if (newVal !== (existing[field] || '')) {
           existing[field] = newVal;
-          await saveResponse(inst.idx);
+          await saveResponse(inst1.idx);
         }
       }
     });
@@ -1124,35 +1232,30 @@
   bindCorrectionBlur('correccion-hyp', 'comentario_hyp');
 
   document.getElementById('btn-prev').addEventListener('click', () => {
-    if (currentIndex > 0) renderInstance(currentIndex - 1);
+    if (currentIndex > 0) renderGroup(currentIndex - 1);
   });
 
   document.getElementById('btn-next').addEventListener('click', async () => {
-    const inst = availableInstances[currentIndex];
-    const r = inst ? responses.get(inst.idx) : null;
-    if (!r || !r.respuesta) {
+    const { instances: curInstances } = displayGroups[currentIndex] || { instances: [] };
+    const allDone = curInstances.every(inst => responses.get(inst.idx)?.respuesta);
+    if (!allDone) {
       showToast('Elegí una opción para continuar');
       return;
     }
-    if (currentIndex < availableInstances.length - 1) {
-      renderInstance(currentIndex + 1);
+    if (currentIndex < displayGroups.length - 1) {
+      renderGroup(currentIndex + 1);
       return;
     }
-    // Última instancia: esperar saves pendientes y validar
     await flushAllSaves();
-    const allAnswered = availableInstances.every(it => {
-      const rr = responses.get(it.idx);
-      return rr && rr.respuesta;
-    });
+    const allAnswered = availableInstances.every(it => responses.get(it.idx)?.respuesta);
     if (allAnswered) {
       showScreen('screen-final');
     } else {
-      const firstUnanswered = availableInstances.findIndex(it => {
-        const rr = responses.get(it.idx);
-        return !rr || !rr.respuesta;
-      });
-      showToast(`Faltan instancias por responder (${firstUnanswered + 1})`);
-      if (firstUnanswered >= 0) renderInstance(firstUnanswered);
+      const firstUnansweredGroup = displayGroups.findIndex(({ instances }) =>
+        instances.some(inst => !responses.get(inst.idx)?.respuesta)
+      );
+      showToast('Faltan instancias por responder');
+      if (firstUnansweredGroup >= 0) renderGroup(firstUnansweredGroup);
     }
   });
 
@@ -1183,7 +1286,7 @@
   document.getElementById('btn-empezar').addEventListener('click', () => {
     localStorage.setItem('welcomed', '1');
     showScreen('screen-instance');
-    renderInstance(0);
+    renderGroup(0);
   });
 
   document.getElementById('btn-submit').addEventListener('click', submitFinal);
@@ -1212,18 +1315,22 @@
   document.querySelector('.combined-text').addEventListener('click', async e => {
     const span = e.target.closest('.word');
     if (!span) return;
-    const inst = availableInstances[currentIndex];
-    if (!inst) return;
-    const source = span.dataset.source;
-    const pos = parseInt(span.dataset.pos, 10);
+    const { instances } = displayGroups[currentIndex] || { instances: [] };
+    if (!instances.length) return;
+    const source   = span.dataset.source;
+    const pos      = parseInt(span.dataset.pos, 10);
     const original = span.dataset.original;
+    const marking  = !span.classList.contains('marked');
+    span.classList.toggle('marked', marking);
+    const mutate = marking ? () => ({ source, pos, palabra: original }) : () => null;
 
-    if (span.classList.contains('marked')) {
-      span.classList.remove('marked');
-      await updateMark(inst.idx, source, pos, () => null);
+    if (source === 'hyp2') {
+      if (instances[1]) await updateMark(instances[1].idx, source, pos, mutate);
+    } else if (source === 'prem' && instances[1]) {
+      await updateMark(instances[0].idx, source, pos, mutate);
+      await updateMark(instances[1].idx, source, pos, mutate);
     } else {
-      span.classList.add('marked');
-      await updateMark(inst.idx, source, pos, () => ({ source, pos, palabra: original }));
+      await updateMark(instances[0].idx, source, pos, mutate);
     }
   });
 
