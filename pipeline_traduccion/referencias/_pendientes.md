@@ -1,5 +1,22 @@
 # Pendientes: vocabulario XNLI a resolver
 
+---
+
+## Completar las instancias faltantes del full 7500
+
+**30 instancias del test set sin procesar** (inventariadas el 2026-05-28). Son del test split (5010 inst) — no sustituibles con instancias del train de XNLI porque son contenido diferente (MultiNLI vs. LILT).
+
+**Idx faltantes:**
+`528, 540, 600, 615, 2693, 4125, 4234, 4235, 4236, 4237, 4239, 4240, 4241, 4242, 4243, 4517, 4526, 4664, 4737, 4783, 4948, 4949, 4950, 4951, 4952, 4953, 4954, 4955, 4956, 4975`
+
+**Opciones:**
+- ☐ Traducir los 30 (run puntual ~5 min, gradear, agregar a `combined_6884_full.jsonl` o `to_fix_pending_all.jsonl`)
+- ☐ Dejar el gap y documentarlo: 7.467/7.500 = 99.6% de cobertura, truncación de pipeline, defensible en tesis
+
+Cluster sospechoso: idx 4234–4243 y 4948–4956 son corridas de números consecutivos → probablemente un batch que falló o fue truncado.
+
+---
+
 > **SUPERSEDED — mayo 2026**
 > Las decisiones de este archivo fueron incorporadas a:
 > - `decisiones_traduccion_tomadas.md` (rationales + decisiones por cluster)

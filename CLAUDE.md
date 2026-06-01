@@ -141,8 +141,8 @@ Gemini traduce
 - `pipeline_evaluacion/error_cases/to_fix_error_cases.jsonl` — casos a corregir (fuentes: grader + app score 1-2 + palabra marcada)
 - `pipeline_evaluacion/error_cases/xnli_error_cases_15.jsonl` — casos problemáticos históricos de referencia
 - `pipeline_evaluacion/respuestas_anotadores/respuestas_validadas.csv` — respuestas nativas validadas (app + útiles de sesiones contaminadas)
-- `pipeline_evaluacion/scripts/grade_translations.py` — wrapper Python para batches grandes via API (ANTHROPIC_API_KEY)
-- Skill `/xnli-grader` — grader interactivo en chat (quota diaria de Claude, sin costo extra)
+- `pipeline_evaluacion/scripts/grade_translations.py` — grader en lote via OpenAI Batch API (gpt-4o-mini, `OPENAI_API_KEY`); flujo: upload → create batch → poll → download → parse
+- Skill `/xnli-grader` — grader interactivo en chat (Sonnet/Haiku, quota diaria de Claude, sin costo extra)
 
 **Escala de rating (app y Sonnet-juez):** 1-2 = problemático → to_fix; 3-5 sin marca = dataset; 1-2 o con palabra marcada = to_fix.
 
@@ -151,12 +151,13 @@ Gemini traduce
 - **Dev canónico** (`data/dev/xnli_combined_dev_200.jsonl`): 200 inst, revisadas manualmente. Distribución: **A 139 / B 19 / C 23 / D 19**. Los few-shots idx 1638, 910, 2821 tienen leakage conocido — usar solo como sanity check para esas instancias. Grader accuracy: **94.0%** (188/200) con prompt v2 expandido (mayo 2026).
 - **Sample 300** (`data/dev/xnli_sample_300_v2_test.jsonl`): 300 inst del full 7500, Gemini v2 + validación Sonnet. **Son las que están actualmente en la validation app (Vercel).** Respuestas nativas consolidadas en `respuestas_validadas.csv` (contaminados útiles ya mergeados).
 - **Cultural adaptations** (`data/dev/cultural_adaptations.jsonl`): ~394 inst del full 7500 con adaptaciones culturales tipo E, procesadas por Opus.
-- **Total procesado:** ~600-900 instancias del full 7500 (ver `pipeline_traduccion/referencias/cronologia_datos.md`).
+- **Total procesado: ~7.484 instancias del full 7500 — traducción COMPLETA.** Pipeline: Gemini 2.5 Flash (traducción) + gpt-4o-mini via OpenAI Batch API (grading). Split resultado: **6.739 OK** → `validation_app/to_upload/combined_6884_full.jsonl`; **728 to_fix** → `pipeline_evaluacion/error_cases/to_fix_pending_all.jsonl`. Ver `pipeline_traduccion/referencias/cronologia_datos.md` para historial por fase.
 - **Billing Gemini**: activo, Tier 1, 1000 RPM.
 - **Eval (stale — re-evaluar con prompt actualizado):**
   - held-out 70 @ Gemini 2.5 Flash T=0.1 v1: type accuracy **94.3%** (A 95.7 / B 83.3 / C 100 / D 87.5)
   - gold 30 @ idem: **93.3%**
   - held-out 100 @ idem: **≈95%**
+- **Validación nativa**: **2.579 respuestas válidas de 136 anotadores** (múltiples provincias: AMBA, interior, Salta, Tucumán, La Rioja, Entre Ríos). Rating promedio 3.71/5; 84.6% OK. CSV más reciente: `pipeline_evaluacion/respuestas_anotadores/Respuestas_rows (13).csv`.
 - **validation_app**: deploy en Vercel (https://tadeo-tesis.vercel.app/), vinculado al repo GitHub. Push a `main` → redeploy automático. Raíz de publicación: `validation_app/`. Features implementadas (mayo 2026): batch siempre 20 (Fisher-Yates), catch trial idx 9999 (texto peninsular + hipótesis con nombres anglos inventados, hardcoded fuera del sistema de reservas), animación cursor 👆 sobre "chaval" al entrar, ranking top 10, validador de nombre duplicado, barra de progreso meta 5000 en screen-thanks, ranking_cap en tabla anotadores (Pablete cap=26). Ver `validation_app/_pendientes.md` para schema Supabase completo.
 - **datasets-codigo-data/** (`C:/Users/tadeo/Desktop/Tesis/datasets-codigo-data/`): 4 JSONL para experimentos BETO: `rp_train.jsonl` (1256), `rp_test.jsonl` (1257), `paired_train.jsonl` (1256), `paired_test.jsonl` (1257). Incluye flag `is_cultural`. Ver `README.md` en esa carpeta para instrucciones de fine-tuning.
 

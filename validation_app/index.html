@@ -1337,7 +1337,7 @@
 
   async function loadProgressMeta() {
     const META = 4577;
-    const { count, error } = await sb.from('Respuestas').select('id', { count: 'exact', head: true }).not('respuesta', 'is', null);
+    const { count, error } = await sb.from('Respuestas').select('id', { count: 'exact', head: true }).not('respuesta', 'is', null).neq('idx', 9999);
     if (error || count === null) return;
     const pct = Math.min(count / META * 100, 100).toFixed(1);
     document.getElementById('progress-label').textContent = `${count.toLocaleString('es-AR')} respuestas anotadas`;

@@ -137,20 +137,24 @@ Las 300 instancias restantes del pilot 500 (posiciones 200-499) fueron traducida
 
 ---
 
-## Resumen contable (mayo 2026)
+## Resumen contable — TRADUCCIÓN COMPLETA (mayo 2026)
 
 | Fuente | Instancias | Método | Estado |
 |--------|-----------|--------|--------|
-| Combined dev 200 | ~200 | Manual + Opus | Gold — en `data/dev/` |
+| Combined dev 200 | 200 | Manual + Opus | Gold — en `data/dev/` |
 | Cultural adaptations | ~394 | Opus 4.7 | Consolidado — en `data/dev/` |
-| Sample 300 | ~300 | Gemini v2 + Sonnet | En app — en `data/dev/` |
-| **Total procesado** | **~894** | | |
-| Full 7500 restante | **~6600** | Pendiente | Pipeline Gemini v2 |
+| Sample 300 | 300 | Gemini v2 + Sonnet | En app — en `data/dev/` |
+| **Full 7500 — OK** | **6.739** | Gemini v2 + gpt-4o-mini | `validation_app/to_upload/combined_6884_full.jsonl` |
+| **Full 7500 — to_fix** | **728** | Gemini v2 + gpt-4o-mini | `pipeline_evaluacion/error_cases/to_fix_pending_all.jsonl` |
+| **Total procesado** | **~7.484** | | Full 7500 cubierto |
 
-> Nota: el usuario estima ~600 instancias procesadas contando dev200 + cultural394. La diferencia con los 894 aquí depende de si el sample300 fue contado. El punto de partida para el siguiente batch es el `processed_idxs.json` (`@data/dev/processed_idxs.json`) que trackea qué índices del full 7500 ya fueron procesados.
+Pipeline de grading: `grade_translations.py` con gpt-4o-mini via OpenAI Batch API. El split OK/to_fix fue generado automáticamente por el grader; los casos to_fix requieren corrección manual o re-traducción.
 
 ---
 
-## Próximo paso
+## Estado al 28-05-2026
 
-Continuar la traducción del full 7500 en batches de 300 usando `pipeline_traduccion/scripts/translate_xnli.py`, validando cada batch con Claude Sonnet/Haiku como juez antes de cargar a la app. Instancias problemáticas van a `@pipeline_evaluacion/error_cases/`.
+La traducción del full 7500 está completa. Las fases siguientes son:
+1. Corrección de las 728 instancias `to_fix_pending_all.jsonl` (manual o re-traducción Gemini).
+2. Subida del dataset completo a Supabase para segunda ronda de validación nativa.
+3. Fine-tuning BETO/XLM-R en las condiciones experimentales (ver `PROJECT.md`).
