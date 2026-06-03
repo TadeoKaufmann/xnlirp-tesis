@@ -526,7 +526,7 @@
         <div id="progress-meta" class="hidden" style="margin:16px 0;width:100%;text-align:left;">
           <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:#666;margin-bottom:4px;">
             <span id="progress-label">Cargando…</span>
-            <span>meta: 4.577</span>
+            <span>meta: 6.000</span>
           </div>
           <div style="background:#e8e8e4;border-radius:8px;height:8px;overflow:hidden;">
             <div id="progress-bar" style="background:var(--green);height:100%;width:0%;transition:width 0.6s ease;border-radius:8px;"></div>
@@ -1336,7 +1336,7 @@
   }
 
   async function loadProgressMeta() {
-    const META = 4577;
+    const META = 6000;
     const { data, error } = await sb.rpc('count_unique_annotated_idx');
     if (error || data === null) return;
     const count = data;
