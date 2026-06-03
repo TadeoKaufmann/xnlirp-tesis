@@ -1337,9 +1337,9 @@
 
   async function loadProgressMeta() {
     const META = 4577;
-    const { data, error } = await sb.from('Respuestas').select('idx').not('respuesta', 'is', null).neq('idx', 9999).limit(50000);
-    if (error || !data) return;
-    const count = new Set(data.map(r => r.idx)).size;
+    const { data, error } = await sb.rpc('count_unique_annotated_idx');
+    if (error || data === null) return;
+    const count = data;
     const pct = Math.min(count / META * 100, 100).toFixed(1);
     document.getElementById('progress-label').textContent = `${count.toLocaleString('es-AR')} instancias anotadas`;
     document.getElementById('progress-bar').style.width = pct + '%';
