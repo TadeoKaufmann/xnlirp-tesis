@@ -1337,10 +1337,11 @@
 
   async function loadProgressMeta() {
     const META = 4577;
-    const { count, error } = await sb.from('Respuestas').select('id', { count: 'exact', head: true }).not('respuesta', 'is', null).neq('idx', 9999);
-    if (error || count === null) return;
+    const { data, error } = await sb.from('Respuestas').select('idx').not('respuesta', 'is', null).neq('idx', 9999).limit(50000);
+    if (error || !data) return;
+    const count = new Set(data.map(r => r.idx)).size;
     const pct = Math.min(count / META * 100, 100).toFixed(1);
-    document.getElementById('progress-label').textContent = `${count.toLocaleString('es-AR')} respuestas anotadas`;
+    document.getElementById('progress-label').textContent = `${count.toLocaleString('es-AR')} instancias anotadas`;
     document.getElementById('progress-bar').style.width = pct + '%';
     document.getElementById('progress-meta').classList.remove('hidden');
   }
