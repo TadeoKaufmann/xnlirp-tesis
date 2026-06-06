@@ -214,6 +214,7 @@ def build_instances(title: str, sentences: list[str], questions: list[dict], rng
             "story": title, "unit_idx": target_idx,
             "unit": sentences[target_idx], "question": question,
             "label": 1, "question_type": qtype, "answer_unit_idx": target_idx,
+            "split": qrow.get("split", "train"),
         })
 
         far_pool = [i for i in candidate_idxs if abs(i - target_idx) >= MIN_NEG_DISTANCE]
@@ -227,6 +228,7 @@ def build_instances(title: str, sentences: list[str], questions: list[dict], rng
                 "story": title, "unit_idx": neg_idx,
                 "unit": sentences[neg_idx], "question": question,
                 "label": 0, "question_type": qtype, "answer_unit_idx": target_idx,
+                "split": qrow.get("split", "train"),
             })
     return instances
 
@@ -240,10 +242,11 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--round", default=None, help="Nombre del round destino, ej. round_002")
-    ap.add_argument("--n", type=int, default=100, help="Máximo de preguntas a generar")
+    ap.add_argument("--round", default=None, help="Nombre del round destino, ej. round_003")
+    ap.add_argument("--n", type=int, default=None, help="Total de preguntas a generar (distribuidas proporcionalmente). None = todas.")
     ap.add_argument("--prompt-version", default="v1", dest="prompt_version")
-    ap.add_argument("--stories", default=None, help="Cuentos específicos separados por coma")
+    ap.add_argument("--stories", default=None, help="Cuentos a incluir, separados por coma")
+    ap.add_argument("--split", default="train", choices=["train", "dev", "test"], help="Split al que pertenecen estas instancias")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--seed", type=int, default=RANDOM_SEED)
     args = ap.parse_args()
@@ -258,8 +261,8 @@ def main():
     cached = load_cache()
     print(f"[cache] {len(cached)} preguntas previas en cache (se saltean)")
 
-    # Armar lista de tareas: oraciones no cacheadas
-    tasks: list[tuple[str, int, str, str]] = []
+    # Armar pool de tareas por cuento
+    pool_by_story: dict[str, list[tuple[str, int, str, str]]] = {}
     for title, sentences in stories:
         for i, s in enumerate(sentences):
             if not is_good_target(s):
@@ -267,10 +270,22 @@ def main():
             if (title, i) in cached:
                 continue
             qtype = "inferencial" if rng.random() < INFERENTIAL_RATIO else "factual"
-            tasks.append((title, i, s, qtype))
+            pool_by_story.setdefault(title, []).append((title, i, s, qtype))
 
-    tasks = tasks[:args.n]
-    print(f"[plan] {len(tasks)} oraciones target a procesar en este batch")
+    total_available = sum(len(v) for v in pool_by_story.values())
+
+    # Distribución proporcional por cuento
+    if args.n is None or args.n >= total_available:
+        tasks = [t for v in pool_by_story.values() for t in v]
+    else:
+        import math
+        tasks = []
+        for title, pool in pool_by_story.items():
+            cuota = math.ceil(args.n * len(pool) / total_available)
+            tasks.extend(pool[:cuota])
+        tasks = tasks[:args.n]
+
+    print(f"[plan] {len(tasks)} oraciones target ({args.split}) — dist: { {t: sum(1 for x in tasks if x[0]==t) for t in pool_by_story} }")
 
     if args.dry_run:
         est_pos = len(tasks)
@@ -313,7 +328,7 @@ def main():
 
         row = {"story": title, "unit_idx": i, "unit": sent,
                "question": None if question.upper() == "SKIP" else question,
-               "question_type": qtype, "skip_reason": reason}
+               "question_type": qtype, "split": args.split, "skip_reason": reason}
         if question.upper() == "SKIP":
             n_skip += 1
         append_cache(row)

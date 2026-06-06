@@ -63,7 +63,9 @@ Sin explicación, sin texto adicional. Solo número(s) o 0.\
 
 
 def load_groups(round_dir: Path) -> list[dict]:
-    gen_path = round_dir / "generated.jsonl"
+    gen_path = round_dir / "generated_v3.jsonl"
+    if not gen_path.exists():
+        gen_path = round_dir / "generated.jsonl"
     if not gen_path.exists():
         gen_path = round_dir / "qa_stories_dataset.jsonl"
     if not gen_path.exists():
@@ -147,11 +149,61 @@ def call_anthropic(client, model: str, prompt: str) -> str | None:
     return None
 
 
-def run(groups: list[dict], model_name: str, rng: random.Random) -> list[dict]:
+def run_anthropic_batch(client, model: str, prompts: list[str]) -> list[str | None]:
+    import anthropic
+    requests = [
+        anthropic.types.message_create_params.MessageCreateParamsNonStreaming(
+            model=model,
+            max_tokens=20,
+            messages=[{"role": "user", "content": p}],
+        )
+        for p in prompts
+    ]
+    batch_requests = [
+        {"custom_id": str(i), "params": r}
+        for i, r in enumerate(requests)
+    ]
+    batch = client.messages.batches.create(requests=batch_requests)
+    print(f"[batch] id: {batch.id}")
+    return _poll_and_download_anthropic_batch(client, batch.id, len(prompts))
+
+
+def _poll_and_download_anthropic_batch(client, batch_id: str, n: int) -> list[str | None]:
+    completed = {"ended"}
+    batch = None
+    while True:
+        try:
+            batch = client.messages.batches.retrieve(batch_id)
+            if batch.processing_status in completed:
+                break
+            print(f"[batch] {batch.processing_status} ...")
+            time.sleep(10)
+        except Exception as e:
+            print(f"  [WARN] polling error: {e} — reintentando en 15s", file=sys.stderr)
+            time.sleep(15)
+    print(f"[batch] completado — {batch.request_counts}")
+    results_map: dict[int, str | None] = {}
+    while True:
+        try:
+            for result in client.messages.batches.results(batch_id):
+                idx = int(result.custom_id)
+                if result.result.type == "succeeded":
+                    results_map[idx] = result.result.message.content[0].text.strip()
+                else:
+                    results_map[idx] = None
+            break
+        except Exception as e:
+            print(f"  [WARN] error descargando resultados: {e} — reintentando en 15s", file=sys.stderr)
+            time.sleep(15)
+    return [results_map.get(i) for i in range(n)]
+
+
+def run(groups: list[dict], model_name: str, rng: random.Random, use_batch: bool = False) -> list[dict]:
     if model_name == "gemini":
         client = get_gemini_client()
         call_fn = lambda prompt: call_gemini(client, prompt)
         model_label = GEMINI_MODEL
+        use_batch = False
     elif model_name == "haiku":
         client = get_anthropic_client()
         call_fn = lambda prompt: call_anthropic(client, HAIKU_MODEL, prompt)
@@ -161,17 +213,28 @@ def run(groups: list[dict], model_name: str, rng: random.Random) -> list[dict]:
         call_fn = lambda prompt: call_anthropic(client, SONNET_MODEL, prompt)
         model_label = SONNET_MODEL
 
-    print(f"[model] {model_label}")
-    results = []
+    print(f"[model] {model_label}  [modo {'batch' if use_batch else 'secuencial'}]")
 
-    for g in tqdm(groups, desc=f"validando [{model_name}]"):
+    # Preparar candidatos y prompts
+    shuffled = []
+    for g in groups:
         candidates = [g["pos"]] + g["negs"]
         rng.shuffle(candidates)
-        correct_idx = candidates.index(g["pos"])
+        shuffled.append((candidates, candidates.index(g["pos"])))
 
-        raw = call_fn(build_prompt(g["question"], candidates))
-        time.sleep(API_PAUSE)
+    if use_batch and model_name in ("haiku", "sonnet"):
+        prompts = [build_prompt(g["question"], cands) for g, (cands, _) in zip(groups, shuffled)]
+        print(f"[batch] enviando {len(prompts)} requests a Anthropic Batch API ...")
+        raw_list = run_anthropic_batch(client, model_label, prompts)
+    else:
+        raw_list = []
+        for g, (candidates, _) in tqdm(zip(groups, shuffled), total=len(groups), desc=f"validando [{model_name}]"):
+            raw = call_fn(build_prompt(g["question"], candidates))
+            time.sleep(API_PAUSE)
+            raw_list.append(raw)
 
+    results = []
+    for g, (candidates, correct_idx), raw in zip(groups, shuffled, raw_list):
         chosen_idxs = parse_answer(raw, len(candidates)) if raw else None
         if chosen_idxs is None:
             issue = None
@@ -186,6 +249,7 @@ def run(groups: list[dict], model_name: str, rng: random.Random) -> list[dict]:
 
         results.append({
             "story": g["story"],
+            "answer_unit_idx": g["answer_unit_idx"],
             "question": g["question"],
             "question_type": g["question_type"],
             "split": g["split"],
@@ -249,6 +313,8 @@ def main():
     ap.add_argument("--model", choices=["gemini", "haiku", "sonnet"], default="haiku")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--seed", type=int, default=RANDOM_SEED)
+    ap.add_argument("--batch", action="store_true", help="Usar Anthropic Batch API (async, 50% descuento)")
+    ap.add_argument("--only-new", action="store_true", help="Saltear grupos ya validados en validation_<model>.jsonl")
     ap.add_argument("--output", type=Path, default=None,
                     help="Guardar resultados en JSONL (default: qa/rounds/<round>/validation_<model>.jsonl)")
     args = ap.parse_args()
@@ -269,15 +335,28 @@ def main():
     groups = load_groups(round_dir)
     print(f"[load] {len(groups)} grupos de preguntas")
 
+    if args.only_new:
+        out_path_check = args.output or round_dir / f"validation_{args.model}.jsonl"
+        if out_path_check.exists():
+            already_done: set[tuple] = set()
+            for line in out_path_check.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    r = json.loads(line)
+                    already_done.add((r["story"], r.get("answer_unit_idx", r["question"])))
+            before = len(groups)
+            groups = [g for g in groups if (g["story"], g["answer_unit_idx"]) not in already_done]
+            print(f"[only-new] {before - len(groups)} ya validados salteados — {len(groups)} nuevos")
+
     if args.limit:
         groups = random.Random(args.seed + 1).sample(groups, min(args.limit, len(groups)))
         print(f"[limit] {len(groups)} grupos")
 
-    results = run(groups, args.model, rng)
+    results = run(groups, args.model, rng, use_batch=args.batch)
 
-    # Guardar
+    # Guardar (append si --only-new, overwrite si no)
     out = args.output or round_dir / f"validation_{args.model}.jsonl"
-    with out.open("w", encoding="utf-8") as f:
+    mode = "a" if args.only_new else "w"
+    with out.open(mode, encoding="utf-8") as f:
         for r in results:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     print(f"[out] → {out}")

@@ -1,0 +1,64 @@
+Sos un anotador de datasets de comprensión lectora en español rioplatense (RP).
+
+Te paso fragmentos de un cuento literario rioplatense. Te marco una ORACIÓN TARGET
+dentro de una ventana de contexto. Tu tarea es generar UNA pregunta en español
+rioplatense natural (voseo donde corresponda, léxico RP) tal que:
+
+  1. La pregunta sea respondible LEYENDO ÚNICAMENTE LA ORACIÓN TARGET. Las
+     oraciones del contexto NO deben contener la respuesta; son solo para que
+     entiendas el referente (quién es el personaje, de qué se habla).
+  2. La pregunta NO debe pedir una cita literal. Debe poder formularse incluso
+     sin haber leído el cuento, mencionando al personaje o referente con su
+     nombre o una descripción mínima. Si la oración target usa solo pronombres
+     ("él", "ella", "lo", "se") sin nombrar al personaje, identificalo usando
+     el contexto para nombrar al personaje en la pregunta. Si no podés
+     identificarlo con certeza, SKIP.
+  3. La pregunta debe ser de tipo {tipo_pregunta}.
+     - factual: pregunta directa sobre un hecho explícito en la oración target
+       (qué hizo X, dónde fue, cuándo, quién, con qué).
+     - inferencial: pregunta que requiere combinar información de la oración
+       target con conocimiento del mundo, pero cuya pieza clave de evidencia
+       SIGUE ESTANDO en la oración target (no en el contexto).
+  4. Usá español rioplatense: voseo si la pregunta es a un personaje (raro,
+     evitalo), pero sobre todo léxico y giros RP. Evitá peninsularismos.
+  5. Reformulá la pregunta con tus propias palabras. El objetivo es que quien
+     lea solo la oración target reconozca que la responde, sin que la pregunta
+     sea una copia de la oración. Como referencia: intentá no superar 2
+     palabras exactas de la oración, pero si la claridad lo requiere podés
+     usar alguna más — lo importante es que se sienta como reformulación, no
+     como transcripción. Preferí usar palabras que también aparezcan en alguna
+     de las negativas, así la tarea no se resuelve solo por solapamiento
+     léxico. Si la oración tiene muchos detalles concretos, elegí UNO como
+     ancla y parafraseá el resto — no preguntes sobre dos cosas a la vez
+     (evitá estructuras tipo "¿qué X y qué Y?").
+  6. La pregunta debe ser ESPECÍFICA a esta oración. No debe poder responderse
+     con ninguna otra oración del cuento, especialmente no con oraciones
+     adyacentes de la misma secuencia narrativa (p.ej.: si la oración target
+     describe el paso 2 de una secuencia, la pregunta no puede ser "¿qué pasó
+     en la secuencia?" porque el paso 1 o el paso 3 también serían respuestas
+     válidas). Anclá la pregunta a un detalle único de esta oración.
+  7. Si la oración target no permite generar una buena pregunta (es muy
+     descriptiva, ambigua, o demasiado dependiente del contexto), devolvé el
+     string exacto: SKIP
+  8. TEST ANTES DE RESPONDER: imaginá que alguien recibe SOLO la oración target,
+     sin ningún contexto previo ni posterior. ¿Puede responder tu pregunta
+     leyéndola? Si la respuesta requiere saber qué pasó antes, quién habla, o
+     algo que no está en la oración misma, la oración es SKIP.
+
+TÍTULO: {title}
+
+CONTEXTO PREVIO:
+{context_before}
+
+>>> ORACIÓN TARGET (de acá tiene que salir la respuesta):
+{target}
+<<<
+
+CONTEXTO POSTERIOR:
+{context_after}
+
+Devolvé SOLO el JSON, sin texto adicional, con este formato exacto:
+{{"question": "..."}}
+
+O bien:
+{{"question": "SKIP", "reason": "..."}}
