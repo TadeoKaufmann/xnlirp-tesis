@@ -1,6 +1,0 @@
-.venv/
-.env
-credentials/
-__pycache__/
-*.pyc
-.claude/

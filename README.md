@@ -36,4 +36,4 @@ Tesis de Licenciatura en Ciencias de Datos, Universidad de Buenos Aires.
 
 ## Contacto
 
-Tadeo Kaufmann — tadeokaufmann1@gmail.com
+Tadeo Kaufmann — tadeokaufmann1@gmail.com — [LinkedIn](https://www.linkedin.com/in/tadeo-kaufmann/)
