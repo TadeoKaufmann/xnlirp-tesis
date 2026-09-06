@@ -1,0 +1,138 @@
+[ID:{task_id}]
+Sos un anotador de datasets de comprensión lectora en español rioplatense (RP).
+
+Te paso fragmentos de un cuento literario rioplatense. Te marco una ORACIÓN TARGET
+dentro de una ventana de contexto, y {n_neg} ORACIONES NEGATIVAS duras del mismo
+cuento (elegidas por ser léxicamente parecidas a la oración target, para que no
+se puedan descartar solo por tema). La pregunta actual sobre esta oración resultó
+DEMASIADO FÁCIL para un modelo de lenguaje entrenado — probablemente porque es
+una reformulación casi literal. Tu tarea es generar una pregunta NUEVA, más
+difícil, en español rioplatense natural (voseo donde corresponda, léxico RP)
+tal que:
+
+  1. La pregunta sea respondible LEYENDO ÚNICAMENTE LA ORACIÓN TARGET. Las
+     oraciones del contexto NO deben contener la respuesta; son solo para que
+     entiendas el referente (quién es el personaje, de qué se habla).
+  2. Ninguna de las ORACIONES NEGATIVAS duras la responde.
+  3. La pregunta NO debe pedir una cita literal. Debe poder formularse incluso
+     sin haber leído el cuento, mencionando al personaje o referente con su
+     nombre o una descripción mínima. Si la oración target usa solo pronombres
+     ("él", "ella", "lo", "se") sin nombrar al personaje, identificalo usando
+     el contexto para nombrar al personaje en la pregunta. Si no podés
+     identificarlo con certeza, SKIP.
+  4. La pregunta debe ser de tipo {tipo_pregunta}.
+     - factual: hecho explícito en la oración target, pero preguntado con
+       vocabulario bien distinto al de la oración (parafraseo fuerte).
+     - inferencial: requiere ir más allá de las palabras exactas de la oración
+       — puede ser reconocer sinónimos o relaciones de sentido común (ej:
+       seguridad=confianza), o apoyarse en un dato de cultura general que
+       cualquier persona conocería (sentido común, lógica cotidiana, física
+       básica de la vida diaria). NUNCA debe depender de un dato específico u
+       oscuro que no esté en el texto (fechas, leyes puntuales, geografía,
+       trivia). Variá el tipo de salto de una pregunta a otra — no repitas
+       siempre la misma fórmula.
+  5. Usá español rioplatense: voseo si la pregunta es a un personaje (raro,
+     evitalo), pero sobre todo léxico y giros RP. Evitá peninsularismos.
+  6. Reformulá agresivamente, con tus propias palabras. Evitá repetir más de
+     1-2 palabras exactas de la oración (más estricto que una reformulación
+     normal, porque la pregunta anterior ya era demasiado literal). Preferí
+     usar palabras que también aparezcan en alguna de las negativas duras, así
+     la tarea no se resuelve solo por solapamiento léxico. Si la oración tiene
+     muchos detalles concretos, elegí UNO como ancla y parafraseá el resto —
+     no preguntes sobre dos cosas a la vez (evitá estructuras tipo "¿qué X y
+     qué Y?").
+  7. La pregunta debe ser ESPECÍFICA a esta oración. No debe poder responderse
+     con ninguna otra oración del cuento, especialmente no con oraciones
+     adyacentes de la misma secuencia narrativa (p.ej.: si la oración target
+     describe el paso 2 de una secuencia, la pregunta no puede ser "¿qué pasó
+     en la secuencia?" porque el paso 1 o el paso 3 también serían respuestas
+     válidas). Anclá la pregunta a un detalle único de esta oración.
+  8. Si la oración target no permite generar una buena pregunta más difícil
+     (es muy descriptiva, ambigua, o demasiado dependiente del contexto),
+     devolvé el string exacto: SKIP
+  9. TEST ANTES DE RESPONDER: imaginá que alguien recibe SOLO la oración target,
+     sin ningún contexto previo ni posterior. ¿Puede responder tu pregunta
+     leyéndola? Si la respuesta requiere saber qué pasó antes, quién habla, o
+     algo que no está en la oración misma, la oración es SKIP.
+ 10. Pregunta anterior (demasiado fácil, no la repitas ni la parafrasees
+     livianamente): "{old_question}"
+
+EJEMPLOS DE BUENAS PREGUNTAS DIFÍCILES (ya validadas, usalas como referencia de
+calibración — no las copies, son de otros cuentos):
+
+Ejemplo 1 (inferencial):
+  pregunta: ¿A pesar de su situación, qué pronóstico optimista mantiene Rebeca?
+  TARGET: Pero sé que vendrá de nuevo la primavera.
+  negativa cercana: Podría haber sido una joven cualquiera disfrutando de un bello día de primavera.
+  por qué funciona: comparte la palabra "primavera" (el atajo léxico que se evita)
+  pero describe una escena distinta (una joven cualquiera un día cualquiera), no
+  una predicción a futuro. Hay que notar el matiz temporal ("vendrá DE NUEVO")
+  para distinguir, no alcanza con la palabra compartida.
+
+Ejemplo 2 (factual):
+  pregunta: ¿Qué tipo de intercambio verbal se especula que la benefició?
+  TARGET: Es probable que también la ayudase el que pudiese hablar libremente conmigo.
+  negativas cercanas: son reflexiones abstractas del mismo registro (déficits, memoria, metáforas).
+  por qué funciona: ninguna negativa comparte vocabulario con "hablar libremente",
+  pero además hay que reconocer que "intercambio verbal" = "hablar" (sinonimia,
+  no trivia) para filtrar por tipo de contenido (hecho puntual vs reflexión
+  filosófica), no por palabras compartidas.
+
+Ejemplo 3 (inferencial):
+  pregunta: ¿Qué experiencia directa hace que una cuestión filosófica abstracta pierda su relevancia?
+  TARGET: La pregunta acerca del ruido que hace una rama cuando se rompe en el bosque y no hay nadie escuchando parece tan lejana cuando somos el personaje principal del contraejemplo.
+  negativa cercana: ...tengan algo que ver con el árbol que se parte y cae pero sin embargo no le falla a sí mismo ni le falla al bosque.
+  por qué funciona: la negativa comparte el elemento "árbol que se rompe/cae"
+  (la más peligrosa), pero responde una pregunta filosófica distinta (el árbol
+  "no le falla a sí mismo" vs. el dilema de percepción de "árbol cae sin nadie
+  escuchando"). Mismo objeto, pregunta filosófica distinta.
+
+Ejemplo 4 (factual):
+  pregunta: ¿Sobre qué tipo de deceso, provocado por un ejemplar arbóreo, el narrador se cuestiona en relación a los pensadores?
+  TARGET: Me pregunto cuántos filósofos habrán muerto aplastados por un árbol.
+  negativa cercana: ...tengan algo que ver con el árbol que se parte y cae...
+  por qué funciona: comparte "árbol que cae", pero el ancla de la pregunta
+  ("filósofos muertos aplastados") es un hecho macabro/hipotético muy concreto
+  que ninguna negativa menciona. El ancla única y específica sobrevive aunque
+  el tema general (árbol) se repita.
+
+Ejemplo 5 (factual, dificultad por diseño de pregunta, no por negativas):
+  pregunta: Aparte de su edad, ¿qué factor contribuía a que el narrador se sintiera confiado en el lugar?
+  TARGET: Mi seguridad venía de mi juventud —ahora saldría corriendo ante cualquier ruido— pero también del lugar: en ese colegio nunca pasaba nada.
+  por qué funciona: la oración target tiene DOS datos (juventud Y el lugar). La
+  pregunta ancla a uno ("aparte de su edad") y excluye el otro explícitamente,
+  obligando a filtrar dentro de la misma oración en vez de descartar por
+  comparación con las negativas.
+
+Ejemplo 6 (factual, el mejor del lote):
+  pregunta: Según la Ley de Gravitación, ¿cómo influye la cantidad de materia de un objeto en la fuerza que ejerce para acercar a otro?
+  TARGET: En la Ley de Gravedad, Isaac Newton dice que la atracción entre dos cuerpos es directamente proporcional a su masa e inversamente proporcional a la distancia entre ellos.
+  negativas cercanas: todas mencionan a "Newton" también, pero hablan de la anécdota del arcoíris (tema distinto).
+  por qué funciona: las negativas comparten el nombre propio (serían "fáciles"
+  para un método que solo mira entidades nombradas), pero ninguna habla del
+  concepto central (gravedad/masa/distancia). Compartir una entidad no alcanza
+  si el concepto es distinto. Ojo: esto no depende de saber física de antes —
+  la ley completa ya está en la oración target, solo hace falta reconocer que
+  "masa" = "cantidad de materia" (sinonimia, no trivia externa).
+
+TÍTULO: {title}
+
+CONTEXTO PREVIO:
+{context_before}
+
+>>> ORACIÓN TARGET (de acá tiene que salir la respuesta):
+{target}
+<<<
+
+CONTEXTO POSTERIOR:
+{context_after}
+
+ORACIONES NEGATIVAS DURAS (ninguna debe responder la pregunta):
+{negatives}
+
+Devolvé SOLO el JSON, sin texto adicional. Incluí siempre el campo "id".
+
+{{"id": {task_id}, "question": "...", "question_type": "factual|inferencial"}}
+
+Si no podés generar una buena pregunta más difícil:
+{{"id": {task_id}, "question": "SKIP", "reason": "..."}}

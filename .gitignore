@@ -4,12 +4,3 @@ credentials/
 __pycache__/
 *.pyc
 .claude/
-.playwright-mcp/
-
-# Outputs de experimentos (regenerables)
-results/
-
-# .jsonl excluidos por defecto, pero se incluyen los gold/dev de processed/
-*.jsonl
-!data/processed/*.jsonl
-!data/raw/**/*.jsonl
